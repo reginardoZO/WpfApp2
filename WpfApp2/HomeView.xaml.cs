@@ -25,6 +25,8 @@ namespace WpfApp2
             InitializeComponent();
 
             // comentarios
+
+            // nova linha
         }
     }
 }
