@@ -43,11 +43,8 @@ namespace WpfApp2
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }
 
-                // Fecha o DrawerHost (menu lateral) após a seleção de uma opção
-                // Isso é importante para menus "flyout" que deslizam para fora.
-                // O DrawerHost.CloseDrawerCommand é um comando estático que fecha o drawer.
-                // O segundo parâmetro (this) é o target do comando, que é a própria janela.
-                DrawerHost.CloseDrawerCommand.Execute(null, this);
+                MenuToggleButton.IsChecked = false; // This will close the drawer
+                MainContentHost.Focus(); // Set focus to the content area
             }
         }
     }
