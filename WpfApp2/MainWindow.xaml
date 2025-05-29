@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:local="clr-namespace:WpfApp2"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
         mc:Ignorable="d"
         Title="Minha Aplicação WPF com Material Design" Height="450" Width="800"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,10 +14,6 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
-
-    <shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome GlassFrameThickness="1" />
-    </shell:WindowChrome.WindowChrome>
 
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                Background="{DynamicResource MaterialDesign.Brush.SurfaceVariant}"
@@ -62,7 +57,7 @@
                         Tag="Conduits"
                         HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="CableCoaxial" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <materialDesign:PackIcon Kind="Lan" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="Conduits" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
