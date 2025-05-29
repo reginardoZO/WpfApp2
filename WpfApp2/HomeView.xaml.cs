@@ -23,6 +23,8 @@ namespace WpfApp2
         public HomeView()
         {
             InitializeComponent();
+
+            // comentarios
         }
     }
 }
