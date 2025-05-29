@@ -30,15 +30,19 @@ namespace WpfApp2
                 {
                     case "Calculadora":
                         MainContentHost.Content = new CalculadoraView();
+                        TitleTextBlock.Text = "Calculadora";
                         break;
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
+                        TitleTextBlock.Text = "Início";
                         break;
                     case "Conduits":
                         MainContentHost.Content = new ConduitsView();
+                        TitleTextBlock.Text = "Conduits";
                         break;
                     case "Util":
                         MainContentHost.Content = new UtilView();
+                        TitleTextBlock.Text = "Util";
                         break;
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }

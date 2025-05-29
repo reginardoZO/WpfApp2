@@ -94,7 +94,8 @@
                                   Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                   HorizontalAlignment="Left"/>
 
-                    <TextBlock Grid.Column="1"
+                    <TextBlock x:Name="TitleTextBlock"
+                               Grid.Column="1"
                                Text="Minha Aplicação"
                                Style="{StaticResource MaterialDesignHeadlineSmallTextBlock}"
                                VerticalAlignment="Center"
