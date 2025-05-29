@@ -27,6 +27,8 @@ namespace WpfApp2
             // comentarios
 
             // nova linha
+
+            // mais comentarios
         }
     }
 }
