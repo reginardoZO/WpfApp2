@@ -34,6 +34,12 @@ namespace WpfApp2
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
                         break;
+                    case "Conduits":
+                        MainContentHost.Content = new ConduitsView();
+                        break;
+                    case "Util":
+                        MainContentHost.Content = new UtilView();
+                        break;
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }
 
