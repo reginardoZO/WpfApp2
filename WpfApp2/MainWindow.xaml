@@ -23,14 +23,15 @@
                 <TextBlock Text="MENU"
                            Style="{StaticResource MaterialDesignHeadlineSmallTextBlock}"
                            Foreground="{DynamicResource MaterialDesign.Brush.OnPrimaryContainer}"
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Left"
                            Margin="16"/>
 
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         Margin="8,4"
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="MenuButton_Click"
-                        Tag="Calculadora">
+                        Tag="Calculadora"
+                        HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Calculator" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="Calculadora" VerticalAlignment="Center"/>
@@ -41,7 +42,8 @@
                         Margin="8,4"
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="MenuButton_Click"
-                        Tag="Inicio">
+                        Tag="Inicio"
+                        HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Home" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="Início" VerticalAlignment="Center"/>
