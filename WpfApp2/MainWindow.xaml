@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" ShowInTaskbar="False">
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" >
 
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                Background="{DynamicResource MaterialDesign.Brush.SurfaceVariant}"
@@ -78,12 +78,16 @@
         </materialDesign:DrawerHost.LeftDrawerContent>
 
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="133*"/>
+                <ColumnDefinition Width="267*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <materialDesign:ColorZone Mode="PrimaryMid" Padding="16">
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Grid.ColumnSpan="2" VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -103,7 +107,7 @@
                 </Grid>
             </materialDesign:ColorZone>
 
-            <ContentControl x:Name="MainContentHost" Grid.Row="1"/>
+            <ContentControl x:Name="MainContentHost" Grid.Row="1" Grid.ColumnSpan="2"/>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>
