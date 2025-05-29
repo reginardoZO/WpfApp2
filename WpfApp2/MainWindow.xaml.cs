@@ -12,9 +12,11 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowState = WindowState.Maximized; 
 
             // Carrega o HomeView (Lorem Ipsum) na inicialização da aplicação
-            MainContentHost.Content = new HomeView();
+            MainContentHost.Content = new HomeView(); // This line was effectively already present
+            TitleTextBlock.Text = "Início"; // Set title for the initial HomeView
         }
 
         // Método para lidar com o clique dos botões do menu lateral
