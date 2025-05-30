@@ -9,10 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
 	  
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" />
   </ItemGroup>
 
 </Project>
