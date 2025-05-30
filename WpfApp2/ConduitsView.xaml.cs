@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows; // For RoutedEventArgs, Visibility
 using System.Threading.Tasks; // For Task
 using System; // For Exception
+using System.Windows.Threading; // Added for DispatcherTimer
 
 namespace WpfApp2
 {
@@ -13,11 +14,16 @@ namespace WpfApp2
     {
         public DatabaseAccess acessos = new DatabaseAccess();
         DataTable databaseLoad = new DataTable(); // Will be loaded async
+        private System.Windows.Threading.DispatcherTimer gifTimer;
 
         public ConduitsView()
         {
             InitializeComponent();
             // Synchronous load removed
+
+            gifTimer = new System.Windows.Threading.DispatcherTimer();
+            gifTimer.Interval = TimeSpan.FromSeconds(2);
+            gifTimer.Tick += GifTimer_Tick;
         }
 
         // This is the new async version
@@ -102,9 +108,47 @@ namespace WpfApp2
 
         private void cmbConductors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Placeholder for user's original logic
-            LimparCombosSequenciais("Conductors");
-             if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Multiconductor")
+            LimparCombosSequenciais("Conductors"); // Existing logic from user (adapted name)
+
+            // New GIF Logic:
+            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Single")
+            {
+                try
+                {
+                    // Uri for the GIF, assuming it's a resource in the root of the project.
+                    if (ArrowGifPlayer.Source == null || ArrowGifPlayer.Source.ToString() != "pack://application:,,,/arrowGIF.gif")
+                    {
+                       ArrowGifPlayer.Source = new Uri("pack://application:,,,/arrowGIF.gif", UriKind.Absolute);
+                    }
+
+                    ArrowGifPlayer.Position = TimeSpan.Zero; // Rewind
+                    ArrowGifPlayer.Play(); // Start playing the GIF
+                    ArrowGifPlayer.Visibility = Visibility.Visible; // Make it visible
+
+                    gifTimer.Start(); // Start the 2-second timer
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error with Arrow GIF: {ex.Message}");
+                    if (ArrowGifPlayer != null) ArrowGifPlayer.Visibility = Visibility.Collapsed; // Hide on error
+                    gifTimer.Stop(); // Ensure timer is stopped on error
+                }
+            }
+            else
+            {
+                // If selection is not "Single" or is null, ensure GIF is hidden and timer is stopped.
+                gifTimer.Stop();
+                if (ArrowGifPlayer != null)
+                {
+                    ArrowGifPlayer.Stop();
+                    ArrowGifPlayer.Visibility = Visibility.Collapsed;
+                    // ArrowGifPlayer.Source = null; // Optionally clear source here too
+                }
+            }
+
+            // Resume existing logic from user:
+            // (This part is based on the reconstructed logic from previous steps)
+            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Multiconductor")
             {
                 cmbAmountMulti.Visibility = Visibility.Visible; // Show Qty
                 // Populate cmbAmountMulti - assuming 'Amount_Multi' is a column
@@ -207,6 +251,25 @@ namespace WpfApp2
             else if (currentComboName == "AmountMulti")
             {
                 cmbSize.ItemsSource = null;
+            }
+        }
+
+        public void GifPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            // STUB METHOD TO FIX BUILD ERROR
+            // This method is likely referenced in XAML but was missing.
+            // If this event handling is actually needed, the logic should be implemented here.
+            System.Diagnostics.Debug.WriteLine("GifPlayer_MediaEnded called - STUB");
+        }
+
+        private void GifTimer_Tick(object sender, EventArgs e)
+        {
+            gifTimer.Stop();
+            if (ArrowGifPlayer != null) // Check if ArrowGifPlayer is not null
+            {
+                ArrowGifPlayer.Stop();
+                ArrowGifPlayer.Visibility = Visibility.Collapsed;
+                ArrowGifPlayer.Source = null; // Release the source
             }
         }
     }
