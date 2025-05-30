@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:WpfApp2"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="elec size &amp; draw" Height="450" Width="800"
+        Title="Minha Aplicação WPF com Material Design" Height="450" Width="800"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" >
+        FontFamily="{DynamicResource MaterialDesignFont}">
 
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                Background="{DynamicResource MaterialDesign.Brush.SurfaceVariant}"
@@ -78,16 +78,12 @@
         </materialDesign:DrawerHost.LeftDrawerContent>
 
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="133*"/>
-                <ColumnDefinition Width="267*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -100,14 +96,14 @@
 
                     <TextBlock x:Name="TitleTextBlock"
                                Grid.Column="1"
-                               Text="Electrical Design Tool"
+                               Text="Minha Aplicação"
                                Style="{StaticResource MaterialDesignHeadlineSmallTextBlock}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
                 </Grid>
             </materialDesign:ColorZone>
 
-            <ContentControl x:Name="MainContentHost" Grid.Row="1" Grid.ColumnSpan="2"/>
+            <ContentControl x:Name="MainContentHost" Grid.Row="1"/>
         </Grid>
     </materialDesign:DrawerHost>
 </Window>
