@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" >
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowState="Maximized" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/electrical-storm-weather-symbol-of-black-lightning-bolt-shape_icon-icons.com_64228.ico" >
 
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
                                Background="{DynamicResource MaterialDesign.Brush.SurfaceVariant}"
