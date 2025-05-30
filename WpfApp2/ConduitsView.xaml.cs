@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using System; // For Exception
-using System.Windows.Threading; // Added for DispatcherTimer
+using System;
+using System.Windows.Threading;
 using System.Windows;
 using System.Threading.Tasks;
-
+using System.Windows.Automation.Provider;
 
 namespace WpfApp2
 {
@@ -17,25 +17,31 @@ namespace WpfApp2
     public partial class ConduitsView : UserControl
     {
         public DatabaseAccess acessos = new DatabaseAccess();
-        
+        DataTable databaseLoad = new DataTable();
 
-        DataTable databaseLoad = new DataTable(); // Will be loaded async
-        private System.Windows.Threading.DispatcherTimer gifTimer;
-
-
+        DataTable elementsAdded = new DataTable();
 
         public ConduitsView()
         {
             InitializeComponent();
 
+            //set datatable to add elements to grid
 
-            gifTimer = new System.Windows.Threading.DispatcherTimer();
-            gifTimer.Interval = TimeSpan.FromSeconds(2);
-            gifTimer.Tick += GifTimer_Tick;
+            elementsAdded.Rows.Clear();
+
+            elementsAdded.Columns.Add("Numb", typeof(int));
+            elementsAdded.Columns.Add("Level", typeof(string));
+            elementsAdded.Columns.Add("Conductors", typeof(string));
+            elementsAdded.Columns.Add("Qt Conductors", typeof(string));
+            elementsAdded.Columns.Add("Size", typeof(string));
+            elementsAdded.Columns.Add("Triplex", typeof(bool));
+            elementsAdded.Columns.Add("Ground", typeof(string));
+
+            CircuitsDataGrid.ItemsSource = elementsAdded.DefaultView;
 
         }
 
-        private async void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             // Show loading indicator
             LoadingIndicator.Visibility = Visibility.Visible;
@@ -63,9 +69,17 @@ namespace WpfApp2
             }
             finally
             {
+
                 // Hide loading indicator
                 LoadingIndicator.Visibility = Visibility.Collapsed;
                 ContentGrid.IsEnabled = true;
+                // starts with the label and grounding size hidden
+                lblGround.IsEnabled = false;
+                cmbGround.IsEnabled = false;
+
+
+
+
             }
         }
 
@@ -115,59 +129,50 @@ namespace WpfApp2
 
         private void cmbConductors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            LimparCombosSequenciais("Conductors"); // Existing logic from user (adapted name)
-
-            // New GIF Logic:
-            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Single")
-            {
-                try
-                {
-                    // Uri for the GIF, assuming it's a resource in the root of the project.
-                    if (ArrowGifPlayer.Source == null || ArrowGifPlayer.Source.ToString() != "pack://application:,,,/arrowGIF.gif")
-                    {
-                       ArrowGifPlayer.Source = new Uri("pack://application:,,,/arrowGIF.gif", UriKind.Absolute);
-                    }
-
-                    ArrowGifPlayer.Position = TimeSpan.Zero; // Rewind
-                    ArrowGifPlayer.Play(); // Start playing the GIF
-                    ArrowGifPlayer.Visibility = Visibility.Visible; // Make it visible
-
-                    gifTimer.Start(); // Start the 2-second timer
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error with Arrow GIF: {ex.Message}");
-                    if (ArrowGifPlayer != null) ArrowGifPlayer.Visibility = Visibility.Collapsed; // Hide on error
-                    gifTimer.Stop(); // Ensure timer is stopped on error
-                }
-            }
-            else
-            {
-                // If selection is not "Single" or is null, ensure GIF is hidden and timer is stopped.
-                gifTimer.Stop();
-                if (ArrowGifPlayer != null)
-                {
-                    ArrowGifPlayer.Stop();
-                    ArrowGifPlayer.Visibility = Visibility.Collapsed;
-                    // ArrowGifPlayer.Source = null; // Optionally clear source here too
-                }
-            }
-
-            // Resume existing logic from user:
-            // (This part is based on the reconstructed logic from previous steps)
-            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Multiconductor")
-
             // Limpa os combos dependentes
             LimparCombosSequenciais(3);
 
-            if (TemSelecaoCompleta(3))
+            // Lógica do GIF - Mostra quando "Single" é selecionado
+            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Single")
+            {
+                checkTriplex.IsEnabled = true;
+                checkTriplex.IsChecked = true;
 
+                lblGround.IsEnabled = true;
+                cmbGround.IsEnabled = true;
+
+                string levelSelecionado = "600V";
+                string typeSelecionado = "Power";
+                string cables = "Single";
+
+                var distinctGrounds = databaseLoad.AsEnumerable()
+                                    .Where(row => row.Field<string>("Level") == levelSelecionado &&
+                                                 row.Field<string>("Type") == typeSelecionado &&
+                                                 row.Field<string>("Cables") == cables)
+                                    .Select(row => row.Field<string>("Size"))
+                                    .Where(cables => !string.IsNullOrEmpty(cables))
+                                    .Distinct()
+                                    .ToList();
+
+                cmbGround.ItemsSource = distinctGrounds;
+
+
+            }
+            else
+            {
+                checkTriplex.IsEnabled = false;
+                checkTriplex.IsChecked = false;
+            }
+
+            // Continua com a lógica existente
+            if (TemSelecaoCompleta(3))
             {
                 ProcessarAmountMulti();
                 ProcessarSize();
             }
         }
+
+
 
         private void cmbAmountMulti_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -204,7 +209,7 @@ namespace WpfApp2
             {
                 // Se não for Multiconductor, apenas o valor "1"
                 cmbAmountMulti.ItemsSource = new List<string> { "1" };
-                cmbAmountMulti.SelectedIndex = 0; // Seleciona automaticamente o "1"
+                cmbAmountMulti.SelectedIndex = 0;
                 Debug.WriteLine("Não é Multiconductor - Valor fixo: 1");
             }
         }
@@ -297,23 +302,51 @@ namespace WpfApp2
             }
         }
 
-        public void GifPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        
+        private void btnAddCircuit_Click(object sender, RoutedEventArgs e)
         {
-            // STUB METHOD TO FIX BUILD ERROR
-            // This method is likely referenced in XAML but was missing.
-            // If this event handling is actually needed, the logic should be implemented here.
-            System.Diagnostics.Debug.WriteLine("GifPlayer_MediaEnded called - STUB");
+            DataRow newRow = elementsAdded.NewRow();
+
+            // Preencher os valores das colunas
+            newRow["Numb"] = elementsAdded.Rows.Count + 1;
+            newRow["Level"] = cmbLevel.SelectedItem?.ToString() ?? string.Empty;
+            newRow["Conductors"] = cmbConductors.SelectedItem?.ToString() ?? string.Empty;
+            newRow["Qt Conductors"] = cmbAmountMulti.SelectedItem?.ToString() ?? string.Empty;
+            newRow["Size"] = cmbSize.SelectedItem?.ToString() ?? string.Empty;
+            newRow["Triplex"] = checkTriplex.IsChecked;
+            newRow["Ground"] = cmbGround.SelectedItem?.ToString() ?? string.Empty;
+
+            // Adicionar a linha à tabela
+            elementsAdded.Rows.Add(newRow);
+
+            
         }
 
-        private void GifTimer_Tick(object sender, EventArgs e)
+        private void DeleteRow_Click(object sender, RoutedEventArgs e)
         {
-            gifTimer.Stop();
-            if (ArrowGifPlayer != null) // Check if ArrowGifPlayer is not null
+            Button button = sender as Button;
+
+            if (button?.Tag is DataRowView rowView)
             {
-                ArrowGifPlayer.Stop();
-                ArrowGifPlayer.Visibility = Visibility.Collapsed;
-                ArrowGifPlayer.Source = null; // Release the source
+                // Confirmar exclusão
+                MessageBoxResult result = MessageBox.Show(
+                    "Tem certeza que deseja excluir esta linha?",
+                    "Confirmar Exclusão",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Remove da DataTable (o DataGrid será atualizado automaticamente)
+                    rowView.Row.Delete();
+                    elementsAdded.AcceptChanges();
+                }
             }
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            elementsAdded.Rows.Clear();
         }
     }
 }
