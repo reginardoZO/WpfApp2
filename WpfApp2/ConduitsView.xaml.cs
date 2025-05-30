@@ -1,8 +1,14 @@
 using System.Data;
+
+using System.Threading.Tasks;
+using System.Windows; // For RoutedEventArgs and Visibility
+using System.Windows.Controls; // For UserControl (already there)
+using System; // For Exception (if more detailed error handling is added)
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
+
 
 namespace WpfApp2
 {
@@ -11,13 +17,16 @@ namespace WpfApp2
     /// </summary>
     public partial class ConduitsView : UserControl
     {
-        public DatabaseAccess acessos = new DatabaseAccess();
-        DataTable databaseLoad = new DataTable();
+
+        private DatabaseAccess acessos = new DatabaseAccess();
+        private DataTable databaseLoad;
+
+
 
         public ConduitsView()
         {
             InitializeComponent();
-            // Carrega todo o banco uma única vez
+            // Carrega todo o banco uma Ãºnica vez
             databaseLoad = acessos.ExecuteQuery("SELECT * FROM cables");
         }
 
@@ -110,7 +119,7 @@ namespace WpfApp2
             }
             else
             {
-                // Se não for Multiconductor, apenas o valor "1"
+                // Se nÃ£o for Multiconductor, apenas o valor "1"
                 cmbAmountMulti.ItemsSource = new List<string> { "1" };
                 cmbAmountMulti.SelectedIndex = 0; // Seleciona automaticamente o "1"
             }
@@ -175,20 +184,20 @@ namespace WpfApp2
             }
         }
 
-        // Métodos auxiliares
+        // MÃ©todos auxiliares
         private void LimparCombosSequenciais(int nivel)
         {
             switch (nivel)
             {
-                case 1: // Limpa tudo após Level
+                case 1: // Limpa tudo apÃ³s Level
                     cmbType.ItemsSource = null;
                     cmbType.SelectedIndex = -1;
                     goto case 2;
-                case 2: // Limpa tudo após Type
+                case 2: // Limpa tudo apÃ³s Type
                     cmbConductors.ItemsSource = null;
                     cmbConductors.SelectedIndex = -1;
                     goto case 3;
-                case 3: // Limpa tudo após Conductors
+                case 3: // Limpa tudo apÃ³s Conductors
                     cmbAmountMulti.ItemsSource = null;
                     cmbAmountMulti.SelectedIndex = -1;
                     cmbSize.ItemsSource = null;
@@ -209,6 +218,45 @@ namespace WpfApp2
                     return TemSelecaoCompleta(3) && cmbAmountMulti.SelectedItem != null;
                 default:
                     return false;
+            }
+        }
+
+        private async void ConduitsView_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadingIndicator.Visibility = Visibility.Visible;
+            CablesDataGrid.Visibility = Visibility.Collapsed;
+
+            string query = "SELECT * FROM cables"; // As confirmed by the user
+
+            try
+            {
+                databaseLoad = await Task.Run(() => acessos.ExecuteQuery(query));
+
+                if (databaseLoad != null)
+                {
+                    CablesDataGrid.ItemsSource = databaseLoad.DefaultView;
+                    CablesDataGrid.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // Optional: Display an error message to the user
+                    // For example, if you add a TextBlock named ErrorTextBlock:
+                    // ErrorTextBlock.Text = "Failed to load data from the database.";
+                    // ErrorTextBlock.Visibility = Visibility.Visible;
+                    Console.WriteLine("ConduitsView: databaseLoad returned null after query execution.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions during the async operation or UI update
+                Console.WriteLine($"Error loading conduits data: {ex.Message}");
+                // Optional: Display an error message to the user
+                // ErrorTextBlock.Text = "An error occurred while loading data.";
+                // ErrorTextBlock.Visibility = Visibility.Visible;
+            }
+            finally
+            {
+                LoadingIndicator.Visibility = Visibility.Collapsed;
             }
         }
     }

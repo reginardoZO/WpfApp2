@@ -12,7 +12,7 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
-            this.WindowState = WindowState.Maximized; 
+            this.WindowState = WindowState.Maximized;
 
             // Carrega o HomeView (Lorem Ipsum) na inicialização da aplicação
             MainContentHost.Content = new HomeView(); // This line was effectively already present
