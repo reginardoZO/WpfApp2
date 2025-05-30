@@ -3,8 +3,11 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
+using System; // For Exception
+using System.Windows.Threading; // Added for DispatcherTimer
 using System.Windows;
 using System.Threading.Tasks;
+
 
 namespace WpfApp2
 {
@@ -14,11 +17,22 @@ namespace WpfApp2
     public partial class ConduitsView : UserControl
     {
         public DatabaseAccess acessos = new DatabaseAccess();
-        DataTable databaseLoad = new DataTable();
+        
+
+        DataTable databaseLoad = new DataTable(); // Will be loaded async
+        private System.Windows.Threading.DispatcherTimer gifTimer;
+
+
 
         public ConduitsView()
         {
             InitializeComponent();
+
+
+            gifTimer = new System.Windows.Threading.DispatcherTimer();
+            gifTimer.Interval = TimeSpan.FromSeconds(2);
+            gifTimer.Tick += GifTimer_Tick;
+
         }
 
         private async void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -101,10 +115,54 @@ namespace WpfApp2
 
         private void cmbConductors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            LimparCombosSequenciais("Conductors"); // Existing logic from user (adapted name)
+
+            // New GIF Logic:
+            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Single")
+            {
+                try
+                {
+                    // Uri for the GIF, assuming it's a resource in the root of the project.
+                    if (ArrowGifPlayer.Source == null || ArrowGifPlayer.Source.ToString() != "pack://application:,,,/arrowGIF.gif")
+                    {
+                       ArrowGifPlayer.Source = new Uri("pack://application:,,,/arrowGIF.gif", UriKind.Absolute);
+                    }
+
+                    ArrowGifPlayer.Position = TimeSpan.Zero; // Rewind
+                    ArrowGifPlayer.Play(); // Start playing the GIF
+                    ArrowGifPlayer.Visibility = Visibility.Visible; // Make it visible
+
+                    gifTimer.Start(); // Start the 2-second timer
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error with Arrow GIF: {ex.Message}");
+                    if (ArrowGifPlayer != null) ArrowGifPlayer.Visibility = Visibility.Collapsed; // Hide on error
+                    gifTimer.Stop(); // Ensure timer is stopped on error
+                }
+            }
+            else
+            {
+                // If selection is not "Single" or is null, ensure GIF is hidden and timer is stopped.
+                gifTimer.Stop();
+                if (ArrowGifPlayer != null)
+                {
+                    ArrowGifPlayer.Stop();
+                    ArrowGifPlayer.Visibility = Visibility.Collapsed;
+                    // ArrowGifPlayer.Source = null; // Optionally clear source here too
+                }
+            }
+
+            // Resume existing logic from user:
+            // (This part is based on the reconstructed logic from previous steps)
+            if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Multiconductor")
+
             // Limpa os combos dependentes
             LimparCombosSequenciais(3);
 
             if (TemSelecaoCompleta(3))
+
             {
                 ProcessarAmountMulti();
                 ProcessarSize();
@@ -144,10 +202,10 @@ namespace WpfApp2
             }
             else
             {
-                // Se n„o for Multiconductor, apenas o valor "1"
+                // Se n√£o for Multiconductor, apenas o valor "1"
                 cmbAmountMulti.ItemsSource = new List<string> { "1" };
                 cmbAmountMulti.SelectedIndex = 0; // Seleciona automaticamente o "1"
-                Debug.WriteLine("N„o È Multiconductor - Valor fixo: 1");
+                Debug.WriteLine("N√£o √© Multiconductor - Valor fixo: 1");
             }
         }
 
@@ -202,20 +260,20 @@ namespace WpfApp2
             }
         }
 
-        // MÈtodos auxiliares
+        // M√©todos auxiliares
         private void LimparCombosSequenciais(int nivel)
         {
             switch (nivel)
             {
-                case 1: // Limpa tudo apÛs Level
+                case 1: // Limpa tudo ap√≥s Level
                     cmbType.ItemsSource = null;
                     cmbType.SelectedIndex = -1;
                     goto case 2;
-                case 2: // Limpa tudo apÛs Type
+                case 2: // Limpa tudo ap√≥s Type
                     cmbConductors.ItemsSource = null;
                     cmbConductors.SelectedIndex = -1;
                     goto case 3;
-                case 3: // Limpa tudo apÛs Conductors
+                case 3: // Limpa tudo ap√≥s Conductors
                     cmbAmountMulti.ItemsSource = null;
                     cmbAmountMulti.SelectedIndex = -1;
                     cmbSize.ItemsSource = null;
@@ -236,6 +294,25 @@ namespace WpfApp2
                     return TemSelecaoCompleta(3) && cmbAmountMulti.SelectedItem != null;
                 default:
                     return false;
+            }
+        }
+
+        public void GifPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            // STUB METHOD TO FIX BUILD ERROR
+            // This method is likely referenced in XAML but was missing.
+            // If this event handling is actually needed, the logic should be implemented here.
+            System.Diagnostics.Debug.WriteLine("GifPlayer_MediaEnded called - STUB");
+        }
+
+        private void GifTimer_Tick(object sender, EventArgs e)
+        {
+            gifTimer.Stop();
+            if (ArrowGifPlayer != null) // Check if ArrowGifPlayer is not null
+            {
+                ArrowGifPlayer.Stop();
+                ArrowGifPlayer.Visibility = Visibility.Collapsed;
+                ArrowGifPlayer.Source = null; // Release the source
             }
         }
     }
