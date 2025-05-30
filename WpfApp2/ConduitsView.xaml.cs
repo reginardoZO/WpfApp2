@@ -3,210 +3,239 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using System.Windows; // For RoutedEventArgs, Visibility
-using System.Threading.Tasks; // For Task
-using System; // For Exception
+using System.Windows;
+using System.Threading.Tasks;
 
 namespace WpfApp2
 {
+    /// <summary>
+    /// Interaction logic for ConduitsView.xaml
+    /// </summary>
     public partial class ConduitsView : UserControl
     {
         public DatabaseAccess acessos = new DatabaseAccess();
-        DataTable databaseLoad = new DataTable(); // Will be loaded async
+        DataTable databaseLoad = new DataTable();
 
         public ConduitsView()
         {
             InitializeComponent();
-            // Synchronous load removed
         }
 
-        // This is the new async version
-        private async void Grid_Loaded(object sender, RoutedEventArgs e)
+        private async void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            // Show loading indicator
             LoadingIndicator.Visibility = Visibility.Visible;
-            ContentGrid.IsEnabled = false; // Disable UI
+            ContentGrid.IsEnabled = false;
 
             try
             {
-                databaseLoad = await Task.Run(() => acessos.ExecuteQuery("SELECT * FROM cables"));
+                // Load data asynchronously to avoid blocking UI
+                await Task.Run(() =>
+                {
+                    databaseLoad = acessos.ExecuteQuery("SELECT * FROM cables");
+                });
+
                 Debug.WriteLine($"Total de registros carregados: {databaseLoad.Rows.Count}");
 
-                // Original logic from Grid_Loaded to populate cmbLevel (must run on UI thread)
-                if (databaseLoad != null) // Check if databaseLoad is not null
-                {
-                    var distinctLevels = databaseLoad.AsEnumerable()
-                                        .Select(row => row.Field<string>("Level"))
-                                        .Where(level => !string.IsNullOrEmpty(level))
-                                        .Distinct()
-                                        .ToList();
+                // Preenche o primeiro combo com todos os valores distintos de Level
+                var distinctLevels = databaseLoad.AsEnumerable()
+                                    .Select(row => row.Field<string>("Level"))
+                                    .Where(level => !string.IsNullOrEmpty(level))
+                                    .Distinct()
+                                    .ToList();
 
-                    cmbLevel.ItemsSource = distinctLevels;
-                    Debug.WriteLine($"Levels carregados: {distinctLevels.Count}");
-                }
-                else
-                {
-                    Debug.WriteLine("Database load returned null in Grid_Loaded.");
-                    // Optionally: show a message to the user in a TextBlock, e.g.
-                    // ErrorMessageTextBlock.Text = "Failed to load initial data.";
-                    // ErrorMessageTextBlock.Visibility = Visibility.Visible;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error loading initial data in ConduitsView: {ex.Message}");
-                // Optionally: show a message to the user
-                // ErrorMessageTextBlock.Text = "An error occurred while loading data.";
-                // ErrorMessageTextBlock.Visibility = Visibility.Visible;
+                cmbLevel.ItemsSource = distinctLevels;
+                Debug.WriteLine($"Levels carregados: {distinctLevels.Count}");
             }
             finally
             {
+                // Hide loading indicator
                 LoadingIndicator.Visibility = Visibility.Collapsed;
-                ContentGrid.IsEnabled = true; // Re-enable UI
+                ContentGrid.IsEnabled = true;
             }
         }
 
         private void cmbLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Placeholder for user's original logic
-            LimparCombosSequenciais("Level");
+            // Limpa os combos dependentes
+            LimparCombosSequenciais(1);
+
             if (cmbLevel.SelectedItem != null)
             {
-                string selectedLevel = cmbLevel.SelectedItem.ToString();
-                var distinctTypes = databaseLoad.AsEnumerable()
-                                    .Where(row => row.Field<string>("Level") == selectedLevel && !string.IsNullOrEmpty(row.Field<string>("Type")))
+                string levelSelecionado = cmbLevel.SelectedItem.ToString();
+
+                var tiposDistintos = databaseLoad.AsEnumerable()
+                                    .Where(row => row.Field<string>("Level") == levelSelecionado)
                                     .Select(row => row.Field<string>("Type"))
+                                    .Where(type => !string.IsNullOrEmpty(type))
                                     .Distinct()
                                     .ToList();
-                cmbType.ItemsSource = distinctTypes;
+
+                cmbType.ItemsSource = tiposDistintos;
+                Debug.WriteLine($"Level: '{levelSelecionado}' - Types encontrados: {tiposDistintos.Count}");
             }
         }
 
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Placeholder for user's original logic
-            LimparCombosSequenciais("Type");
-            if (cmbType.SelectedItem != null)
+            // Limpa os combos dependentes
+            LimparCombosSequenciais(2);
+
+            if (cmbLevel.SelectedItem != null && cmbType.SelectedItem != null)
             {
-                string selectedLevel = cmbLevel.SelectedItem?.ToString();
-                string selectedType = cmbType.SelectedItem.ToString();
-                var distinctConductors = databaseLoad.AsEnumerable()
-                                        .Where(row => row.Field<string>("Level") == selectedLevel &&
-                                                      row.Field<string>("Type") == selectedType &&
-                                                      !string.IsNullOrEmpty(row.Field<string>("Conductors")))
-                                        .Select(row => row.Field<string>("Conductors"))
-                                        .Distinct()
-                                        .ToList();
-                cmbConductors.ItemsSource = distinctConductors;
+                string levelSelecionado = cmbLevel.SelectedItem.ToString();
+                string typeSelecionado = cmbType.SelectedItem.ToString();
+
+                var cablesDistintos = databaseLoad.AsEnumerable()
+                                     .Where(row => row.Field<string>("Level") == levelSelecionado &&
+                                                  row.Field<string>("Type") == typeSelecionado)
+                                     .Select(row => row.Field<string>("Cables"))
+                                     .Where(cables => !string.IsNullOrEmpty(cables))
+                                     .Distinct()
+                                     .ToList();
+
+                cmbConductors.ItemsSource = cablesDistintos;
+                Debug.WriteLine($"Level: '{levelSelecionado}', Type: '{typeSelecionado}' - Cables encontrados: {cablesDistintos.Count}");
             }
         }
 
         private void cmbConductors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Placeholder for user's original logic
-            LimparCombosSequenciais("Conductors");
-             if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Multiconductor")
+            // Limpa os combos dependentes
+            LimparCombosSequenciais(3);
+
+            if (TemSelecaoCompleta(3))
             {
-                cmbAmountMulti.Visibility = Visibility.Visible; // Show Qty
-                // Populate cmbAmountMulti - assuming 'Amount_Multi' is a column
-                var distinctAmountMulti = databaseLoad.AsEnumerable()
-                                            .Where(row => row.Field<string>("Level") == cmbLevel.SelectedItem.ToString() &&
-                                                          row.Field<string>("Type") == cmbType.SelectedItem.ToString() &&
-                                                          row.Field<string>("Conductors") == "Multiconductor" &&
-                                                          row.Field<string>("Amount_Multi") != null) // Ensure not null
-                                            .Select(row => row.Field<string>("Amount_Multi"))
-                                            .Distinct()
-                                            .ToList();
-                cmbAmountMulti.ItemsSource = distinctAmountMulti;
-            }
-            else
-            {
-                cmbAmountMulti.Visibility = Visibility.Collapsed; // Hide Qty
-                cmbAmountMulti.ItemsSource = null; // Clear items
-            }
-
-            // Populate Size based on previous selections
-            if (cmbLevel.SelectedItem != null && cmbType.SelectedItem != null && cmbConductors.SelectedItem != null)
-            {
-                string selectedLevel = cmbLevel.SelectedItem.ToString();
-                string selectedType = cmbType.SelectedItem.ToString();
-                string selectedConductors = cmbConductors.SelectedItem.ToString();
-
-                var query = databaseLoad.AsEnumerable()
-                                .Where(row => row.Field<string>("Level") == selectedLevel &&
-                                              row.Field<string>("Type") == selectedType &&
-                                              row.Field<string>("Conductors") == selectedConductors);
-
-                // If Multiconductor and Qty is selected, filter by Qty as well
-                if (selectedConductors == "Multiconductor" && cmbAmountMulti.SelectedItem != null)
-                {
-                    string selectedAmountMulti = cmbAmountMulti.SelectedItem.ToString();
-                    query = query.Where(row => row.Field<string>("Amount_Multi") == selectedAmountMulti);
-                }
-
-                var distinctSizes = query.Where(row => !string.IsNullOrEmpty(row.Field<string>("Size")))
-                                     .Select(row => row.Field<string>("Size"))
-                                     .Distinct()
-                                     .ToList();
-                cmbSize.ItemsSource = distinctSizes;
+                ProcessarAmountMulti();
+                ProcessarSize();
             }
         }
 
         private void cmbAmountMulti_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Placeholder for user's original logic
-             LimparCombosSequenciais("AmountMulti");
-            // Logic to repopulate Size when AmountMulti changes for Multiconductor
+            // Reprocessa o Size quando Amount Multi muda (se for Multiconductor)
             if (cmbConductors.SelectedItem?.ToString() == "Multiconductor" && cmbAmountMulti.SelectedItem != null)
             {
-                string selectedLevel = cmbLevel.SelectedItem.ToString();
-                string selectedType = cmbType.SelectedItem.ToString();
-                string selectedConductors = "Multiconductor";
-                string selectedAmountMulti = cmbAmountMulti.SelectedItem.ToString();
-
-                var distinctSizes = databaseLoad.AsEnumerable()
-                                    .Where(row => row.Field<string>("Level") == selectedLevel &&
-                                                  row.Field<string>("Type") == selectedType &&
-                                                  row.Field<string>("Conductors") == selectedConductors &&
-                                                  row.Field<string>("Amount_Multi") == selectedAmountMulti &&
-                                                  !string.IsNullOrEmpty(row.Field<string>("Size")))
-                                    .Select(row => row.Field<string>("Size"))
-                                    .Distinct()
-                                    .ToList();
-                cmbSize.ItemsSource = distinctSizes;
+                ProcessarSizeComAmountMulti();
             }
         }
 
-
-        private void LimparCombosSequenciais(string currentComboName)
+        private void ProcessarAmountMulti()
         {
-            // Placeholder for user's original logic
-            if (currentComboName == "Level")
+            string conductorsSelecionado = cmbConductors.SelectedItem.ToString();
+
+            if (conductorsSelecionado == "Multiconductor")
             {
-                cmbType.ItemsSource = null;
-                cmbConductors.ItemsSource = null;
-                cmbAmountMulti.ItemsSource = null;
-                cmbAmountMulti.Visibility = Visibility.Collapsed;
-                cmbSize.ItemsSource = null;
+                // Se for Multiconductor, preenche com valores da coluna Conductors
+                string levelSelecionado = cmbLevel.SelectedItem.ToString();
+                string typeSelecionado = cmbType.SelectedItem.ToString();
+
+                var quantidadeCondutores = databaseLoad.AsEnumerable()
+                                          .Where(row => row.Field<string>("Level") == levelSelecionado &&
+                                                       row.Field<string>("Type") == typeSelecionado &&
+                                                       row.Field<string>("Cables") == conductorsSelecionado)
+                                          .Select(row => row.Field<string>("Conductors"))
+                                          .Where(conductors => !string.IsNullOrEmpty(conductors))
+                                          .Distinct()
+                                          .ToList();
+
+                cmbAmountMulti.ItemsSource = quantidadeCondutores;
+                Debug.WriteLine($"Multiconductor - Quantidades encontradas: {quantidadeCondutores.Count}");
             }
-            else if (currentComboName == "Type")
+            else
             {
-                cmbConductors.ItemsSource = null;
-                cmbAmountMulti.ItemsSource = null;
-                cmbAmountMulti.Visibility = Visibility.Collapsed;
-                cmbSize.ItemsSource = null;
+                // Se não for Multiconductor, apenas o valor "1"
+                cmbAmountMulti.ItemsSource = new List<string> { "1" };
+                cmbAmountMulti.SelectedIndex = 0; // Seleciona automaticamente o "1"
+                Debug.WriteLine("Não é Multiconductor - Valor fixo: 1");
             }
-            else if (currentComboName == "Conductors")
+        }
+
+        private void ProcessarSize()
+        {
+            if (TemSelecaoCompleta(3))
             {
-                 if (cmbConductors.SelectedItem?.ToString() != "Multiconductor")
+                string levelSelecionado = cmbLevel.SelectedItem.ToString();
+                string typeSelecionado = cmbType.SelectedItem.ToString();
+                string cablesSelecionado = cmbConductors.SelectedItem.ToString();
+
+                var sizesDistintos = databaseLoad.AsEnumerable()
+                                    .Where(row => row.Field<string>("Level") == levelSelecionado &&
+                                                 row.Field<string>("Type") == typeSelecionado &&
+                                                 row.Field<string>("Cables") == cablesSelecionado)
+                                    .Select(row => row.Field<string>("Size"))
+                                    .Where(size => !string.IsNullOrEmpty(size))
+                                    .Distinct()
+                                    .ToList();
+
+                cmbSize.ItemsSource = sizesDistintos;
+                Debug.WriteLine($"Sizes encontrados: {sizesDistintos.Count}");
+
+                foreach (var size in sizesDistintos)
                 {
-                    cmbAmountMulti.ItemsSource = null;
-                    cmbAmountMulti.Visibility = Visibility.Collapsed;
+                    Debug.WriteLine($"- Size: '{size}'");
                 }
-                cmbSize.ItemsSource = null;
             }
-            else if (currentComboName == "AmountMulti")
+        }
+
+        private void ProcessarSizeComAmountMulti()
+        {
+            if (TemSelecaoCompleta(3) && cmbAmountMulti.SelectedItem != null)
             {
-                cmbSize.ItemsSource = null;
+                string levelSelecionado = cmbLevel.SelectedItem.ToString();
+                string typeSelecionado = cmbType.SelectedItem.ToString();
+                string cablesSelecionado = cmbConductors.SelectedItem.ToString();
+                string amountSelecionado = cmbAmountMulti.SelectedItem.ToString();
+
+                var sizesDistintos = databaseLoad.AsEnumerable()
+                                    .Where(row => row.Field<string>("Level") == levelSelecionado &&
+                                                 row.Field<string>("Type") == typeSelecionado &&
+                                                 row.Field<string>("Cables") == cablesSelecionado &&
+                                                 row.Field<string>("Conductors") == amountSelecionado)
+                                    .Select(row => row.Field<string>("Size"))
+                                    .Where(size => !string.IsNullOrEmpty(size))
+                                    .Distinct()
+                                    .ToList();
+
+                cmbSize.ItemsSource = sizesDistintos;
+                Debug.WriteLine($"Sizes para Multiconductor ({amountSelecionado} condutores): {sizesDistintos.Count}");
+            }
+        }
+
+        // Métodos auxiliares
+        private void LimparCombosSequenciais(int nivel)
+        {
+            switch (nivel)
+            {
+                case 1: // Limpa tudo após Level
+                    cmbType.ItemsSource = null;
+                    cmbType.SelectedIndex = -1;
+                    goto case 2;
+                case 2: // Limpa tudo após Type
+                    cmbConductors.ItemsSource = null;
+                    cmbConductors.SelectedIndex = -1;
+                    goto case 3;
+                case 3: // Limpa tudo após Conductors
+                    cmbAmountMulti.ItemsSource = null;
+                    cmbAmountMulti.SelectedIndex = -1;
+                    cmbSize.ItemsSource = null;
+                    cmbSize.SelectedIndex = -1;
+                    break;
+            }
+        }
+
+        private bool TemSelecaoCompleta(int nivel)
+        {
+            switch (nivel)
+            {
+                case 3:
+                    return cmbLevel.SelectedItem != null &&
+                           cmbType.SelectedItem != null &&
+                           cmbConductors.SelectedItem != null;
+                case 4:
+                    return TemSelecaoCompleta(3) && cmbAmountMulti.SelectedItem != null;
+                default:
+                    return false;
             }
         }
     }
