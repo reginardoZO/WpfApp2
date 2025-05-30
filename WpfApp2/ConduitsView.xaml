@@ -18,8 +18,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="21,117,0,0" TextWrapping="Wrap" Text="Conductors" VerticalAlignment="Top"/>
         <ComboBox x:Name="cmbConductors" HorizontalAlignment="Left" Margin="103,114,0,0" VerticalAlignment="Top" Width="110" Height="22" SelectionChanged="cmbConductors_SelectionChanged"/>
 
-        <!-- Amount Multi (quantidade de condutores para Multiconductor) -->
-        <TextBlock HorizontalAlignment="Left" Margin="218,117,0,0" TextWrapping="Wrap" Text="Qty" VerticalAlignment="Top"/>
+        <!-- Amount Multi -->
         <ComboBox x:Name="cmbAmountMulti" HorizontalAlignment="Left" Margin="239,114,0,0" VerticalAlignment="Top" Width="42" Height="22" SelectionChanged="cmbAmountMulti_SelectionChanged"/>
         <MediaElement x:Name="ArrowGifPlayer"
                   Source="pack://application:,,,/arrowGIF.gif" <!-- Pre-set source, assuming Build Action: Resource -->
@@ -36,6 +35,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="61,159,0,0" TextWrapping="Wrap" Text="Size" VerticalAlignment="Top"/>
         <ComboBox x:Name="cmbSize" HorizontalAlignment="Left" Margin="103,156,0,0" VerticalAlignment="Top" Width="110" Height="22"/>
 
+        <!-- Triplex Checkbox with Arrow -->
+        <CheckBox x:Name="checkTriplex" Content="Triplex" HorizontalAlignment="Left" Margin="239,163,0,0" VerticalAlignment="Top" IsEnabled="False"/>
+        <MediaElement x:Name="gifPlayer" Stretch="Uniform" Visibility="Collapsed"
+                  LoadedBehavior="Manual" UnloadedBehavior="Stop"
+                  MediaEnded="GifPlayer_MediaEnded"
+                  Height="22" Width="50" 
+                  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,178,0,0"/>
+
         <!-- Loading Indicator -->
         <ProgressBar x:Name="LoadingIndicator"
                      IsIndeterminate="True"
@@ -45,6 +52,5 @@
                      Height="20"
                      Visibility="Collapsed"
                      Panel.ZIndex="10"/>
-                     <!-- Ensure ZIndex is high enough if other elements could overlap -->
     </Grid>
 </UserControl>
