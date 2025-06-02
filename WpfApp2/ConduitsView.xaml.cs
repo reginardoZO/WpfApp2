@@ -17,10 +17,13 @@ namespace WpfApp2
     public partial class ConduitsView : UserControl
     {
         public DatabaseAccess acessos = new DatabaseAccess();
-        DataTable databaseLoad = new DataTable();
-        DataTable dataConduitsLoad = new DataTable();
+        DataTable dataCables = new DataTable();
+        DataTable dataConduits = new DataTable();
 
         DataTable elementsAdded = new DataTable();
+
+
+        calc classCalc = new calc();
 
         public ConduitsView()
         {
@@ -32,11 +35,13 @@ namespace WpfApp2
 
             elementsAdded.Columns.Add("Numb", typeof(int));
             elementsAdded.Columns.Add("Level", typeof(string));
+            elementsAdded.Columns.Add("Type", typeof(string));
             elementsAdded.Columns.Add("Conductors", typeof(string));
-            elementsAdded.Columns.Add("QtConductors", typeof(string));
             elementsAdded.Columns.Add("Size", typeof(string));
-            elementsAdded.Columns.Add("Triplex", typeof(bool));
+            elementsAdded.Columns.Add("QtConductors", typeof(string));
             elementsAdded.Columns.Add("Ground", typeof(string));
+            elementsAdded.Columns.Add("Triplex", typeof(bool));
+            
 
             CircuitsDataGrid.ItemsSource = elementsAdded.DefaultView;
 
@@ -51,10 +56,8 @@ namespace WpfApp2
             conduitTypes.Add("PVC/HDPE - Rigid PVC Conduit - SCH 40");
 
             cmbCondType.ItemsSource = conduitTypes;
-            
 
-
-
+            cmbCondType.SelectedIndex = 4;
 
         }
 
@@ -69,12 +72,12 @@ namespace WpfApp2
                 // Load data asynchronously to avoid blocking UI
                 await Task.Run(() =>
                 {
-                    databaseLoad = acessos.ExecuteQuery("SELECT * FROM cables");
-                    dataConduitsLoad = acessos.ExecuteQuery("SELECT * FROM conduitsSizes");
+                    dataCables = acessos.ExecuteQuery("SELECT * FROM cables");
+                    dataConduits = acessos.ExecuteQuery("SELECT * FROM conduitsSizes");
                 });
 
                 // Preenche o primeiro combo com todos os valores distintos de Level
-                var distinctLevels = databaseLoad.AsEnumerable()
+                var distinctLevels = dataCables.AsEnumerable()
                                     .Select(row => row.Field<string>("Level"))
                                     .Where(level => !string.IsNullOrEmpty(level) && level != "GND")
                                     .Distinct()
@@ -103,7 +106,7 @@ namespace WpfApp2
             {
                 string levelSelecionado = cmbLevel.SelectedItem.ToString();
 
-                var tiposDistintos = databaseLoad.AsEnumerable()
+                var tiposDistintos = dataCables.AsEnumerable()
                                     .Where(row => row.Field<string>("Level") == levelSelecionado)
                                     .Select(row => row.Field<string>("Type"))
                                     .Where(type => !string.IsNullOrEmpty(type))
@@ -111,7 +114,6 @@ namespace WpfApp2
                                     .ToList();
 
                 cmbType.ItemsSource = tiposDistintos;
-                Debug.WriteLine($"Level: '{levelSelecionado}' - Types encontrados: {tiposDistintos.Count}");
             }
         }
 
@@ -125,16 +127,15 @@ namespace WpfApp2
                 string levelSelecionado = cmbLevel.SelectedItem.ToString();
                 string typeSelecionado = cmbType.SelectedItem.ToString();
 
-                var cablesDistintos = databaseLoad.AsEnumerable()
+                var cablesDistintos = dataCables.AsEnumerable()
                                      .Where(row => row.Field<string>("Level") == levelSelecionado &&
                                                   row.Field<string>("Type") == typeSelecionado)
-                                     .Select(row => row.Field<string>("Cables"))
+                                     .Select(row => row.Field<string>("Conductors"))
                                      .Where(cables => !string.IsNullOrEmpty(cables))
                                      .Distinct()
                                      .ToList();
 
                 cmbConductors.ItemsSource = cablesDistintos;
-                Debug.WriteLine($"Level: '{levelSelecionado}', Type: '{typeSelecionado}' - Cables encontrados: {cablesDistintos.Count}");
             }
         }
 
@@ -152,11 +153,8 @@ namespace WpfApp2
                 lblGround.IsEnabled = true;
                 cmbGround.IsEnabled = true;
 
-                string levelSelecionado = "600V";
-                string typeSelecionado = "Power";
-                string cables = "Single";
-
-                var distinctGrounds = databaseLoad.AsEnumerable()
+               
+                var distinctGrounds = dataCables.AsEnumerable()
                                     .Where(row => row.Field<string>("Level") == "GND")
                                     .Select(row => row.Field<string>("Size"))
                                     .Where(cables => !string.IsNullOrEmpty(cables))
@@ -201,24 +199,22 @@ namespace WpfApp2
                 string levelSelecionado = cmbLevel.SelectedItem.ToString();
                 string typeSelecionado = cmbType.SelectedItem.ToString();
 
-                var quantidadeCondutores = databaseLoad.AsEnumerable()
+                var quantidadeCondutores = dataCables.AsEnumerable()
                                           .Where(row => row.Field<string>("Level") == levelSelecionado &&
                                                        row.Field<string>("Type") == typeSelecionado &&
-                                                       row.Field<string>("Cables") == conductorsSelecionado)
-                                          .Select(row => row.Field<string>("Conductors"))
+                                                       row.Field<string>("Conductors") == conductorsSelecionado)
+                                          .Select(row => row.Field<string>("QtConductors"))
                                           .Where(conductors => !string.IsNullOrEmpty(conductors))
                                           .Distinct()
                                           .ToList();
 
                 cmbAmountMulti.ItemsSource = quantidadeCondutores;
-                Debug.WriteLine($"Multiconductor - Quantidades encontradas: {quantidadeCondutores.Count}");
             }
             else
             {
                 // Se não for Multiconductor, apenas o valor "1"
                 cmbAmountMulti.ItemsSource = new List<string> { "1" };
                 cmbAmountMulti.SelectedIndex = 0;
-                Debug.WriteLine("Não é Multiconductor - Valor fixo: 1");
             }
         }
 
@@ -230,17 +226,16 @@ namespace WpfApp2
                 string typeSelecionado = cmbType.SelectedItem.ToString();
                 string cablesSelecionado = cmbConductors.SelectedItem.ToString();
 
-                var sizesDistintos = databaseLoad.AsEnumerable()
+                var sizesDistintos = dataCables.AsEnumerable()
                                     .Where(row => row.Field<string>("Level") == levelSelecionado &&
                                                  row.Field<string>("Type") == typeSelecionado &&
-                                                 row.Field<string>("Cables") == cablesSelecionado)
+                                                 row.Field<string>("Conductors") == cablesSelecionado)
                                     .Select(row => row.Field<string>("Size"))
                                     .Where(size => !string.IsNullOrEmpty(size))
                                     .Distinct()
                                     .ToList();
 
                 cmbSize.ItemsSource = sizesDistintos;
-                Debug.WriteLine($"Sizes encontrados: {sizesDistintos.Count}");
 
                 foreach (var size in sizesDistintos)
                 {
@@ -258,11 +253,11 @@ namespace WpfApp2
                 string cablesSelecionado = cmbConductors.SelectedItem.ToString();
                 string amountSelecionado = cmbAmountMulti.SelectedItem.ToString();
 
-                var sizesDistintos = databaseLoad.AsEnumerable()
+                var sizesDistintos = dataCables.AsEnumerable()
                                     .Where(row => row.Field<string>("Level") == levelSelecionado &&
                                                  row.Field<string>("Type") == typeSelecionado &&
-                                                 row.Field<string>("Cables") == cablesSelecionado &&
-                                                 row.Field<string>("Conductors") == amountSelecionado)
+                                                 row.Field<string>("Conductors") == cablesSelecionado &&
+                                                 row.Field<string>("QtConductors") == amountSelecionado)
                                     .Select(row => row.Field<string>("Size"))
                                     .Where(size => !string.IsNullOrEmpty(size))
                                     .Distinct()
@@ -328,6 +323,7 @@ namespace WpfApp2
             newRow["Size"] = cmbSize.SelectedItem?.ToString() ?? string.Empty;
             newRow["Triplex"] = checkTriplex.IsChecked;
             newRow["Ground"] = cmbGround.SelectedItem?.ToString() ?? string.Empty;
+            newRow["Type"] = cmbType.SelectedItem?.ToString() ?? string.Empty;
 
             // Adicionar a linha à tabela
             elementsAdded.Rows.Add(newRow);
@@ -360,6 +356,14 @@ namespace WpfApp2
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             elementsAdded.Rows.Clear();
+        }
+
+        private void btnSizer_Click(object sender, RoutedEventArgs e)
+        {
+
+            (string sized, string elemento) sizedConduit = classCalc.sizeConduit(dataCables, dataConduits, cmbCondType.SelectedItem.ToString(), elementsAdded);
+
+            txtSizedCond.Text = sizedConduit.sized;
         }
     }
 }
