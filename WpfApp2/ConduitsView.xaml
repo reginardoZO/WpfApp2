@@ -156,7 +156,7 @@
         <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="310,187,0,0" VerticalAlignment="Top" Height="26" FontSize="10" Width="58" Click="btnClear_Click"/>
         <ComboBox x:Name="cmbCondType" HorizontalAlignment="Left" Margin="1017,256,0,0" VerticalAlignment="Top" Width="246"/>
         <TextBlock HorizontalAlignment="Left" Margin="935,261,0,0" TextWrapping="Wrap" Text="Cond. Type" VerticalAlignment="Top"/>
-        <Button x:Name="btnSizer" Content="Size" HorizontalAlignment="Left" Margin="1292,253,0,0" VerticalAlignment="Top" Click="btnSizer_Click" />
+        <Button x:Name="btnSizer" Content="Size" HorizontalAlignment="Left" Margin="1292,253,0,0" VerticalAlignment="Top" Click="btnSizer_Click"  Height="26" FontSize="10" Width="56"/>
         <RichTextBox x:Name="richConduit"
              Margin="42,497,26,35"
              FontFamily="Consolas"
