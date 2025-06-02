@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="850" d:DesignWidth="1500">
 
     <UserControl.Resources>
         <Style x:Key="DeleteButtonStyle" TargetType="Button">
@@ -19,8 +19,8 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    
-    <Grid Background="White" Loaded="Grid_Loaded" x:Name="ContentGrid" Margin="0,0,-399,-72">
+
+    <Grid Background="White" Loaded="Grid_Loaded" x:Name="ContentGrid" >
         <!-- Level -->
         <TextBlock HorizontalAlignment="Left" Margin="55,30,0,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top"/>
         <ComboBox x:Name="cmbLevel" HorizontalAlignment="Left" Margin="103,27,0,0" VerticalAlignment="Top" Width="110" Height="22" SelectionChanged="cmbLevel_SelectionChanged"/>
@@ -62,7 +62,7 @@
         <DataGrid x:Name="CircuitsDataGrid" 
           AutoGenerateColumns="False"
                    HorizontalAlignment="Left"
-          Width="770"
+          Width="870"
           CanUserAddRows="False"
           CanUserDeleteRows="False"
           IsReadOnly="False"
@@ -70,7 +70,7 @@
           HeadersVisibility="Column"
           SelectionMode="Single"
           AlternatingRowBackground="#66D3D3D3"
-          RowBackground="White" Margin="42,249,0,16" Foreground="#E5000000" Background="#7FFFFFFF" BorderBrush="#33000000">
+          RowBackground="White" Margin="42,249,0,0" Foreground="#E5000000" Background="#7FFFFFFF" BorderBrush="#33000000" Height="219" VerticalAlignment="Top">
 
             <DataGrid.Columns>
                 <!-- Coluna 1: Numero -->
@@ -146,17 +146,21 @@
                                     Tag="{Binding}"
                                     ToolTip="Excluir linha"/>
                         </DataTemplate>
-                    
+
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
 
-            
+
         </DataGrid>
         <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="310,187,0,0" VerticalAlignment="Top" Height="26" FontSize="10" Width="58" Click="btnClear_Click"/>
-        <ComboBox x:Name="cmbCondType" HorizontalAlignment="Left" Margin="910,256,0,0" VerticalAlignment="Top" Width="246"/>
-        <TextBlock HorizontalAlignment="Left" Margin="825,261,0,0" TextWrapping="Wrap" Text="Cond. Type" VerticalAlignment="Top"/>
-        <Button x:Name="btnSizer" Content="Size" HorizontalAlignment="Left" Margin="825,305,0,0" VerticalAlignment="Top" Click="btnSizer_Click" />
-        <TextBlock x:Name="txtSizedCond" HorizontalAlignment="Left" Margin="910,164,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbCondType" HorizontalAlignment="Left" Margin="1017,256,0,0" VerticalAlignment="Top" Width="246"/>
+        <TextBlock HorizontalAlignment="Left" Margin="935,261,0,0" TextWrapping="Wrap" Text="Cond. Type" VerticalAlignment="Top"/>
+        <Button x:Name="btnSizer" Content="Size" HorizontalAlignment="Left" Margin="1292,253,0,0" VerticalAlignment="Top" Click="btnSizer_Click" />
+        <RichTextBox x:Name="richConduit"
+             Margin="42,497,26,35"
+             FontFamily="Consolas"
+             VerticalScrollBarVisibility="Auto"             />
+        <TextBlock x:Name="txtSizedConduit" Margin="1192,305,0,0" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" TextAlignment="Right" FontSize="18" HorizontalAlignment="Left" Width="157"/>
     </Grid>
 </UserControl>

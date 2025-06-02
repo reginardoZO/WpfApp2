@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using System.Windows;
 using System.Threading.Tasks;
 using System.Windows.Automation.Provider;
+using System.Windows.Documents;
 
 namespace WpfApp2
 {
@@ -58,6 +59,9 @@ namespace WpfApp2
             cmbCondType.ItemsSource = conduitTypes;
 
             cmbCondType.SelectedIndex = 4;
+
+            txtSizedConduit.Visibility = Visibility.Hidden;
+            richConduit.Visibility = Visibility.Hidden;
 
         }
 
@@ -356,14 +360,20 @@ namespace WpfApp2
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             elementsAdded.Rows.Clear();
+            richConduit.Document = null;
         }
 
         private void btnSizer_Click(object sender, RoutedEventArgs e)
         {
 
-            (string sized, string elemento) sizedConduit = classCalc.sizeConduit(dataCables, dataConduits, cmbCondType.SelectedItem.ToString(), elementsAdded);
+            (string sized, FlowDocument elemento) sizedConduit = classCalc.sizeConduit(dataCables, dataConduits, cmbCondType.SelectedItem.ToString(), elementsAdded);
 
-            txtSizedCond.Text = sizedConduit.sized;
+
+            txtSizedConduit.Visibility = Visibility.Visible;
+            richConduit.Visibility = Visibility.Visible;
+
+            txtSizedConduit.Text = "Sized: " + sizedConduit.sized;
+            richConduit.Document = sizedConduit.elemento;
         }
     }
 }
