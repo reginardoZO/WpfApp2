@@ -91,6 +91,12 @@
                            Width="100"
                            IsReadOnly="False"/>
 
+                <!-- Coluna 2a: Level -->
+                <DataGridTextColumn Header="Type" 
+              Binding="{Binding Type}" 
+              Width="100"
+              IsReadOnly="False"/>
+
                 <!-- Coluna 3: Conductors -->
                 <DataGridTextColumn Header="Conductors" 
                            Binding="{Binding Conductors}" 
@@ -150,6 +156,9 @@
         <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="310,187,0,0" VerticalAlignment="Top" Height="26" FontSize="10" Width="58" Click="btnClear_Click"/>
         <ComboBox x:Name="cmbCondType" HorizontalAlignment="Left" Margin="910,256,0,0" VerticalAlignment="Top" Width="246"/>
         <TextBlock HorizontalAlignment="Left" Margin="825,261,0,0" TextWrapping="Wrap" Text="Cond. Type" VerticalAlignment="Top"/>
-        <Button x:Name="btnSize" Content="Size" HorizontalAlignment="Left" Margin="470,183,0,0" VerticalAlignment="Top" Click="btnSize_Click"/>
+
+        <Button x:Name="btnSizer" Content="Size" HorizontalAlignment="Left" Margin="825,305,0,0" VerticalAlignment="Top" Click="btnSizer_Click" />
+        <TextBlock x:Name="txtSizedCond" HorizontalAlignment="Left" Margin="910,164,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+
     </Grid>
 </UserControl>
