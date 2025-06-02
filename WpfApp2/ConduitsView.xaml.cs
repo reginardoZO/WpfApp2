@@ -364,6 +364,7 @@ namespace WpfApp2
             (string sized, string elemento) sizedConduit = classCalc.sizeConduit(dataCables, dataConduits, cmbCondType.SelectedItem.ToString(), elementsAdded);
 
             txtSizedCond.Text = sizedConduit.sized;
+
         }
     }
 }
