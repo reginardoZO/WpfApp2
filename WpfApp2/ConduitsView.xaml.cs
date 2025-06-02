@@ -361,5 +361,10 @@ namespace WpfApp2
         {
             elementsAdded.Rows.Clear();
         }
+
+        private void btnSize_Click(object sender, RoutedEventArgs e)
+        {
+            //size the conduit
+        }
     }
 }
