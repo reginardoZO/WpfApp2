@@ -18,6 +18,7 @@ namespace WpfApp2
     {
         public DatabaseAccess acessos = new DatabaseAccess();
         DataTable databaseLoad = new DataTable();
+        DataTable dataConduitsLoad = new DataTable();
 
         DataTable elementsAdded = new DataTable();
 
@@ -32,12 +33,28 @@ namespace WpfApp2
             elementsAdded.Columns.Add("Numb", typeof(int));
             elementsAdded.Columns.Add("Level", typeof(string));
             elementsAdded.Columns.Add("Conductors", typeof(string));
-            elementsAdded.Columns.Add("Qt Conductors", typeof(string));
+            elementsAdded.Columns.Add("QtConductors", typeof(string));
             elementsAdded.Columns.Add("Size", typeof(string));
             elementsAdded.Columns.Add("Triplex", typeof(bool));
             elementsAdded.Columns.Add("Ground", typeof(string));
 
             CircuitsDataGrid.ItemsSource = elementsAdded.DefaultView;
+
+
+            List<string> conduitTypes = new List<string>();
+            conduitTypes.Add("EMT - Electrical Metallic Tubing");
+            conduitTypes.Add("ENT - Electrical Nonmetallic Tubing");
+            conduitTypes.Add("FMC - Flexible Metal Conduit");
+            conduitTypes.Add("IMC - Intermediate Metal Conduit");
+            conduitTypes.Add("RMC - Rigid Metal Conduit");
+            conduitTypes.Add("PVC - Rigid PVC Conduit - SCH 80");
+            conduitTypes.Add("PVC/HDPE - Rigid PVC Conduit - SCH 40");
+
+            cmbCondType.ItemsSource = conduitTypes;
+            
+
+
+
 
         }
 
@@ -53,19 +70,17 @@ namespace WpfApp2
                 await Task.Run(() =>
                 {
                     databaseLoad = acessos.ExecuteQuery("SELECT * FROM cables");
+                    dataConduitsLoad = acessos.ExecuteQuery("SELECT * FROM conduitsSizes");
                 });
-
-                Debug.WriteLine($"Total de registros carregados: {databaseLoad.Rows.Count}");
 
                 // Preenche o primeiro combo com todos os valores distintos de Level
                 var distinctLevels = databaseLoad.AsEnumerable()
                                     .Select(row => row.Field<string>("Level"))
-                                    .Where(level => !string.IsNullOrEmpty(level))
+                                    .Where(level => !string.IsNullOrEmpty(level) && level != "GND")
                                     .Distinct()
                                     .ToList();
 
                 cmbLevel.ItemsSource = distinctLevels;
-                Debug.WriteLine($"Levels carregados: {distinctLevels.Count}");
             }
             finally
             {
@@ -76,10 +91,6 @@ namespace WpfApp2
                 // starts with the label and grounding size hidden
                 lblGround.IsEnabled = false;
                 cmbGround.IsEnabled = false;
-
-
-
-
             }
         }
 
@@ -146,9 +157,7 @@ namespace WpfApp2
                 string cables = "Single";
 
                 var distinctGrounds = databaseLoad.AsEnumerable()
-                                    .Where(row => row.Field<string>("Level") == levelSelecionado &&
-                                                 row.Field<string>("Type") == typeSelecionado &&
-                                                 row.Field<string>("Cables") == cables)
+                                    .Where(row => row.Field<string>("Level") == "GND")
                                     .Select(row => row.Field<string>("Size"))
                                     .Where(cables => !string.IsNullOrEmpty(cables))
                                     .Distinct()
@@ -164,7 +173,6 @@ namespace WpfApp2
                 checkTriplex.IsChecked = false;
             }
 
-            // Continua com a lógica existente
             if (TemSelecaoCompleta(3))
             {
                 ProcessarAmountMulti();
@@ -273,16 +281,21 @@ namespace WpfApp2
                 case 1: // Limpa tudo após Level
                     cmbType.ItemsSource = null;
                     cmbType.SelectedIndex = -1;
+                    
                     goto case 2;
                 case 2: // Limpa tudo após Type
                     cmbConductors.ItemsSource = null;
                     cmbConductors.SelectedIndex = -1;
+                    cmbGround.SelectedIndex = -1;
+                    cmbGround.IsEnabled = false;
                     goto case 3;
                 case 3: // Limpa tudo após Conductors
                     cmbAmountMulti.ItemsSource = null;
                     cmbAmountMulti.SelectedIndex = -1;
                     cmbSize.ItemsSource = null;
                     cmbSize.SelectedIndex = -1;
+                    cmbGround.SelectedIndex = -1;
+                    cmbGround.IsEnabled = false;
                     break;
             }
         }
@@ -311,7 +324,7 @@ namespace WpfApp2
             newRow["Numb"] = elementsAdded.Rows.Count + 1;
             newRow["Level"] = cmbLevel.SelectedItem?.ToString() ?? string.Empty;
             newRow["Conductors"] = cmbConductors.SelectedItem?.ToString() ?? string.Empty;
-            newRow["Qt Conductors"] = cmbAmountMulti.SelectedItem?.ToString() ?? string.Empty;
+            newRow["QtConductors"] = cmbAmountMulti.SelectedItem?.ToString() ?? string.Empty;
             newRow["Size"] = cmbSize.SelectedItem?.ToString() ?? string.Empty;
             newRow["Triplex"] = checkTriplex.IsChecked;
             newRow["Ground"] = cmbGround.SelectedItem?.ToString() ?? string.Empty;

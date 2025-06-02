@@ -20,7 +20,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid Background="White" Loaded="Grid_Loaded" x:Name="ContentGrid" Margin="0,0,-328,-72">
+    <Grid Background="White" Loaded="Grid_Loaded" x:Name="ContentGrid" Margin="0,0,-399,-72">
         <!-- Level -->
         <TextBlock HorizontalAlignment="Left" Margin="55,30,0,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top"/>
         <ComboBox x:Name="cmbLevel" HorizontalAlignment="Left" Margin="103,27,0,0" VerticalAlignment="Top" Width="110" Height="22" SelectionChanged="cmbLevel_SelectionChanged"/>
@@ -148,5 +148,7 @@
             
         </DataGrid>
         <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="310,187,0,0" VerticalAlignment="Top" Height="26" FontSize="10" Width="58" Click="btnClear_Click"/>
+        <ComboBox x:Name="cmbCondType" HorizontalAlignment="Left" Margin="910,256,0,0" VerticalAlignment="Top" Width="246"/>
+        <TextBlock HorizontalAlignment="Left" Margin="825,261,0,0" TextWrapping="Wrap" Text="Cond. Type" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
