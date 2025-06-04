@@ -73,7 +73,7 @@ namespace WpfApp2
                     dataConduitsLoad = acessos.ExecuteQuery("SELECT * FROM conduitsSizes");
                 });
 
-                // Preenche o primeiro combo com todos os valores distintos de Level
+                // Fills the first combo box with all distinct Level values
                 var distinctLevels = databaseLoad.AsEnumerable()
                                     .Select(row => row.Field<string>("Level"))
                                     .Where(level => !string.IsNullOrEmpty(level) && level != "GND")
@@ -96,7 +96,7 @@ namespace WpfApp2
 
         private void cmbLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Limpa os combos dependentes
+            // Clears the dependent combo boxes
             LimparCombosSequenciais(1);
 
             if (cmbLevel.SelectedItem != null)
@@ -117,7 +117,7 @@ namespace WpfApp2
 
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Limpa os combos dependentes
+            // Clears the dependent combo boxes
             LimparCombosSequenciais(2);
 
             if (cmbLevel.SelectedItem != null && cmbType.SelectedItem != null)
@@ -140,10 +140,10 @@ namespace WpfApp2
 
         private void cmbConductors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Limpa os combos dependentes
+            // Clears the dependent combo boxes
             LimparCombosSequenciais(3);
 
-            // Lógica do GIF - Mostra quando "Single" é selecionado
+            // GIF logic - Shows when "Single" is selected
             if (cmbConductors.SelectedItem != null && cmbConductors.SelectedItem.ToString() == "Single")
             {
                 checkTriplex.IsEnabled = true;
@@ -184,7 +184,7 @@ namespace WpfApp2
 
         private void cmbAmountMulti_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Reprocessa o Size quando Amount Multi muda (se for Multiconductor)
+            // Reprocesses Size when Amount Multi changes (if it's Multiconductor)
             if (cmbConductors.SelectedItem?.ToString() == "Multiconductor" && cmbAmountMulti.SelectedItem != null)
             {
                 ProcessarSizeComAmountMulti();
@@ -197,7 +197,7 @@ namespace WpfApp2
 
             if (conductorsSelecionado == "Multiconductor")
             {
-                // Se for Multiconductor, preenche com valores da coluna Conductors
+                // If Multiconductor, fills with values from the Conductors column
                 string levelSelecionado = cmbLevel.SelectedItem.ToString();
                 string typeSelecionado = cmbType.SelectedItem.ToString();
 
@@ -215,7 +215,7 @@ namespace WpfApp2
             }
             else
             {
-                // Se não for Multiconductor, apenas o valor "1"
+                // If not Multiconductor, just the value "1"
                 cmbAmountMulti.ItemsSource = new List<string> { "1" };
                 cmbAmountMulti.SelectedIndex = 0;
                 Debug.WriteLine("Não é Multiconductor - Valor fixo: 1");
@@ -273,23 +273,23 @@ namespace WpfApp2
             }
         }
 
-        // Métodos auxiliares
+        // Helper methods
         private void LimparCombosSequenciais(int nivel)
         {
             switch (nivel)
             {
-                case 1: // Limpa tudo após Level
+                case 1: // Clears everything after Level
                     cmbType.ItemsSource = null;
                     cmbType.SelectedIndex = -1;
                     
                     goto case 2;
-                case 2: // Limpa tudo após Type
+                case 2: // Clears everything after Type
                     cmbConductors.ItemsSource = null;
                     cmbConductors.SelectedIndex = -1;
                     cmbGround.SelectedIndex = -1;
                     cmbGround.IsEnabled = false;
                     goto case 3;
-                case 3: // Limpa tudo após Conductors
+                case 3: // Clears everything after Conductors
                     cmbAmountMulti.ItemsSource = null;
                     cmbAmountMulti.SelectedIndex = -1;
                     cmbSize.ItemsSource = null;
@@ -320,7 +320,7 @@ namespace WpfApp2
         {
             DataRow newRow = elementsAdded.NewRow();
 
-            // Preencher os valores das colunas
+            // Fill column values
             newRow["Numb"] = elementsAdded.Rows.Count + 1;
             newRow["Level"] = cmbLevel.SelectedItem?.ToString() ?? string.Empty;
             newRow["Conductors"] = cmbConductors.SelectedItem?.ToString() ?? string.Empty;
@@ -329,7 +329,7 @@ namespace WpfApp2
             newRow["Triplex"] = checkTriplex.IsChecked;
             newRow["Ground"] = cmbGround.SelectedItem?.ToString() ?? string.Empty;
 
-            // Adicionar a linha à tabela
+            // Add the row to the table
             elementsAdded.Rows.Add(newRow);
 
             
@@ -341,7 +341,7 @@ namespace WpfApp2
 
             if (button?.Tag is DataRowView rowView)
             {
-                // Confirmar exclusão
+                // Confirm deletion
                 MessageBoxResult result = MessageBox.Show(
                     "Tem certeza que deseja excluir esta linha?",
                     "Confirmar Exclusão",
@@ -350,7 +350,7 @@ namespace WpfApp2
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Remove da DataTable (o DataGrid será atualizado automaticamente)
+                    // Removes from DataTable (the DataGrid will be updated automatically)
                     rowView.Row.Delete();
                     elementsAdded.AcceptChanges();
                 }

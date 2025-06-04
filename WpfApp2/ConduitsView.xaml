@@ -73,7 +73,7 @@
           RowBackground="White" Margin="42,249,0,16" Foreground="#E5000000" Background="#7FFFFFFF" BorderBrush="#33000000">
 
             <DataGrid.Columns>
-                <!-- Coluna 1: Numero -->
+                <!-- Column 1: Number -->
                 <DataGridTextColumn Header="Numb." 
                            Binding="{Binding Numb}" 
                            Width="80"
@@ -85,31 +85,31 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <!-- Coluna 2: Level -->
+                <!-- Column 2: Level -->
                 <DataGridTextColumn Header="Level" 
                            Binding="{Binding Level}" 
                            Width="100"
                            IsReadOnly="False"/>
 
-                <!-- Coluna 3: Conductors -->
+                <!-- Column 3: Conductors -->
                 <DataGridTextColumn Header="Conductors" 
                            Binding="{Binding Conductors}" 
                            Width="120"
                            IsReadOnly="False"/>
 
-                <!-- Coluna 4: Qt Conductors -->
+                <!-- Column 4: Qty Conductors -->
                 <DataGridTextColumn Header="Qt Conductors" 
                            Binding="{Binding QtConductors}" 
                            Width="120"
                            IsReadOnly="False"/>
 
-                <!-- Coluna 5: Size -->
+                <!-- Column 5: Size -->
                 <DataGridTextColumn Header="Size" 
                            Binding="{Binding Size}" 
                            Width="100"
                            IsReadOnly="False"/>
 
-                <!-- Coluna 6: Triplex (Checkbox) -->
+                <!-- Column 6: Triplex (Checkbox) -->
                 <DataGridCheckBoxColumn Header="Triplex" 
                                Binding="{Binding Triplex}" 
                                Width="80"
@@ -122,7 +122,7 @@
                     </DataGridCheckBoxColumn.ElementStyle>
                 </DataGridCheckBoxColumn>
 
-                <!-- Coluna 7: Ground -->
+                <!-- Column 7: Ground -->
                 <DataGridTextColumn Header="Ground" 
                            Binding="{Binding Ground}" 
                            Width="100"
@@ -138,7 +138,7 @@
                                     Height="25"
                                     Click="DeleteRow_Click"
                                     Tag="{Binding}"
-                                    ToolTip="Excluir linha"/>
+                                    ToolTip="Delete row"/>
                         </DataTemplate>
                     
                     </DataGridTemplateColumn.CellTemplate>

@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using MaterialDesignThemes.Wpf; // Adicione esta linha para usar o DrawerHost
+using MaterialDesignThemes.Wpf; // Add this line to use DrawerHost
 
 namespace WpfApp2
 {
     /// <summary>
-    /// Lógica de interação para MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -14,12 +14,12 @@ namespace WpfApp2
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
 
-            // Carrega o HomeView (Lorem Ipsum) na inicialização da aplicação
+            // Loads HomeView (Lorem Ipsum) on application startup
             MainContentHost.Content = new HomeView(); // This line was effectively already present
             TitleTextBlock.Text = "Início"; // Set title for the initial HomeView
         }
 
-        // Método para lidar com o clique dos botões do menu lateral
+        // Method to handle sidebar menu button clicks
         private void MenuButton_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -46,7 +46,7 @@ namespace WpfApp2
                         MainContentHost.Content = new UtilView();
                         TitleTextBlock.Text = "Util";
                         break;
-                        // Adicione mais 'case' aqui para cada novo botão de menu que você criar
+                        // Add more 'case' statements here for each new menu button you create
                 }
 
                 MenuToggleButton.IsChecked = false; // This will close the drawer
