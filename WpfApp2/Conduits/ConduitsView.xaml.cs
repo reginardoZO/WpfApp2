@@ -381,11 +381,20 @@ namespace WpfApp2
 
         private void batchButton_Click(object sender, RoutedEventArgs e)
         {
+            // Validar seleção de tipo de conduit
+            if (cmbCondType.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, selecione um tipo de conduit antes de processar o arquivo em lote.",
+                               "Tipo de Conduit Necessário",
+                               MessageBoxButton.OK,
+                               MessageBoxImage.Warning);
+                return;
+            }
 
             // Configurar OpenFileDialog para selecionar arquivo Excel
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "Selecionar arquivo Excel",
+                Title = "Selecionar arquivo Excel para processamento em lote",
                 Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*",
                 FilterIndex = 1,
                 RestoreDirectory = true
@@ -396,63 +405,106 @@ namespace WpfApp2
             {
                 try
                 {
-                    DataTable dataTable = CreateCircuitsDataTable();
+                    // Mostrar indicador de carregamento
+                    LoadingIndicator.Visibility = Visibility.Visible;
+                    ContentGrid.IsEnabled = false;
 
-                    // Ler arquivo Excel usando EPPlus
-                    using (var package = new ExcelPackage(new FileInfo(openFileDialog.FileName)))
+                    string conduitType = cmbCondType.SelectedItem.ToString();
+
+                    // Criar processador de lote
+                    var batchProcessor = new Conduits.BatchProcessor(dataCables, dataConduits);
+
+                    // Processar arquivo (isso pode demorar para arquivos grandes)
+                    string outputPath = batchProcessor.ProcessBatch(openFileDialog.FileName, conduitType);
+
+                    // Notificar usuário sobre conclusão
+                    MessageBoxResult result = MessageBox.Show(
+                        $"Processamento em lote concluído com sucesso!\n\n" +
+                        $"Arquivo original: {Path.GetFileName(openFileDialog.FileName)}\n" +
+                        $"Arquivo com resultados: {Path.GetFileName(outputPath)}\n\n" +
+                        $"O arquivo foi salvo em:\n{outputPath}\n\n" +
+                        $"Deseja abrir o arquivo com os resultados?",
+                        "Processamento Concluído",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Information);
+
+                    if (result == MessageBoxResult.Yes)
                     {
-                        // Obter a planilha "Circuits" (primeira planilha)
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets["Circuits"] ?? package.Workbook.Worksheets[0];
-
-                        if (worksheet == null)
+                        try
                         {
-                            MessageBox.Show("Não foi possível encontrar a planilha de dados no arquivo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = outputPath,
+                                UseShellExecute = true
+                            });
                         }
-
-                        // Obter dimensões da planilha (ignorar primeira linha que são os headers)
-                        int rowCount = worksheet.Dimension?.Rows ?? 0;
-                        int colCount = worksheet.Dimension?.Columns ?? 0;
-
-                        if (rowCount <= 1) // Só header ou planilha vazia
+                        catch (Exception openEx)
                         {
-                            MessageBox.Show("O arquivo não contém dados válidos.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
-                        }
-
-                        // Ler dados linha por linha (começando da linha 2, pulando o header)
-                        for (int row = 2; row <= rowCount; row++)
-                        {
-                            DataRow dataRow = dataTable.NewRow();
-
-                            // Ler cada coluna conforme a estrutura esperada
-                            dataRow["Numb"] = GetCellValue<int>(worksheet, row, 1, 0);
-                            dataRow["Level"] = GetCellValue<string>(worksheet, row, 2, string.Empty);
-                            dataRow["Type"] = GetCellValue<string>(worksheet, row, 3, string.Empty);
-                            dataRow["Conductors"] = GetCellValue<string>(worksheet, row, 4, string.Empty);
-                            dataRow["Size"] = GetCellValue<string>(worksheet, row, 5, string.Empty);
-                            dataRow["QtConductors"] = GetCellValue<int>(worksheet, row, 6, 0);
-                            dataRow["Ground"] = GetCellValue<string>(worksheet, row, 7, null);
-                            dataRow["Triplex"] = GetCellValue<string>(worksheet, row, 8, null);
-                            dataRow["Conduit"] = GetCellValue<string>(worksheet, row, 9, string.Empty);
-
-                            dataTable.Rows.Add(dataRow);
+                            MessageBox.Show($"Não foi possível abrir o arquivo automaticamente: {openEx.Message}\n\n" +
+                                           $"Você pode abrir manualmente o arquivo em:\n{outputPath}",
+                                           "Aviso",
+                                           MessageBoxButton.OK,
+                                           MessageBoxImage.Warning);
                         }
                     }
-
-                    // Aqui você pode usar o DataTable como precisar
-                    // Por exemplo, atribuir a um DataGrid:
-                    // myDataGrid.ItemsSource = dataTable.DefaultView;
-
-
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("O arquivo selecionado não foi encontrado. Verifique se o arquivo ainda existe no local especificado.",
+                                   "Arquivo Não Encontrado",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show($"Problema com o formato ou conteúdo do arquivo Excel:\n\n{ex.Message}\n\n" +
+                                   "Verifique se:\n" +
+                                   "• O arquivo é um Excel válido (.xlsx)\n" +
+                                   "• A planilha contém dados na estrutura esperada\n" +
+                                   "• Todas as colunas necessárias estão presentes",
+                                   "Formato de Arquivo Inválido",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
+                }
+                catch (DataException ex)
+                {
+                    MessageBox.Show($"Erro nos dados da planilha:\n\n{ex.Message}\n\n" +
+                                   "Verifique se todos os dados estão preenchidos corretamente e se os valores " +
+                                   "nas colunas correspondem aos dados esperados pelo sistema.",
+                                   "Erro nos Dados",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Não foi possível acessar o arquivo. Verifique se:\n\n" +
+                                   "• O arquivo não está aberto em outro programa\n" +
+                                   "• Você tem permissão para ler/escrever no local do arquivo\n" +
+                                   "• O arquivo não está protegido contra escrita",
+                                   "Acesso Negado",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao processar o arquivo: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro inesperado durante o processamento:\n\n{ex.Message}\n\n" +
+                                   "Se o problema persistir, verifique:\n" +
+                                   "• Se o arquivo Excel está corrompido\n" +
+                                   "• Se há espaço suficiente em disco\n" +
+                                   "• Se todos os dados na planilha são válidos",
+                                   "Erro Inesperado",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
+                }
+                finally
+                {
+                    // Esconder indicador de carregamento
+                    LoadingIndicator.Visibility = Visibility.Collapsed;
+                    ContentGrid.IsEnabled = true;
                 }
             }
-
         }
+
 
         #region Read Excel Files Auxiliars
 
@@ -512,5 +564,69 @@ namespace WpfApp2
         }
 
         #endregion
+
+        private void btnPattern_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Nome do arquivo e pasta
+                string nomeArquivo = "CircuitsUpload.xlsx";
+                string nomePasta = "Conduits";
+
+                // Caminho completo do arquivo na pasta Conduits
+                string caminhoOrigem = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, nomePasta, nomeArquivo);
+
+                // Verificar se o arquivo existe
+                if (!File.Exists(caminhoOrigem))
+                {
+                    MessageBox.Show($"Arquivo '{nomeArquivo}' não encontrado na pasta '{nomePasta}'!",
+                                  "Arquivo não encontrado",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Error);
+                    return;
+                }
+
+                // Abrir dialog para o usuário escolher onde salvar
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    FileName = nomeArquivo,
+                    Filter = "Arquivos Excel (*.xlsx)|*.xlsx|Todos os arquivos (*.*)|*.*",
+                    Title = "Salvar CircuitsUpload.xlsx como...",
+                    DefaultExt = "xlsx"
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    // Copiar arquivo para o destino escolhido
+                    File.Copy(caminhoOrigem, saveDialog.FileName, true);
+
+                    MessageBox.Show("Arquivo CircuitsUpload.xlsx baixado com sucesso!",
+                                  "Download Concluído",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Acesso negado. Verifique as permissões do arquivo ou se ele não está sendo usado por outro programa.",
+                              "Erro de Acesso",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("A pasta 'Conduits' não foi encontrada na aplicação.",
+                              "Pasta não encontrada",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao baixar arquivo: {ex.Message}",
+                              "Erro",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+        }
     }
 }

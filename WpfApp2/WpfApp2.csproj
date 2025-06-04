@@ -20,4 +20,10 @@
 	  
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Conduits\CircuitsUpload.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
