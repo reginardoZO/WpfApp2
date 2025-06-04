@@ -5,25 +5,277 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp2"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="600">
-    <Border Background="White" Padding="20" CornerRadius="5" Margin="20">
-        <StackPanel VerticalAlignment="Top">
-            <TextBlock Text="Bem-vindo à sua Aplicação WPF!"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,20"
-                       Foreground="#FF333333"/>
-            <TextBlock TextWrapping="Wrap"
-                       FontSize="16"
-                       LineHeight="24"
-                       TextAlignment="Justify"
-                       Foreground="#FF555555">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                <LineBreak/>
-                <LineBreak/>
-                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-            </TextBlock>
-        </StackPanel>
-    </Border>
+             d:DesignHeight="2000" d:DesignWidth="2200">
+
+    <UserControl.Resources>
+        <!-- Gradient Brushes -->
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF673AB7" Offset="0"/>
+            <GradientStop Color="#FF673AB7" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+            <GradientStop Color="#FFF8FAFC" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Card Style -->
+        <Style x:Key="FeatureCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardGradient}"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Margin" Value="12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#20000000" BlurRadius="4" ShadowDepth="2" Direction="270"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="#30000000" BlurRadius="25" ShadowDepth="2" Direction="270"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Icon Style -->
+        <Style x:Key="FeatureIcon" TargetType="Ellipse">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Fill" Value="#FF3B82F6"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <!-- Title Style -->
+        <Style x:Key="FeatureTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#FF1F2937"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <!-- Description Style -->
+        <Style x:Key="FeatureDescription" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF6B7280"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="LineHeight" Value="20"/>
+        </Style>
+
+        <!-- Custom Button Style -->
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#FF3B82F6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="24,12"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2563EB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF1D4ED8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
+            <Border Grid.Row="0" Background="{StaticResource HeaderGradient}" Padding="40,60,40,60">
+                <StackPanel HorizontalAlignment="Center" MaxWidth="800">
+                    <TextBlock Text="ElectriCAD Suite"
+                               FontSize="48"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Professional Electrical Engineering Software"
+                               FontSize="20"
+                               Foreground="#FFE2E8F0"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,24"/>
+
+                    <TextBlock TextWrapping="Wrap"
+                               FontSize="16"
+                               Foreground="#FFE2E8F0"
+                               TextAlignment="Center"
+                               LineHeight="24"
+                               Opacity="0.9">
+                        Complete electrical design solution featuring cable sizing calculations, conduit and cable tray design, 
+                        automated AutoCAD drawing generation, and comprehensive electrical utilities. Streamline your electrical 
+                        engineering workflow with our integrated database management and calculation tools.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="40,40,40,60">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Features Title -->
+                <TextBlock Grid.Row="0"
+                           Text="Core Features"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#FF1F2937"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,40"/>
+
+                <!-- Feature Cards Grid -->
+                <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,60">
+
+                    <!-- Cable Sizing Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FFEF4444" Offset="0"/>
+                                        <GradientStop Color="#FFDC2626" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="Cable Sizing"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Advanced cable sizing calculations based on current carrying capacity, voltage drop, 
+                                and short circuit requirements. Supports multiple international standards.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Conduit Design Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FF10B981" Offset="0"/>
+                                        <GradientStop Color="#FF059669" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="Conduit &amp; Cable Trays"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Comprehensive conduit sizing and cable tray design tools. Calculate fill ratios, 
+                                support spacing, and generate material lists automatically.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- AutoCAD Integration Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FF8B5CF6" Offset="0"/>
+                                        <GradientStop Color="#FF7C3AED" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="AutoCAD Integration"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Seamless AutoCAD integration for automated drawing generation. Create electrical 
+                                schematics, panel layouts, and installation drawings directly from your calculations.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Database Management Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FFF59E0B" Offset="0"/>
+                                        <GradientStop Color="#FFD97706" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="Circuit Database"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Complete CRUD operations for electrical circuits. Manage your electrical database 
+                                with advanced search, filtering, and reporting capabilities.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Unit Conversion Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FF06B6D4" Offset="0"/>
+                                        <GradientStop Color="#FF0891B2" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="Unit Conversion"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Comprehensive unit conversion utilities for electrical engineering. Convert between 
+                                different measurement systems and electrical units with precision.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Electrical Utilities Card -->
+                    <Border Style="{StaticResource FeatureCard}">
+                        <StackPanel>
+                            <Ellipse Style="{StaticResource FeatureIcon}">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FFEC4899" Offset="0"/>
+                                        <GradientStop Color="#FFE11D48" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <TextBlock Style="{StaticResource FeatureTitle}" Text="Electrical Utilities"/>
+                            <TextBlock Style="{StaticResource FeatureDescription}">
+                                Essential electrical calculation tools including power factor correction, 
+                                load analysis, fault current calculations, and electrical safety assessments.
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <!-- Call to Action Section -->
+                
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
+

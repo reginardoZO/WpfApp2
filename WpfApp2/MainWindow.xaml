@@ -20,35 +20,37 @@
                                BorderThickness="0">
         <materialDesign:DrawerHost.LeftDrawerContent>
             <StackPanel Orientation="Vertical" Width="250" Background="{DynamicResource MaterialDesign.Brush.PrimaryContainer}">
-                <TextBlock Text="MENU"
+                <TextBlock Text=""
                            Style="{StaticResource MaterialDesignHeadlineSmallTextBlock}"
                            Foreground="{DynamicResource MaterialDesign.Brush.OnPrimaryContainer}"
                            HorizontalAlignment="Left"
                            Margin="16"/>
 
-                <Button Style="{StaticResource MaterialDesignFlatButton}"
-                        Margin="8,4"
-                        materialDesign:ButtonAssist.CornerRadius="8"
-                        Click="MenuButton_Click"
-                        Tag="Calculadora"
-                        HorizontalContentAlignment="Left">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Calculator" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="Calculadora" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+
 
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         Margin="8,4"
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="MenuButton_Click"
-                        Tag="Inicio"
+                        Tag="Home"
                         HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Home" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="Início" VerticalAlignment="Center"/>
+                        <TextBlock Text="Home" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="8,4"
+                        materialDesign:ButtonAssist.CornerRadius="8"
+                        Click="MenuButton_Click"
+                        Tag="Calculator"
+                        HorizontalContentAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Calculator" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Calculator" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
 
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         Margin="8,4"

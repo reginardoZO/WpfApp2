@@ -16,7 +16,7 @@ namespace WpfApp2
 
             // Carrega o HomeView (Lorem Ipsum) na inicialização da aplicação
             MainContentHost.Content = new HomeView(); // This line was effectively already present
-            TitleTextBlock.Text = "Início"; // Set title for the initial HomeView
+            TitleTextBlock.Text = ""; // Set title for the initial HomeView
         }
 
         // Método para lidar com o clique dos botões do menu lateral
@@ -36,7 +36,7 @@ namespace WpfApp2
                         break;
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
-                        TitleTextBlock.Text = "Início";
+                        TitleTextBlock.Text = "";
                         break;
                     case "Conduits":
                         MainContentHost.Content = new ConduitsView();
