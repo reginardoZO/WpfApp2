@@ -24,11 +24,11 @@ namespace WpfApp2
         {
             InitializeComponent();
 
-            // comentarios
+            // comments
 
-            // nova linha
+            // new line
 
-            // mais comentarios
+            // more comments
         }
     }
 }
