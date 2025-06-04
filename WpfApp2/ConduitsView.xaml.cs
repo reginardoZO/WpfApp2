@@ -9,6 +9,9 @@ using System.Windows;
 using System.Threading.Tasks;
 using System.Windows.Automation.Provider;
 using System.Windows.Documents;
+using OfficeOpenXml;
+using Microsoft.Win32;
+using System.IO;
 
 namespace WpfApp2
 {
@@ -375,5 +378,139 @@ namespace WpfApp2
             txtSizedConduit.Text = "Sized: " + sizedConduit.sized;
             richConduit.Document = sizedConduit.elemento;
         }
+
+        private void batchButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            // Configurar OpenFileDialog para selecionar arquivo Excel
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Selecionar arquivo Excel",
+                Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
+
+            // Mostrar dialog e verificar se usuário selecionou um arquivo
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    DataTable dataTable = CreateCircuitsDataTable();
+
+                    // Ler arquivo Excel usando EPPlus
+                    using (var package = new ExcelPackage(new FileInfo(openFileDialog.FileName)))
+                    {
+                        // Obter a planilha "Circuits" (primeira planilha)
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets["Circuits"] ?? package.Workbook.Worksheets[0];
+
+                        if (worksheet == null)
+                        {
+                            MessageBox.Show("Não foi possível encontrar a planilha de dados no arquivo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        // Obter dimensões da planilha (ignorar primeira linha que são os headers)
+                        int rowCount = worksheet.Dimension?.Rows ?? 0;
+                        int colCount = worksheet.Dimension?.Columns ?? 0;
+
+                        if (rowCount <= 1) // Só header ou planilha vazia
+                        {
+                            MessageBox.Show("O arquivo não contém dados válidos.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        // Ler dados linha por linha (começando da linha 2, pulando o header)
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            DataRow dataRow = dataTable.NewRow();
+
+                            // Ler cada coluna conforme a estrutura esperada
+                            dataRow["Numb"] = GetCellValue<int>(worksheet, row, 1, 0);
+                            dataRow["Level"] = GetCellValue<string>(worksheet, row, 2, string.Empty);
+                            dataRow["Type"] = GetCellValue<string>(worksheet, row, 3, string.Empty);
+                            dataRow["Conductors"] = GetCellValue<string>(worksheet, row, 4, string.Empty);
+                            dataRow["Size"] = GetCellValue<string>(worksheet, row, 5, string.Empty);
+                            dataRow["QtConductors"] = GetCellValue<int>(worksheet, row, 6, 0);
+                            dataRow["Ground"] = GetCellValue<string>(worksheet, row, 7, null);
+                            dataRow["Triplex"] = GetCellValue<string>(worksheet, row, 8, null);
+                            dataRow["Conduit"] = GetCellValue<string>(worksheet, row, 9, string.Empty);
+
+                            dataTable.Rows.Add(dataRow);
+                        }
+                    }
+
+                    // Aqui você pode usar o DataTable como precisar
+                    // Por exemplo, atribuir a um DataGrid:
+                    // myDataGrid.ItemsSource = dataTable.DefaultView;
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao processar o arquivo: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+        }
+
+        #region Read Excel Files Auxiliars
+
+        private DataTable CreateCircuitsDataTable()
+        {
+            DataTable dataTable = new DataTable("Circuits");
+
+            // Adicionar colunas conforme estrutura do arquivo Excel
+            dataTable.Columns.Add("Numb", typeof(int));
+            dataTable.Columns.Add("Level", typeof(string));
+            dataTable.Columns.Add("Type", typeof(string));
+            dataTable.Columns.Add("Conductors", typeof(string));
+            dataTable.Columns.Add("Size", typeof(string));
+            dataTable.Columns.Add("QtConductors", typeof(int));
+            dataTable.Columns.Add("Ground", typeof(string));
+            dataTable.Columns.Add("Triplex", typeof(string));
+            dataTable.Columns.Add("Conduit", typeof(string));
+
+            // Permitir valores nulos para as colunas Ground e Triplex
+            dataTable.Columns["Ground"].AllowDBNull = true;
+            dataTable.Columns["Triplex"].AllowDBNull = true;
+
+            return dataTable;
+        }
+
+        private T GetCellValue<T>(ExcelWorksheet worksheet, int row, int col, T defaultValue)
+        {
+            try
+            {
+                var cellValue = worksheet.Cells[row, col].Value;
+
+                if (cellValue == null)
+                    return defaultValue;
+
+                // Conversão específica para int
+                if (typeof(T) == typeof(int))
+                {
+                    if (int.TryParse(cellValue.ToString(), out int intResult))
+                        return (T)(object)intResult;
+                    return defaultValue;
+                }
+
+                // Conversão para string
+                if (typeof(T) == typeof(string))
+                {
+                    string stringValue = cellValue.ToString()?.Trim();
+                    return string.IsNullOrEmpty(stringValue) ? defaultValue : (T)(object)stringValue;
+                }
+
+                // Conversão genérica
+                return (T)Convert.ChangeType(cellValue, typeof(T));
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        #endregion
     }
 }
