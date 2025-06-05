@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="arrowGIF.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Conduits\CircuitsUpload.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
