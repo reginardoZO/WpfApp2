@@ -6,10 +6,23 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	  
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="App.config" />
+    <None Remove="database\cables.json" />
+    <None Remove="database\conduitsSizes.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="database\cables.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="database\conduitsSizes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

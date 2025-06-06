@@ -13,6 +13,8 @@ using OfficeOpenXml;
 using Microsoft.Win32;
 using System.IO;
 
+using JsonDatabaseManager;
+
 namespace WpfApp2
 {
     /// <summary>
@@ -20,7 +22,7 @@ namespace WpfApp2
     /// </summary>
     public partial class ConduitsView : UserControl
     {
-        public DatabaseAccess acessos = new DatabaseAccess();
+        
         DataTable dataCables = new DataTable();
         DataTable dataConduits = new DataTable();
 
@@ -28,6 +30,9 @@ namespace WpfApp2
 
 
         calc classCalc = new calc();
+
+        private JsonDbManager _dbManager;
+
 
         public ConduitsView()
         {
@@ -66,7 +71,27 @@ namespace WpfApp2
             txtSizedConduit.Visibility = Visibility.Hidden;
             richConduit.Visibility = Visibility.Hidden;
 
+            string databasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database");
+
+            _dbManager = new JsonDbManager(databasePath);
+
+
         }
+
+        private DataTable ExecuteJsonQuery(string sqlQuery)
+        {
+            try
+            {
+                return _dbManager.ExecuteQuery(sqlQuery);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao executar consulta: {ex.Message}", "Erro",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return new DataTable();
+            }
+        }
+
 
         private async void Grid_Loaded(object sender, RoutedEventArgs e)
         {
@@ -79,8 +104,8 @@ namespace WpfApp2
                 // Load data asynchronously to avoid blocking UI
                 await Task.Run(() =>
                 {
-                    dataCables = acessos.ExecuteQuery("SELECT * FROM cables");
-                    dataConduits = acessos.ExecuteQuery("SELECT * FROM conduitsSizes");
+                    dataCables = ExecuteJsonQuery("SELECT * FROM cables");
+                    dataConduits = ExecuteJsonQuery("SELECT * FROM conduitsSizes");
                 });
 
                 // Preenche o primeiro combo com todos os valores distintos de Level
@@ -363,7 +388,7 @@ namespace WpfApp2
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             elementsAdded.Rows.Clear();
-            richConduit.Document = null;
+            richConduit.Document.Blocks.Clear();
         }
 
         private void btnSizer_Click(object sender, RoutedEventArgs e)

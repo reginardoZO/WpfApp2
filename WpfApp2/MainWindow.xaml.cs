@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf; // Adicione esta linha para usar o DrawerHost
+using WpfApp2.Conduits; // Certifique-se de que o namespace esteja correto
+using WpfApp2.Projects;
 
 namespace WpfApp2
 {
@@ -45,6 +47,10 @@ namespace WpfApp2
                     case "Util":
                         MainContentHost.Content = new UtilView();
                         TitleTextBlock.Text = "Util";
+                        break;
+                    case "Projects":
+                        MainContentHost.Content = new Projects.Projects(); // use nome completo se necessário
+                        TitleTextBlock.Text = "Projects";
                         break;
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }

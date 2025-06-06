@@ -6,7 +6,7 @@ namespace WpfApp2
 {
     public class DatabaseAccess
     {
-        private const string ConnectionString = @"Data Source=\\tonsrv1.rna.linde.grp\ACAD\Temporary\Reginardo\elec.db";
+        private const string ConnectionString = @"Data Source=c:\temp\database\elec.db";
 
         // Connection string and methods will be added in later steps.
         public DatabaseAccess() // Optional: constructor if needed later

@@ -1,0 +1,416 @@
+[
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "1/2",
+    "areaMM": "196",
+    "areaIN": "0.304"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "3/4",
+    "areaMM": "343",
+    "areaIN": "0.533"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "1",
+    "areaMM": "556",
+    "areaIN": "0.864"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "1 1/2",
+    "areaMM": "1314",
+    "areaIN": "2.036"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "2",
+    "areaMM": "2165",
+    "areaIN": "3.356"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "2 1/2",
+    "areaMM": "3783",
+    "areaIN": "5.858"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "3",
+    "areaMM": "5701",
+    "areaIN": "8.846"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "3 1/2",
+    "areaMM": "7451",
+    "areaIN": "11.545"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "4",
+    "areaMM": "9521",
+    "areaIN": "14.753"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "5",
+    "areaMM": "13050",
+    "areaIN": "20.212"
+  },
+  {
+    "Type": "EMT - Electrical Metallic Tubing",
+    "Size": "6",
+    "areaMM": "18821",
+    "areaIN": "29.158"
+  },
+  {
+    "Type": "ENT - Electrical Nonmetallic Tubing",
+    "Size": "1/2",
+    "areaMM": "184",
+    "areaIN": "0.285"
+  },
+  {
+    "Type": "ENT - Electrical Nonmetallic Tubing",
+    "Size": "3/4",
+    "areaMM": "328",
+    "areaIN": "0.508"
+  },
+  {
+    "Type": "ENT - Electrical Nonmetallic Tubing",
+    "Size": "1",
+    "areaMM": "537",
+    "areaIN": "0.832"
+  },
+  {
+    "Type": "ENT - Electrical Nonmetallic Tubing",
+    "Size": "1 1/2",
+    "areaMM": "1281",
+    "areaIN": "1.986"
+  },
+  {
+    "Type": "ENT - Electrical Nonmetallic Tubing",
+    "Size": "2",
+    "areaMM": "2123",
+    "areaIN": "3.291"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "1/2",
+    "areaMM": "204",
+    "areaIN": "0.317"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "3/4",
+    "areaMM": "343",
+    "areaIN": "0.533"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "1",
+    "areaMM": "527",
+    "areaIN": "0.817"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "1 1/2",
+    "areaMM": "1201",
+    "areaIN": "1.858"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "2",
+    "areaMM": "2107",
+    "areaIN": "3.269"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "2 1/2",
+    "areaMM": "3167",
+    "areaIN": "4.909"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "3",
+    "areaMM": "4560",
+    "areaIN": "7.069"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "3 1/2",
+    "areaMM": "6207",
+    "areaIN": "9.621"
+  },
+  {
+    "Type": "FMC - Flexible Metal Conduit",
+    "Size": "4",
+    "areaMM": "8107",
+    "areaIN": "12.566"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "1/2",
+    "areaMM": "222",
+    "areaIN": "0.342"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "3/4",
+    "areaMM": "377",
+    "areaIN": "0.586"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "1",
+    "areaMM": "620",
+    "areaIN": "0.959"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "1 1/2",
+    "areaMM": "1432",
+    "areaIN": "2.225"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "2",
+    "areaMM": "2341",
+    "areaIN": "3.63"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "2 1/2",
+    "areaMM": "3308",
+    "areaIN": "5.135"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "3",
+    "areaMM": "5115",
+    "areaIN": "7.922"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "3 1/2",
+    "areaMM": "6822",
+    "areaIN": "10.584"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "4",
+    "areaMM": "8725",
+    "areaIN": "13.631"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "5",
+    "areaMM": "13639",
+    "areaIN": "21.32"
+  },
+  {
+    "Type": "IMC - Intermediate Metal Conduit",
+    "Size": "6",
+    "areaMM": "19696",
+    "areaIN": "30.76"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "1/2",
+    "areaMM": "204",
+    "areaIN": "0.314"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "3/4",
+    "areaMM": "353",
+    "areaIN": "0.549"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "1",
+    "areaMM": "573",
+    "areaIN": "0.887"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "1 1/2",
+    "areaMM": "1333",
+    "areaIN": "2.071"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "2",
+    "areaMM": "2198",
+    "areaIN": "3.408"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "2 1/2",
+    "areaMM": "3137",
+    "areaIN": "4.866"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "3",
+    "areaMM": "4840",
+    "areaIN": "7.499"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "3 1/2",
+    "areaMM": "6461",
+    "areaIN": "10.01"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "4",
+    "areaMM": "8316",
+    "areaIN": "12.882"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "5",
+    "areaMM": "13050",
+    "areaIN": "20.212"
+  },
+  {
+    "Type": "RMC - Rigid Metal Conduit",
+    "Size": "6",
+    "areaMM": "18821",
+    "areaIN": "29.158"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "1/2",
+    "areaMM": "141",
+    "areaIN": "0.217"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "3/4",
+    "areaMM": "263",
+    "areaIN": "0.409"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "1",
+    "areaMM": "445",
+    "areaIN": "0.688"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "1 1/2",
+    "areaMM": "1104",
+    "areaIN": "1.711"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "2",
+    "areaMM": "1855",
+    "areaIN": "2.874"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "2 1/2",
+    "areaMM": "2660",
+    "areaIN": "4.119"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "3",
+    "areaMM": "4151",
+    "areaIN": "6.442"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "3 1/2",
+    "areaMM": "5608",
+    "areaIN": "8.688"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "4",
+    "areaMM": "7268",
+    "areaIN": "11.258"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "5",
+    "areaMM": "11518",
+    "areaIN": "17.855"
+  },
+  {
+    "Type": "PVC - Rigid PVC Conduit - SCH 80",
+    "Size": "6",
+    "areaMM": "16513",
+    "areaIN": "25.598"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "1/2",
+    "areaMM": "184",
+    "areaIN": "0.285"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "3/4",
+    "areaMM": "327",
+    "areaIN": "0.508"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "1",
+    "areaMM": "535",
+    "areaIN": "0.832"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "1 1/2",
+    "areaMM": "1282",
+    "areaIN": "1.986"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "2",
+    "areaMM": "2124",
+    "areaIN": "3.291"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "2 1/2",
+    "areaMM": "3029",
+    "areaIN": "4.695"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "3",
+    "areaMM": "4693",
+    "areaIN": "7.268"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "3 1/2",
+    "areaMM": "6277",
+    "areaIN": "9.737"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "4",
+    "areaMM": "8091",
+    "areaIN": "12.554"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "5",
+    "areaMM": "12748",
+    "areaIN": "19.761"
+  },
+  {
+    "Type": "PVC/HDPE - Rigid PVC Conduit - SCH 40",
+    "Size": "6",
+    "areaMM": "18433",
+    "areaIN": "28.567"
+  }
+]
