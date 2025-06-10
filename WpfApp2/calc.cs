@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -276,6 +277,28 @@ namespace WpfApp2
             AddParagraph(calculationDoc, "\n--- Calculation Finished ---", true, false);
 
             return (selectedConduit, calculationDoc);
+        }
+
+
+        public static (double numero, string unidade) Separar(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                throw new ArgumentException("String não pode ser nula ou vazia", nameof(input));
+
+            // Separa caracteres numéricos (incluindo ponto e vírgula) dos alfabéticos
+            string numeroStr = new string(input.TakeWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+            string unidade = new string(input.SkipWhile(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
+
+            if (string.IsNullOrEmpty(numeroStr))
+                throw new ArgumentException($"Não foi possível extrair número da string: {input}");
+
+            // Converte vírgula para ponto se necessário (para compatibilidade)
+            numeroStr = numeroStr.Replace(',', '.');
+
+            if (!double.TryParse(numeroStr, NumberStyles.Float, CultureInfo.InvariantCulture, out double numero))
+                throw new ArgumentException($"Não foi possível converter '{numeroStr}' para número");
+
+            return (numero, unidade.Trim());
         }
     }
 }

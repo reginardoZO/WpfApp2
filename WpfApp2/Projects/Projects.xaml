@@ -6,11 +6,18 @@
              xmlns:local="clr-namespace:WpfApp2.Projects"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="WpfApp2.Projects.Projects"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="950" d:DesignWidth="1200">
     <Grid Background="White">
-        <TabControl>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Projects">
                 <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="97*"/>
+                        <ColumnDefinition Width="53*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -25,7 +32,6 @@
                             </TransformGroup>
                         </DataGrid.RenderTransform>
                     </DataGrid>
-                    <TextBlock HorizontalAlignment="Left" Margin="283,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Plant" RenderTransformOrigin="-0.356,0.442" Height="16" Width="27"/>
                     <DataGrid x:Name="gridPlants" Style="{DynamicResource MaterialDesignDataGrid}"  Margin="274,45,0,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="245" Height="320" VerticalAlignment="Top" CanUserAddRows="False">
                         <DataGrid.RenderTransform>
                             <TransformGroup>
@@ -53,9 +59,7 @@
           IsTextSearchEnabled="False"
             PreviewKeyUp="cmbProject_PreviewKeyUp"
           StaysOpenOnEdit="True"
-          Margin="612,61,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="136" >
-
-                    </ComboBox>
+          Margin="612,61,0,0" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="136" />
 
                     <ComboBox x:Name="cmbPlant"
           IsEditable="True"
@@ -83,11 +87,266 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Feeders" >
+                <Grid Background="#FFE5E5E5" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle HorizontalAlignment="Left" Height="482" Margin="10,53,0,0" Stroke="Black" VerticalAlignment="Top" Width="364"/>
+                    <ComboBox x:Name="cmbProjectsFeeder" HorizontalAlignment="Left" Margin="56,11,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbProjectsFeeder_SelectionChanged" />
+                    <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="Plant" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="33,94,0,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtTagPanel" HorizontalAlignment="Left" Margin="74,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="42,130,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="168,59,0,0" TextWrapping="Wrap" Text="Panels" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="32,168,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top" TextAlignment="Right" RenderTransformOrigin="0.954,0.645"/>
+                    <TextBox x:Name="txtDescPanel" HorizontalAlignment="Left" Margin="74,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
+                    <Button x:Name="btnAddPanels" Content="Add" HorizontalAlignment="Left" Margin="314,157,0,0" VerticalAlignment="Top" Height="26" Width="52" FontSize="10" BorderThickness="0,0,0,0" Click="btnAddPanels_Click"/>
+                    <ListView x:Name="listPanels" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="28,201,0,376" HorizontalAlignment="Left" Width="331">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+
+                    <TextBox x:Name="txtPanelLevel" HorizontalAlignment="Left" Margin="74,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
+                    <ComboBox x:Name="cmbUnitLevel" HorizontalAlignment="Left" Margin="152,90,0,0" VerticalAlignment="Top" Width="42">
+                        <ComboBoxItem Content="kV"/>
+                        <ComboBoxItem Content="V"/>
+                    </ComboBox>
+                    <Rectangle HorizontalAlignment="Left" Height="482" Margin="384,53,0,0" Stroke="Black" VerticalAlignment="Top" Width="406"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="568,59,0,0" TextWrapping="Wrap" Text="Transformers" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="407,105,0,0" TextWrapping="Wrap" Text="High Voltage" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="411,135,0,0" TextWrapping="Wrap" Text="Low Voltage" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtTrafHV" HorizontalAlignment="Left" Margin="504,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" TabIndex="49"/>
+                    <TextBox x:Name="txtTrafLV" HorizontalAlignment="Left" Margin="504,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" TabIndex="51"/>
+                    <ComboBox x:Name="cmbLevelUnitHV" HorizontalAlignment="Left" Margin="593,96,0,0" VerticalAlignment="Top" Width="57" SelectedValuePath="Content" TabIndex="50">
+                        <ComboBoxItem Content="kV"/>
+                        <ComboBoxItem Content="V"/>
+                    </ComboBox>
+                    <ComboBox x:Name="cmbLevelUnitLV" HorizontalAlignment="Left" Margin="593,126,0,0" VerticalAlignment="Top" Width="57" SelectedValuePath="Content" TabIndex="52">
+                        <ComboBoxItem Content="kV"/>
+                        <ComboBoxItem Content="V"/>
+                    </ComboBox>
+                    <TextBlock HorizontalAlignment="Left" Margin="458,166,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtTagTrafo" HorizontalAlignment="Left" Margin="504,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" TabIndex="53"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="444,201,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtPowerTrafo" HorizontalAlignment="Left" Margin="504,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="69" TabIndex="54"/>
+                    <ComboBox x:Name="cmbLevelPotTrafo" HorizontalAlignment="Left" Margin="593,192,0,0" VerticalAlignment="Top" Width="57" SelectedValuePath="Content" TabIndex="55">
+                        <ComboBoxItem Content="kVA"/>
+                        <ComboBoxItem Content="MVA"/>
+                    </ComboBox>
+                    <TextBlock HorizontalAlignment="Left" Margin="419,235,0,0" TextWrapping="Wrap" Text="From Plant" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <ComboBox x:Name="cmbFromPlantTrafo" HorizontalAlignment="Left" Margin="504,226,0,0" VerticalAlignment="Top" Width="146" SelectionChanged="cmbFromPlantTrafo_SelectionChanged" TabIndex="56"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="417,268,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top" TextAlignment="Right"/>
+                    
+                    <ComboBox x:Name="cmbFromPanelTrafo" HorizontalAlignment="Left" Margin="504,260,0,0" Width="197" VerticalAlignment="Top" SelectedValuePath="Content" TabIndex="57"/>
+                    
+                    <Button x:Name="btnAddPanels_Copy" Content="Add" HorizontalAlignment="Left" Margin="726,406,0,0" VerticalAlignment="Top" Height="26" Width="52" FontSize="10" BorderThickness="0,0,0,0" Click="btnAddPanels_Copy_Click" TabIndex="58"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="431,338,0,0" TextWrapping="Wrap" Text="To Plant" VerticalAlignment="Top" TextAlignment="Right" RenderTransformOrigin="0.504,0.111"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="430,372,0,0" TextWrapping="Wrap" Text="To Panel" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <ComboBox x:Name="cmbToPlantTrafo" HorizontalAlignment="Left" Margin="504,329,0,0" VerticalAlignment="Top" Width="146" SelectionChanged="cmbToPlantTrafo_SelectionChanged"/>
+                    <ComboBox x:Name="cmbToPanelTrafo" HorizontalAlignment="Left" Margin="504,367,0,0" VerticalAlignment="Top" Width="197"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="423,302,0,0" TextWrapping="Wrap" Text="From Unit" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtFromUnitTrafo" HorizontalAlignment="Left" Margin="504,294,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="436,407,0,0" TextWrapping="Wrap" Text="To Unit" VerticalAlignment="Top" TextAlignment="Right"/>
+                    <TextBox x:Name="txtToUnitTrafo" HorizontalAlignment="Left" Margin="504,402,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"/>
+
+                    <DataGrid x:Name="gridFeeders" IsReadOnly="True"
+          Margin="10,540,10,10"
+          AutoGenerateColumns="False"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          CanUserAddRows="False"
+          AlternatingRowBackground="LightGray"
+          RowBackground="White"
+          BorderBrush="DarkGray"
+          BorderThickness="1"
+          FontSize="14"
+          FontFamily="Segoe UI"
+          ColumnHeaderHeight="30"
+          RowHeight="38">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#FFDDDDDD"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="id" Binding="{Binding id}" Width="60" />
+                            <DataGridTextColumn Header="Plant" Binding="{Binding plant}" Width="*" />
+                            <DataGridTextColumn Header="Level" Binding="{Binding level}" Width="*" />
+                            <DataGridTextColumn Header="Tag" Binding="{Binding tag}" Width="*" />
+                            <DataGridTextColumn Header="Description" Binding="{Binding desc}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                    
+                    <DataGrid x:Name="gridTrafos" IsReadOnly="True"
+          Margin="795,53,10,0"
+          AutoGenerateColumns="False"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          CanUserAddRows="False"
+          AlternatingRowBackground="LightGray"
+          RowBackground="White"
+          BorderBrush="DarkGray"
+          BorderThickness="1"
+          FontSize="14"
+          FontFamily="Segoe UI"
+          ColumnHeaderHeight="30"
+                              SelectionChanged="gridTrafos_SelectionChanged"
+          RowHeight="38" Height="482" VerticalAlignment="Top">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#FFDDDDDD"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="id" Binding="{Binding id}" Width="60" />
+                            <DataGridTextColumn Header="High" Binding="{Binding high}" Width="*" />
+                            <DataGridTextColumn Header="Low" Binding="{Binding low}" Width="*" />
+                            <DataGridTextColumn Header="Tag" Binding="{Binding tag}" Width="*" />
+                            <DataGridTextColumn Header="Power" Binding="{Binding power}" Width="*" />
+                            <DataGridTextColumn Header="From Plant" Binding="{Binding fromPlant}" Width="*" />
+                            <DataGridTextColumn Header="To Plant" Binding="{Binding toPlant}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Loads">
+                <Grid Background="#FFE5E5E5" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ComboBox x:Name="cmbPlantsLoad" HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbPlantsLoad_SelectionChanged" />
+                    <TextBlock HorizontalAlignment="Left" Margin="18,19,0,0" TextWrapping="Wrap" Text="Plant" VerticalAlignment="Top" RenderTransformOrigin="1.249,0.732"/>
+                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="18,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="503"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="154,66,0,0" TextWrapping="Wrap" Text="Medium Voltage" VerticalAlignment="Top" Foreground="#FF673AB7"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="28,106,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cmbMVFromPanel" HorizontalAlignment="Left" Margin="104,101,0,0" VerticalAlignment="Top" Width="120"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="66,143,0,0" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtMVUnit" HorizontalAlignment="Left" Margin="104,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="56,183,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtPowerMV" HorizontalAlignment="Left" Margin="104,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
+                    <ComboBox x:Name="cmbPowerUnitsMV" HorizontalAlignment="Left" Margin="186,173,0,0" VerticalAlignment="Top" Width="38"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="70,221,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtTagMV" HorizontalAlignment="Left" Margin="104,215,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="70,263,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtDescrMV" HorizontalAlignment="Left" Margin="104,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="409"/>
+                    <Button x:Name="btnAddMVLoad" Content="Add" HorizontalAlignment="Left" Margin="440,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnAddMVLoad_Click"/>
+                    <CheckBox x:Name="chkSELPower" Content="SEL2600 POWER" HorizontalAlignment="Left" Margin="72,309,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkSELFiberCable" Content="SEL2600 FIBER CABLE" HorizontalAlignment="Left" Margin="72,333,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkCTWiring" Content="CT WIRING" HorizontalAlignment="Left" Margin="72,359,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkExciterControlPower" Content="EXCITER CONTROL POWER" HorizontalAlignment="Left" Margin="72,383,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkSpeedSwitchWiring" Content="SPEED SWITCH WIRING" HorizontalAlignment="Left" Margin="72,409,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkTerminalBoxHeaterWiring" Content="TERMINAL BOX SPACE HEATER WIRING" HorizontalAlignment="Left" Margin="72,433,0,0" VerticalAlignment="Top"/>
+                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="526,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="489"/>
+                    <TextBox x:Name="txtLVTag" HorizontalAlignment="Left" Margin="620,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TabIndex="75"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="745,66,0,0" TextWrapping="Wrap" Text="Low Voltage" VerticalAlignment="Top" Foreground="#FF673AB7"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="548,182,0,0" TextWrapping="Wrap" Text="Load Type" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cmbLVLoadType" HorizontalAlignment="Left" Margin="620,177,0,0" VerticalAlignment="Top" Width="142" SelectionChanged="cmbLVLoadType_SelectionChanged" TabIndex="72"/>
+                    <CheckBox x:Name="chkVFD" Content="VFD" HorizontalAlignment="Left" Margin="786,181,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
+                    <TextBlock x:Name="lblPowerLV" HorizontalAlignment="Left" Margin="565,219,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtPowerLV" HorizontalAlignment="Left" Margin="624,212,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" TabIndex="73"/>
+                    <ComboBox x:Name="cmbLVUnidade" HorizontalAlignment="Left" Margin="708,212,0,0" VerticalAlignment="Top" Width="58" TabIndex="74"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="543,106,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cmbLVFromPanel" HorizontalAlignment="Left" Margin="624,102,0,0" VerticalAlignment="Top" Width="120" TabIndex="70"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="580,147,0,0" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtLVUnit" HorizontalAlignment="Left" Margin="624,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="71"/>
+                    <Button
+        Background="{DynamicResource PrimaryHueMidBrush}"
+        Foreground="White"
+        Margin="797,147,0,0"
+        ToolTip="Adicionar"
+        Click="AddButton_Click"
+        Style="{StaticResource MaterialDesignFloatingActionButton}" RenderTransformOrigin="0.5,0.5" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20">
+                        <Button.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform />
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Button.RenderTransform>
+                        <materialDesign:PackIcon Kind="Plus" Width="18" Height="18" RenderTransformOrigin="0.5,0.5" >
+                            <materialDesign:PackIcon.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform />
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </materialDesign:PackIcon.RenderTransform>
+                        </materialDesign:PackIcon>
+                    </Button>
+
+
+
+                    <TextBlock HorizontalAlignment="Left" Margin="582,258,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="576,296,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439"/>
+                    <TextBox x:Name="txtLVDesc" Margin="623,293,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="369" TabIndex="76"/>
+                    <Button x:Name="btnLVAdd" Content="Add" HorizontalAlignment="Left" Margin="944,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnLVAdd_Click" />
+
+                    <materialDesign:Snackbar x:Name="MySnackbar"
+                                 VerticalAlignment="Top"
+                                 Margin="0,883,0,0"
+                                 MessageQueue="{materialDesign:MessageQueue}" />
+
+
+                    <DataGrid x:Name="gridLoads" Margin="18,533,10,10" 
+          AutoGenerateColumns="False"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          CanUserAddRows="False"
+          AlternatingRowBackground="LightGray"
+          RowBackground="White"
+          BorderBrush="DarkGray"
+          BorderThickness="1"
+          FontSize="14"
+          FontFamily="Segoe UI"
+          ColumnHeaderHeight="30"
+          RowHeight="38">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#FFDDDDDD"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="From" Binding="{Binding fromPanel}" Width="150" />
+                            <DataGridTextColumn Header="Unit" Binding="{Binding fromUnit}" Width="80" />
+                            <DataGridTextColumn Header="Power" Binding="{Binding power}" Width="80" />
+                            <DataGridTextColumn Header="Power Unit" Binding="{Binding powerUnit}" Width="120" />
+                            <DataGridTextColumn Header="Tag" Binding="{Binding tag}" Width="*" />
+                            <DataGridTextColumn Header="Description" Binding="{Binding descr}" Width="*" />
+                            <DataGridTextColumn Header="Level" Binding="{Binding Level}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
             </TabItem>
         </TabControl>
 
@@ -100,6 +359,7 @@
               Height="20"
               Visibility="Collapsed"
               Panel.ZIndex="10"/>
+
 
     </Grid>
 </UserControl>

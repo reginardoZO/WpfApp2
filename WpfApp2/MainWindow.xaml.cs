@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf; // Adicione esta linha para usar o DrawerHost
+using WpfApp2.Cables;
 using WpfApp2.Conduits; // Certifique-se de que o namespace esteja correto
 using WpfApp2.Projects;
 
@@ -32,9 +33,9 @@ namespace WpfApp2
 
                 switch (menuOption)
                 {
-                    case "Calculadora":
-                        MainContentHost.Content = new CalculadoraView();
-                        TitleTextBlock.Text = "Calculadora";
+                    case "Calculator":
+                        MainContentHost.Content = new Cables_Sizing();
+                        TitleTextBlock.Text = "Calculator";
                         break;
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
