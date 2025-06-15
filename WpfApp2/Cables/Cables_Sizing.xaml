@@ -4,42 +4,141 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp2.Cables"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1250" d:DesignWidth="1600">
     <Grid Background="White">
-        <Button x:Name="btnSizing" Content="Size" HorizontalAlignment="Left" Margin="395,91,0,0" VerticalAlignment="Top" Click="Button_Click" Height="20" Width="46" FontSize="8"/>
-        <TextBlock HorizontalAlignment="Left" Margin="26,50,0,0" TextWrapping="Wrap" Text="Type" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbType" HorizontalAlignment="Left" Margin="68,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbType_SelectionChanged">
+        <Border BorderBrush="Black" BorderThickness="1" Margin="10,298,0,0" Height="436" VerticalAlignment="Top" HorizontalAlignment="Left" Width="464">
+            <RichTextBox x:Name="richText" Margin="9,10,9,10" RenderTransformOrigin="0.5,0.5">
 
-        </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Margin="26,91,0,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
-        <ComboBox x:Name="cmbLevel" HorizontalAlignment="Left" Margin="68,86,0,0" VerticalAlignment="Top" Width="120">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Border>
+        <Rectangle HorizontalAlignment="Left" Height="283" Margin="10,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="464"/>
+        <Button x:Name="btnSizing" Content="Size" HorizontalAlignment="Left" Margin="389,242,0,0" VerticalAlignment="Top" Click="Button_Click" Height="34" Width="55" FontSize="12" RenderTransformOrigin="1.609,0.382"/>
+        <TextBlock HorizontalAlignment="Left" Margin="38,51,0,0" TextWrapping="Wrap" Text="Type" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbType" HorizontalAlignment="Left" Margin="77,46,0,0" VerticalAlignment="Top" Width="85" SelectionChanged="cmbType_SelectionChanged"/>
+        <TextBlock HorizontalAlignment="Left" Margin="36,94,0,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <ComboBox x:Name="cmbLevel" HorizontalAlignment="Left" Margin="77,86,0,0" VerticalAlignment="Top" Width="85"/>
+        <TextBlock HorizontalAlignment="Left" Margin="173,94,0,0" TextWrapping="Wrap" Text="V" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtLevel" HorizontalAlignment="Left" Margin="285,51,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <ComboBox x:Name="cmbUnit" HorizontalAlignment="Left" Margin="404,46,0,0" VerticalAlignment="Top" Width="46"/>
+        <TextBlock HorizontalAlignment="Left" Margin="33,132,0,0" TextWrapping="Wrap" Text="Cable" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbCable" HorizontalAlignment="Left" Margin="77,122,0,0" VerticalAlignment="Top" Width="85"/>
 
-        </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Margin="207,94,0,0" TextWrapping="Wrap" Text="V" VerticalAlignment="Top"/>
-        <TextBlock x:Name="txtLevel" HorizontalAlignment="Left" Margin="239,54,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
-        <ComboBox x:Name="cmbUnit" HorizontalAlignment="Left" Margin="377,50,0,0" VerticalAlignment="Top" Width="64"/>
-        <TextBlock HorizontalAlignment="Left" Margin="26,132,0,0" TextWrapping="Wrap" Text="Cable" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbCable" HorizontalAlignment="Left" Margin="67,127,0,0" VerticalAlignment="Top" Width="120">
-
-        </ComboBox>
-
-        <RadioButton x:Name="g90"  Content="90ºC" HorizontalAlignment="Left" GroupName="Grupo1" Margin="68,171,0,0" Height="22" VerticalAlignment="Top"/>
-        <RadioButton x:Name="g75"  Content="75ºC" GroupName="Grupo1" Margin="134,171,613,0" Height="22" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="13,208,0,0" TextWrapping="Wrap" Text="Correction" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbCorrection" HorizontalAlignment="Left" Margin="80,200,0,0" VerticalAlignment="Top" Width="108"/>
-        <TextBlock x:Name="lblPowerFactor" HorizontalAlignment="Left" Margin="239,94,0,0" TextWrapping="Wrap" Text="Power Factor" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
-        <TextBox x:Name="txtPowerFactor" HorizontalAlignment="Left" Margin="318,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54" Text="1" TextAlignment="Right"/>
-        <TextBox x:Name="txtPower" HorizontalAlignment="Left" Margin="292,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" TextAlignment="Right"/>
-        <RichTextBox x:Name="richText" Margin="13,263,10,10">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <RadioButton x:Name="g90"  Content="90ºC" HorizontalAlignment="Left" GroupName="Grupo1" Margin="26,198,0,0" Height="22" VerticalAlignment="Top"/>
+        <RadioButton x:Name="g75"  Content="75ºC" GroupName="Grupo1" Margin="100,195,1438,0" Height="22" VerticalAlignment="Top" IsChecked="True"/>
+        <TextBlock x:Name="lblPowerFactor" HorizontalAlignment="Left" Margin="251,94,0,0" TextWrapping="Wrap" Text="Power Factor" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <TextBox x:Name="txtPowerFactor" HorizontalAlignment="Left" Margin="338,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40" Text="0.85"/>
+        <TextBox x:Name="txtPower" HorizontalAlignment="Left" Margin="338,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61"/>
+        <TextBlock HorizontalAlignment="Left" Margin="242,167,0,0" TextWrapping="Wrap" Text="Ambient Temp." VerticalAlignment="Top"/>
+        <TextBox x:Name="txtAmbTemp" HorizontalAlignment="Left" Margin="338,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40" Text="85"/>
+        <TextBlock x:Name="lblPowerFactor_Copy" HorizontalAlignment="Left" Margin="387,165,0,0" TextWrapping="Wrap" Text="ºF" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <TextBlock HorizontalAlignment="Left" Margin="26,14,0,0" TextWrapping="Wrap" Text="Sizing by NEC" VerticalAlignment="Top"/>
+        <Canvas VerticalAlignment="Top">
+            <Rectangle Height="724" Stroke="Black" VerticalAlignment="Center" Width="1097" HorizontalAlignment="Left" Canvas.Left="480" Canvas.Top="10"/>
+            <TextBox x:Name="txtUnderSection" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="778" Canvas.Top="660" VerticalAlignment="Center"/>
 
 
+
+            <TextBlock TextWrapping="Wrap" Text="Plant" HorizontalAlignment="Left" Canvas.Left="512" Canvas.Top="88" VerticalAlignment="Top"/>
+
+
+
+            <TextBlock TextWrapping="Wrap" Text="Project" HorizontalAlignment="Left" Canvas.Left="502" Canvas.Top="51" VerticalAlignment="Top"/>
+            <ComboBox x:Name="cmbPlant" Width="120" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="82" VerticalAlignment="Top" SelectionChanged="cmbPlant_SelectionChanged"/>
+            <DataGrid x:Name="gridCircuits"
+          IsReadOnly="True"
+          AutoGenerateColumns="False"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          CanUserAddRows="False"
+          AlternatingRowBackground="LightGray"
+          RowBackground="White"
+          BorderBrush="DarkGray"
+          BorderThickness="1"
+          FontSize="14"
+          FontFamily="Segoe UI"
+          ColumnHeaderHeight="30"
+          RowHeight="38"
+          Height="501"
+          Width="1058"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top" SelectionChanged="gridCircuits_SelectionChanged" Canvas.Left="502" Canvas.Top="127">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="#FFDDDDDD"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="id" Binding="{Binding id}" Width="60" />
+                    <DataGridTextColumn Header="From Panel" Binding="{Binding fromPanel}" Width="*" />
+                    <DataGridTextColumn Header="From Unit" Binding="{Binding fromUnit}" Width="*" />
+                    <DataGridTextColumn Header="Load Type" Binding="{Binding loadType}" Width="*" />
+                    <DataGridTextColumn Header="Power" Binding="{Binding power}" Width="*" />
+                    <DataGridTextColumn Header="Unit" Binding="{Binding powerUnit}" Width="*" />
+                    <DataGridTextColumn Header="Tag" Binding="{Binding tag}" Width="*" />
+                    <DataGridTextColumn Header="Description" Binding="{Binding descr}" Width="2*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <ComboBox x:Name="cmbProjects" Width="120" SelectionChanged="cmbProjects_SelectionChanged" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="45" VerticalAlignment="Top"/>
+            <RadioButton x:Name="radLV" Content="Low Voltage" GroupName="voltageLoad" HorizontalAlignment="Left" Canvas.Left="712" Canvas.Top="51" VerticalAlignment="Top" Checked="radLV_Checked"/>
+            <RadioButton x:Name="radMV" Content="Medium Voltage" GroupName="voltageLoad" HorizontalAlignment="Left" Canvas.Left="712" Canvas.Top="81" VerticalAlignment="Top" Checked="radMV_Checked"/>
+            <TextBlock TextWrapping="Wrap" Text="Tag" Canvas.Left="507" Canvas.Top="662" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="2.678,0.721"/>
+            <TextBlock TextWrapping="Wrap" Text="Cable" Canvas.Left="496" Canvas.Top="696" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Text="Under Section" Canvas.Left="692" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtTagCircuit" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="541" Canvas.Top="656" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Text="Above Section" Canvas.Left="923" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="Distance" Canvas.Left="1148" Canvas.Top="668" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </Canvas>
+        <TextBlock HorizontalAlignment="Left" Margin="502,22,0,0" TextWrapping="Wrap" Text="Associate Load" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lblSizedCable" HorizontalAlignment="Left" Margin="26,246,0,0" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" RenderTransformOrigin="-42.361,3.112"/>
+        <TextBox x:Name="txtAboveSection" HorizontalAlignment="Left" Margin="1010,662,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtDistance" HorizontalAlignment="Left" Margin="1214,662,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="1486,658,0,0" VerticalAlignment="Top" Click="btnSave_Click"/>
+        <TextBox x:Name="txtSelectedCable" HorizontalAlignment="Left" Margin="541,692,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="228"/>
+
+        <materialDesign:Snackbar x:Name="MySnackbar"
+                         VerticalAlignment="Top"
+                         Margin="0,883,0,0"
+                         Background="#4CAF50" 
+            Foreground="White"
+                         MessageQueue="{materialDesign:MessageQueue}">
+            <materialDesign:Snackbar.Message>
+                <materialDesign:SnackbarMessage>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CheckCircle"
+                                         Width="24"
+                                         Height="24"
+                                         Foreground="White"
+                                         Margin="0,0,8,0"/>
+                        <TextBlock Text="Operação realizada com sucesso!" 
+                           VerticalAlignment="Center"/>
+                    </StackPanel>
+                </materialDesign:SnackbarMessage>
+            </materialDesign:Snackbar.Message>
+        </materialDesign:Snackbar>
+        <TextBlock HorizontalAlignment="Left" Margin="267,196,0,0" TextWrapping="Wrap" Text="Max Drop" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtMaxDrop" HorizontalAlignment="Left" Margin="338,191,0,0" TextWrapping="Wrap" Text="3" VerticalAlignment="Top" Width="40"/>
+        <TextBlock x:Name="lblPowerFactor_Copy1" HorizontalAlignment="Left" Margin="389,196,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <TextBlock HorizontalAlignment="Left" Margin="19,165,0,0" TextWrapping="Wrap" Text="Distance" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtDistanceSizer" HorizontalAlignment="Left" Margin="77,160,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="85"/>
+        <TextBlock HorizontalAlignment="Left" Margin="173,168,0,0" TextWrapping="Wrap" Text="ft" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lblEff" HorizontalAlignment="Left" Margin="270,132,0,0" TextWrapping="Wrap" Text="Efficiency" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtEff" HorizontalAlignment="Left" Margin="338,126,0,0" TextWrapping="Wrap" Text="95" VerticalAlignment="Top" Width="40"/>
+        <TextBlock x:Name="lblUnitEfficiency" HorizontalAlignment="Left" Margin="388,132,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
 
     </Grid>
 </UserControl>

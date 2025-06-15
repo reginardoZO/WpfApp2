@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml;
+using WpfApp2.Cables;
 
 namespace WpfApp2
 {
@@ -299,6 +300,11 @@ namespace WpfApp2
                 throw new ArgumentException($"Não foi possível converter '{numeroStr}' para número");
 
             return (numero, unidade.Trim());
+
+            
+            
         }
+
+
     }
 }

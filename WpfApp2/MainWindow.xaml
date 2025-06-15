@@ -43,11 +43,11 @@
                         Margin="8,4"
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="MenuButton_Click"
-                        Tag="Calculator"
+                        Tag="Cable"
                         HorizontalContentAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Calculator" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="Calculator" VerticalAlignment="Center"/>
+                        <TextBlock Text="Cable" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 

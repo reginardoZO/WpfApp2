@@ -12,12 +12,16 @@
 
   <ItemGroup>
     <None Remove="App.config" />
+    <None Remove="Cables\cablesSpecs.json" />
     <None Remove="database\cables.json" />
     <None Remove="database\conduitsSizes.json" />
     <None Remove="Projects\add.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Cables\cablesSpecs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="database\cables.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -39,7 +43,7 @@
 
   <ItemGroup>
     <Reference Include="CableCalculator">
-      <HintPath>..\..\..\..\Downloads\CableCalculator.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Temp\cable calculator new\CableCalculator.dll</HintPath>
     </Reference>
   </ItemGroup>
 

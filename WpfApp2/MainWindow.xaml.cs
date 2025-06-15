@@ -5,6 +5,7 @@ using WpfApp2.Cables;
 using WpfApp2.Conduits; // Certifique-se de que o namespace esteja correto
 using WpfApp2.Projects;
 
+
 namespace WpfApp2
 {
     /// <summary>
@@ -20,11 +21,14 @@ namespace WpfApp2
             // Carrega o HomeView (Lorem Ipsum) na inicialização da aplicação
             MainContentHost.Content = new HomeView(); // This line was effectively already present
             TitleTextBlock.Text = ""; // Set title for the initial HomeView
-        }
 
+            
+        }
+        
         // Método para lidar com o clique dos botões do menu lateral
         private void MenuButton_Click(object sender, RoutedEventArgs e)
         {
+            
             Button clickedButton = sender as Button;
 
             if (clickedButton != null)
@@ -33,9 +37,9 @@ namespace WpfApp2
 
                 switch (menuOption)
                 {
-                    case "Calculator":
+                    case "Cable":
                         MainContentHost.Content = new Cables_Sizing();
-                        TitleTextBlock.Text = "Calculator";
+                        TitleTextBlock.Text = "Cable";
                         break;
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
@@ -60,5 +64,7 @@ namespace WpfApp2
                 MainContentHost.Focus(); // Set focus to the content area
             }
         }
+
+
     }
 }

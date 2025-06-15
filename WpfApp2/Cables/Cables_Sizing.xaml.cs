@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +15,33 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CableCalculator;
+using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
+using CablesQuery;
+using System.Reflection.Metadata.Ecma335;
+using ControlzEx.Standard;
+using System.Security.RightsManagement;
+using System.Text.RegularExpressions;
+
 
 namespace WpfApp2.Cables
 {
-    /// <summary>
-    /// Interaction logic for Cables_Sizing.xaml
-    /// </summary>
+
+
+
+
     public partial class Cables_Sizing : UserControl
     {
+
+        CablesQueryEngine jsonQuery = new CablesQueryEngine();
+
+
+        DatabaseAccess acessos = new DatabaseAccess();
+
         public Cables_Sizing()
         {
             InitializeComponent();
-            double fator = 0.75;
-            for (int i = 0; i < 6; i++)
-            {
-                cmbCorrection.Items.Add(fator.ToString("0.00"));
-                fator += 0.05;
-            }
+
             cmbType.Items.Add("Motor");
             cmbType.Items.Add("Heater");
             cmbType.Items.Add("Feeder");
@@ -39,113 +50,200 @@ namespace WpfApp2.Cables
             cmbLevel.Items.Add("480");
 
             cmbCable.Items.Add("VFD");
-            cmbCable.Items.Add("Power Single");
-            cmbCable.Items.Add("Power Multicable");
+            cmbCable.Items.Add("Single");
+            cmbCable.Items.Add("Multicable");
 
+            updateProjects();
+
+            MySnackbar.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+
+
+        }
+
+        public async void updateProjects()
+        {
+            string varSql = "Select * from projects";
+
+            DataTable retorno = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+
+            List<string> projectsList = retorno.AsEnumerable()
+                                    .Select(row => row.Field<string>("Name"))
+                                    .ToList();
+            cmbProjects.ItemsSource = projectsList;
+
+            cmbProjects.SelectedIndex = -1;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var calculator = new ElectricalCableCalculator();
-            // Prepare input parameters
-            var input = new CableCalculationInput
-            { 
-                LoadType = cmbType.SelectedItem.ToString(),
-                Unit = cmbUnit.SelectedItem.ToString(),
-                Voltage = Convert.ToDouble(cmbLevel.SelectedItem.ToString()),
-                Power = Convert.ToDouble(txtPower.Text),
-                Temperature = (g90.IsChecked == true) ? 90 : 75,
-                Factor = Convert.ToDouble(cmbCorrection.SelectedItem.ToString()),
-                PowerFactor = Convert.ToDouble(txtPowerFactor.Text),
-                CableType = cmbCable.SelectedItem.ToString()
-            };
-            // Calculate cable
-            string resultado = calculator.CalculateCable(input);
-
-            var result = JsonConvert.DeserializeObject<RootObject>(resultado);
 
 
-            if (result == null || !result.Success || result.Calculation == null)
+            calcCables calcCabos = new calcCables();
+
+            inputData dadosEntrada = new();
+            dadosEntrada.voltageLevel = Convert.ToDouble(cmbLevel.SelectedItem.ToString());
+            dadosEntrada.cableType = cmbCable.SelectedItem.ToString();
+            dadosEntrada.loadType = cmbType.SelectedItem.ToString();
+            dadosEntrada.powerFactor = Convert.ToDouble(txtPowerFactor.Text);
+            dadosEntrada.power = Convert.ToDouble(txtPower.Text);
+            dadosEntrada.efficiency = string.IsNullOrWhiteSpace(txtEff.Text) ? 0 : Convert.ToDouble(txtEff.Text);
+            dadosEntrada.powerUnit = cmbUnit.SelectedItem.ToString();
+            if (g90.IsChecked == true)
+                dadosEntrada.cableTempCol = 90;
+            else
+                dadosEntrada.cableTempCol = 75;
+
+            dadosEntrada.ambientTemperature = string.IsNullOrWhiteSpace(txtAmbTemp.Text) ? 85 : Convert.ToDouble(txtAmbTemp.Text);
+            dadosEntrada.maxDropVoltage = string.IsNullOrWhiteSpace(txtMaxDrop.Text) ? 3 : Convert.ToDouble(txtMaxDrop.Text);
+            dadosEntrada.distance = string.IsNullOrWhiteSpace(txtDistanceSizer.Text) ? 1 : Convert.ToDouble(txtDistanceSizer.Text);
+
+
+
+            outputData dadosSaida = new();
+
+            dadosSaida.nominalCurrent = calcCabos.nominalCurrent(dadosEntrada);
+            dadosSaida.temperatureFactor = calcCabos.temperatureFactor(dadosEntrada);
+            dadosSaida.correctedCurrent = dadosSaida.nominalCurrent / dadosSaida.temperatureFactor;
+            dadosSaida.sizedCableCurrent = calcCabos.findCableByCorrectecCurrent(dadosEntrada, dadosSaida);
+
+            lblSizedCable.Text = dadosSaida.sizedCableCurrent;
+
+            var match = Regex.Match(dadosSaida.sizedCableCurrent, @"^(\d+)\s*x\s*\(\s*(.+?)\s*\+\s*(.+?)\s*\)$");
+            dadosSaida.cableQuantity = int.Parse(match.Groups[1].Value);
+            dadosSaida.powerCable = match.Groups[2].Value.Trim();
+            dadosSaida.groundCable = match.Groups[3].Value.Trim();
+
+            //auxiliar
+
+            dadosSaida.sizedDrop = calcCabos.findCableByDropVoltage(dadosEntrada, dadosSaida);
+
+
+            var doc = new FlowDocument();
+
+            // === CALCULATION ===
+            doc.Blocks.Add(new Paragraph(new Run("=== CALCULATION ===")));
+
+            doc.Blocks.Add(new Paragraph(new Run($"Load type: {dadosEntrada.loadType}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Power: {dadosEntrada.power:F2} {dadosEntrada.powerUnit}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Power Factor: {dadosEntrada.powerFactor:F2}")));
+            doc.Blocks.Add(new Paragraph(new Run($"Voltage Level: {dadosEntrada.voltageLevel} V")));
+            doc.Blocks.Add(new Paragraph(new Run($"Efficiency: {dadosEntrada.efficiency} %")));
+
+            var pRequired = new Paragraph();
+            var runRequired = new Run($"Nominal current: {dadosSaida.nominalCurrent:F2} A")
             {
-                string errorMessage = result?.Error ?? "An unknown error occurred during the calculation.";
-                MessageBox.Show(errorMessage, "Calculation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return; // Interrompe o restante do código
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
+            pRequired.Inlines.Add(runRequired);
+            doc.Blocks.Add(pRequired);
+
+
+            pRequired = new Paragraph();
+            runRequired = new Run($"Temperature Factor: {dadosSaida.temperatureFactor:F2}")
+            {
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
+            pRequired.Inlines.Add(runRequired);
+            doc.Blocks.Add(pRequired);
+
+            pRequired = new Paragraph();
+            runRequired = new Run($"New Current: {dadosSaida.correctedCurrent:F2}")
+            {
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
+            pRequired.Inlines.Add(runRequired);
+            doc.Blocks.Add(pRequired);
+
+
+            pRequired = new Paragraph();
+            runRequired = new Run($"Cable by Ampacity: {dadosSaida.sizedCableCurrent}")
+            {
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
+            pRequired.Inlines.Add(runRequired);
+            doc.Blocks.Add(pRequired);
+
+
+            Brush corSelecionada;
+
+            if (dadosSaida.sizedDrop > dadosEntrada.maxDropVoltage)
+            {
+                corSelecionada = Brushes.Red;
             }
             else
             {
-                var doc = new FlowDocument();
-
-                // === CALCULATION ===
-                doc.Blocks.Add(new Paragraph(new Run("=== CALCULATION ===")));
-
-                doc.Blocks.Add(new Paragraph(new Run($"Load type: {result.Calculation.LoadType}")));
-                doc.Blocks.Add(new Paragraph(new Run($"Power: {result.Calculation.Power} {result.Calculation.Unit}")));
-                doc.Blocks.Add(new Paragraph(new Run($"Voltage: {result.Calculation.Voltage} V")));
-                doc.Blocks.Add(new Paragraph(new Run($"Power factor: {result.Calculation.PowerFactor}")));
-
-                // Required current (bold + bigger)
-                var pRequired = new Paragraph();
-                var runRequired = new Run($"Required current: {result.Calculation.RequiredCurrent} A")
-                {
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 16
-                };
-                pRequired.Inlines.Add(runRequired);
-                doc.Blocks.Add(pRequired);
-
-                // Adjusted current (bold + bigger)
-                var pAdjusted = new Paragraph();
-                var runAdjusted = new Run($"Adjusted current: {result.Calculation.AdjustedCurrent} A")
-                {
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 16
-                };
-                pAdjusted.Inlines.Add(runAdjusted);
-                doc.Blocks.Add(pAdjusted);
-
-                doc.Blocks.Add(new Paragraph(new Run($"Correction factor: {result.Calculation.Factor}")));
-                doc.Blocks.Add(new Paragraph(new Run($"Temperature: {result.Calculation.Temperature} ºC")));
-                doc.Blocks.Add(new Paragraph(new Run($"Cable type: {result.Calculation.CableType}")));
-
-                // === SELECTED CABLE ===
-                doc.Blocks.Add(new Paragraph(new Run("\n=== SELECTED CABLE ===")));
-                doc.Blocks.Add(new Paragraph(new Run($"Stock number: {result.SelectedCable.StockNumber}")));
-
-                // Conductor size (bold + bigger)
-                var pConductor = new Paragraph();
-                var runConductor = new Run($"Conductor size:{result.SelectedCable.Quantity} x {result.SelectedCable.ConductorSize}")
-                {
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 16
-                };
-                pConductor.Inlines.Add(runConductor);
-                doc.Blocks.Add(pConductor);
-
-                doc.Blocks.Add(new Paragraph(new Run($"Ampacity at 75ºC: {result.SelectedCable.Ampacity75C} A")));
-                doc.Blocks.Add(new Paragraph(new Run($"Ampacity at 90ºC: {result.SelectedCable.Ampacity90C} A")));
-                doc.Blocks.Add(new Paragraph(new Run($"Overall diameter: {result.SelectedCable.OverallDiameter} in")));
-                doc.Blocks.Add(new Paragraph(new Run($"Copper weight: {result.SelectedCable.CopperWeight} lb/1000ft")));
-                doc.Blocks.Add(new Paragraph(new Run($"Total weight: {result.SelectedCable.TotalWeight} lb/1000ft")));
-                doc.Blocks.Add(new Paragraph(new Run($"Cable type: {result.SelectedCable.CableType}")));
-
-                // === SELECTED CABLE ===
-                doc.Blocks.Add(new Paragraph(new Run("\n=== GROUNDING ===")));
-                doc.Blocks.Add(new Paragraph(new Run($"Conductor Size: {result.GroundingConductor.ConductorSize}")));
-                doc.Blocks.Add(new Paragraph(new Run($"Quantity: {result.GroundingConductor.Quantity}")));
-
-                // Exibir no RichTextBox
-                richText.Document.Blocks.Clear();
-
-
-                richText.Document = doc;
-
+                corSelecionada = Brushes.Black;
             }
 
+            pRequired = new Paragraph();
 
 
+            runRequired = new Run($"Sized Drop: {dadosSaida.sizedDrop:F2}")
+            {
+
+                Foreground = corSelecionada, // Highlight the voltage drop result
+
+
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
+
+
+            pRequired.Inlines.Add(runRequired);
+            doc.Blocks.Add(pRequired);
+
+
+
+            richText.Document.Blocks.Clear();
+
+
+            richText.Document = doc;
 
 
         }
+
+        public class inputData
+        {
+            public string loadType { get; set; }
+            public string cableType { get; set; }
+            public double powerFactor { get; set; }
+            public double power { get; set; }
+            public string powerUnit { get; set; }
+            public double voltageLevel { get; set; }
+            public double efficiency { get; set; }
+            public int cableTempCol { get; set; }
+            public double ambientTemperature { get; set; }
+            public double maxDropVoltage { get; set; }
+            public double distance { get; set; } // This can be used to store the distance if applicable
+        }
+
+        public class outputData
+        {
+            public double nominalCurrent { get; set; }
+            public double temperatureFactor { get; set; }
+
+            public double correctedCurrent { get; set; }
+
+            public string sizedCableCurrent { get; set; }
+
+            public int cableQuantity { get; set; } // This can be used to store the number of cables needed if applicable
+            public string powerCable { get; set; }
+
+            public string groundCable { get; set; }
+            public double sizedDrop { get; set; }
+        }
+
+
+
+
 
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -154,6 +252,9 @@ namespace WpfApp2.Cables
                 txtLevel.Text = "Power";
                 txtPowerFactor.Visibility = Visibility.Visible;
                 lblPowerFactor.Visibility = Visibility.Visible;
+                txtEff.Visibility = Visibility.Visible;
+                lblEff.Visibility = Visibility.Visible;
+                lblUnitEfficiency.Visibility = Visibility.Visible;
                 cmbUnit.Items.Clear();
                 cmbUnit.Items.Add("HP");
                 cmbUnit.Items.Add("kW");
@@ -161,6 +262,9 @@ namespace WpfApp2.Cables
             }
             else if (cmbType.SelectedItem == "Heater")
             {
+                txtEff.Visibility = Visibility.Collapsed;
+                lblEff.Visibility = Visibility.Collapsed;
+                lblUnitEfficiency.Visibility = Visibility.Collapsed;
                 txtPowerFactor.Visibility = Visibility.Collapsed;
                 lblPowerFactor.Visibility = Visibility.Collapsed;
                 cmbUnit.Items.Clear();
@@ -170,6 +274,9 @@ namespace WpfApp2.Cables
             }
             else
             {
+                txtEff.Visibility = Visibility.Collapsed;
+                lblEff.Visibility = Visibility.Collapsed;
+                lblUnitEfficiency.Visibility = Visibility.Collapsed;
                 txtPowerFactor.Visibility = Visibility.Collapsed;
                 lblPowerFactor.Visibility = Visibility.Collapsed;
                 cmbUnit.Items.Clear();
@@ -185,17 +292,28 @@ namespace WpfApp2.Cables
         public class Calculation
         {
             public string LoadType { get; set; }
-            public double Power { get; set; }
-            public string Unit { get; set; }
-            public double Voltage { get; set; }
-            public double PowerFactor { get; set; }
             public double RequiredCurrent { get; set; }
             public double AdjustedCurrent { get; set; }
-            public double Factor { get; set; }
-            public int Temperature { get; set; }
-            public string CableType { get; set; }
+
+            public string AmbientTemperature { get; set; }
+
+            public double TemperatureCorrectionFactor { get; set; }
+
+            public double OriginalCableAmpacity { get; set; }
+
+            public double CorrectedCableAmpacity { get; set; }
             public int CableQuantity { get; set; }
             public double CurrentPerCable { get; set; }
+
+            public double Distance { get; set; }
+            public double VoltageDropCalculated { get; set; }
+            public double VoltageDropPercentage { get; set; }
+            public double VoltageDropLimit { get; set; }
+
+            public string VoltageDropStatus { get; set; } // "OK" or "Exceeds Limit"
+
+            public double EffectiveImpedance { get; set; }
+
         }
 
         public class SelectedCable
@@ -209,6 +327,8 @@ namespace WpfApp2.Cables
             public double TotalWeight { get; set; }
             public string CableType { get; set; }
             public int Quantity { get; set; }
+
+            public double CorrectedAmpacity { get; set; }
         }
 
         public class GroundingConductor
@@ -232,5 +352,148 @@ namespace WpfApp2.Cables
 
             public GroundingConductor GroundingConductor { get; set; }
         }
+
+        private void cmbProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updatePlants(cmbProjects.SelectedValue.ToString());
+        }
+
+        public async void updatePlants(string selectedProject)
+        {
+            string varSql = $"Select code from projects where Name = '{selectedProject}'";
+
+            DataTable retorno = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+            varSql = $"select plant from plants where code = '{retorno.Rows[0]["code"]}'";
+
+            retorno = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+
+            List<string> plantList = retorno.AsEnumerable()
+                                    .Select(row => row.Field<string>("Plant"))
+                                    .ToList();
+
+            cmbPlant.ItemsSource = plantList;
+
+            cmbPlant.SelectedIndex = -1;
+
+        }
+
+        private void radLV_Checked(object sender, RoutedEventArgs e)
+        {
+            if (radLV.IsChecked == true)
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
+
+            }
+            else
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
+            }
+        }
+
+        public async void populateGrid(string project, string plant, string voltage)
+        {
+            //find project code
+            string varSql = $"Select code from projects where Name = '{project}'";
+
+            DataTable oneRowReturn = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+            project = oneRowReturn.Rows[0]["code"].ToString();
+
+
+            varSql = "";
+            if (voltage == "LV")
+            {
+                varSql = $"Select id, frompanel, fromUnit, Loadtype, Power, powerUnit, tag, descr from lvLoads where project = '{project}' and plant = '{plant}'";
+            }
+            else
+            {
+                varSql = $"Select id, frompanel, fromUnit, Loadtype, Power, powerUnit, tag, descr from mvLoads where project = '{project}' and plant = '{plant}'";
+            }
+
+            DataTable retorno = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+            gridCircuits.ItemsSource = retorno.DefaultView;
+        }
+
+        private void radMV_Checked(object sender, RoutedEventArgs e)
+        {
+            if (radLV.IsChecked == true)
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
+
+            }
+            else
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
+            }
+        }
+
+        private void cmbPlant_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (radLV.IsChecked == true)
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
+
+            }
+            else
+            {
+                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
+            }
+        }
+        int selectedId = 0;
+        private void gridCircuits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+            if (gridCircuits.SelectedItem != null)
+            {
+                DataRowView selectedRow = (DataRowView)gridCircuits.SelectedItem;
+                selectedId = Convert.ToInt32(selectedRow["id"]);
+
+                cmbType.Text = selectedRow["loadType"].ToString();
+                txtPower.Text = selectedRow["power"].ToString();
+                cmbUnit.Text = selectedRow["powerUnit"].ToString();
+
+
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            string loadLevel = "MV";
+            if (radLV.IsChecked == true)
+            {
+                loadLevel = "LV";
+            }
+            string varSql = $"Insert into circuits (loadLevel, loadId, tag, cable, underSection, aboveSection, distance) values ('{loadLevel}', {selectedId}, '{txtTagCircuit.Text.ToString()}', '{txtSelectedCable.Text.ToString()}', '{txtUnderSection.Text.ToString()}', '{txtAboveSection.Text.ToString()}', '{txtDistance.Text.ToString()}')";
+
+            int resposta = acessos.ExecuteNonQuery(varSql);
+
+            if (resposta > 0)
+            {
+                MySnackbar.MessageQueue?.Enqueue("Added Successfully");
+
+
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+        }
     }
 }
+

@@ -1,0 +1,476 @@
+{
+    "vfd": [
+        {
+            "size": "14 AWG",
+            "grndSize": "3 x 18 AWG",
+            "od": 0.571,
+            "weight": 202,
+            "bend": 6.9,
+            "amp75": 20,
+            "amp90": 25
+        },
+        {
+            "size": "12 AWG",
+            "grndSize": "3 x 16 AWG",
+            "od": 0.606,
+            "weight": 244,
+            "bend": 7.3,
+            "amp75": 25,
+            "amp90": 30
+        },
+        {
+            "size": "10 AWG",
+            "grndSize": "3 x 14 AWG",
+            "od": 0.657,
+            "weight": 329,
+            "bend": 7.9,
+            "amp75": 35,
+            "amp90": 40
+        },
+        {
+            "size": "8 AWG",
+            "grndSize": "3 x 14 AWG",
+            "od": 0.772,
+            "weight": 456,
+            "bend": 9.3,
+            "amp75": 50,
+            "amp90": 55
+        },
+        {
+            "size": "6 AWG",
+            "grndSize": "3 x 12 AWG",
+            "od": 0.883,
+            "weight": 624,
+            "bend": 10.6,
+            "amp75": 65,
+            "amp90": 75
+        },
+        {
+            "size": "4 AWG",
+            "grndSize": "3 x 12 AWG",
+            "od": 0.985,
+            "weight": 815,
+            "bend": 11.8,
+            "amp75": 85,
+            "amp90": 95
+        },
+        {
+            "size": "2 AWG",
+            "grndSize": "3 x 10 AWG",
+            "od": 1.106,
+            "weight": 1121,
+            "bend": 13.3,
+            "amp75": 115,
+            "amp90": 130
+        },
+        {
+            "size": "1 AWG",
+            "grndSize": "3 x 8 AWG",
+            "od": 1.272,
+            "weight": 1508,
+            "bend": 15.3,
+            "amp75": 130,
+            "amp90": 145
+        },
+        {
+            "size": "1/0 AWG",
+            "grndSize": "3 x 6 AWG",
+            "od": 1.38,
+            "weight": 1858,
+            "bend": 16.6,
+            "amp75": 150,
+            "amp90": 170
+        },
+        {
+            "size": "2/0 AWG",
+            "grndSize": "3 x 6 AWG",
+            "od": 1.471,
+            "weight": 2164,
+            "bend": 17.7,
+            "amp75": 175,
+            "amp90": 195
+        },
+        {
+            "size": "3/0 AWG",
+            "grndSize": "3 x 5 AWG",
+            "od": 1.579,
+            "weight": 2604,
+            "bend": 18.9,
+            "amp75": 200,
+            "amp90": 225
+        },
+        {
+            "size": "4/0 AWG",
+            "grndSize": "3 x 4 AWG",
+            "od": 1.736,
+            "weight": 3202,
+            "bend": 20.8,
+            "amp75": 230,
+            "amp90": 260
+        },
+        {
+            "size": "250 kcmil",
+            "grndSize": "3 x 2 AWG",
+            "od": 1.895,
+            "weight": 3995,
+            "bend": 22.7,
+            "amp75": 255,
+            "amp90": 290
+        },
+        {
+            "size": "500 kcmil",
+            "grndSize": "3 x 1 AWG",
+            "od": 2.379,
+            "weight": 6767,
+            "bend": 28.5,
+            "amp75": 380,
+            "amp90": 430
+        }
+    ],
+    "multi": [
+        {
+            "size": "8 AWG",
+            "grndSize": "1 x 10 AWG",
+            "od": 0.724,
+            "weight": 385,
+            "bend": 2.9,
+            "res75": 0.786,
+            "res90": 0.832374,
+            "rea": 0.052,
+            "amp75": 40,
+            "amp90": 44
+        },
+        {
+            "size": "6 AWG",
+            "grndSize": "1 x 8 AWG",
+            "od": 0.816,
+            "weight": 553,
+            "bend": 3.3,
+            "res75": 0.495,
+            "res90": 0.5242049999999999,
+            "rea": 0.051,
+            "amp75": 52,
+            "amp90": 60
+        },
+        {
+            "size": "4 AWG",
+            "grndSize": "1 x 8 AWG",
+            "od": 0.936,
+            "weight": 802,
+            "bend": 3.7,
+            "res75": 0.31,
+            "res90": 0.32828999999999997,
+            "rea": 0.048,
+            "amp75": 68,
+            "amp90": 76
+        },
+        {
+            "size": "2 AWG",
+            "grndSize": "1 x 6 AWG",
+            "od": 1.123,
+            "weight": 1214,
+            "bend": 5.6,
+            "res75": 0.195,
+            "res90": 0.206505,
+            "rea": 0.045,
+            "amp75": 92,
+            "amp90": 104
+        },
+        {
+            "size": "1 AWG",
+            "grndSize": "1 x 6 AWG",
+            "od": 1.279,
+            "weight": 1527,
+            "bend": 6.4,
+            "res75": 0.154,
+            "res90": 0.16308599999999998,
+            "rea": 0.046,
+            "amp75": 104,
+            "amp90": 116
+        },
+        {
+            "size": "1/0 AWG",
+            "grndSize": "1 x 6 AWG",
+            "od": 1.357,
+            "weight": 1828,
+            "bend": 6.8,
+            "res75": 0.122,
+            "res90": 0.12919799999999998,
+            "rea": 0.044,
+            "amp75": 120,
+            "amp90": 136
+        },
+        {
+            "size": "2/0 AWG",
+            "grndSize": "1 x 6 AWG",
+            "od": 1.464,
+            "weight": 2210,
+            "bend": 7.3,
+            "res75": 0.097,
+            "res90": 0.102723,
+            "rea": 0.043,
+            "amp75": 140,
+            "amp90": 156
+        },
+        {
+            "size": "4/0 AWG",
+            "grndSize": "1 x 4 AWG",
+            "od": 1.74,
+            "weight": 3369,
+            "bend": 8.7,
+            "res75": 0.062,
+            "res90": 0.065658,
+            "rea": 0.041,
+            "amp75": 184,
+            "amp90": 208
+        },
+        {
+            "size": "250 kcmil",
+            "grndSize": "1 x 4 AWG",
+            "od": 1.939,
+            "weight": 4006,
+            "bend": 9.7,
+            "res75": 0.053,
+            "res90": 0.056126999999999996,
+            "rea": 0.041,
+            "amp75": 204,
+            "amp90": 232
+        },
+        {
+            "size": "350 kcmil",
+            "grndSize": "1 x 3 AWG",
+            "od": 2.202,
+            "weight": 5420,
+            "bend": 13.2,
+            "res75": 0.039,
+            "res90": 0.041301,
+            "rea": 0.04,
+            "amp75": 248,
+            "amp90": 280
+        },
+        {
+            "size": "500 kcmil",
+            "grndSize": "1 x 2 AWG",
+            "od": 2.464,
+            "weight": 7386,
+            "bend": 14.8,
+            "res75": 0.029,
+            "res90": 0.030711,
+            "rea": 0.039,
+            "amp75": 304,
+            "amp90": 344
+        }
+    ],
+    "single": [
+        {
+            "size": "8 AWG",
+            "od": 0.278,
+            "weight": 77,
+            "bend": 1.1,
+            "res75": 0.786,
+            "res90": 0.832374,
+            "rea": 0.052,
+            "amp75": 50,
+            "amp90": 55
+        },
+        {
+            "size": "6 AWG",
+            "od": 0.342,
+            "weight": 121,
+            "bend": 1.3,
+            "res75": 0.495,
+            "res90": 0.5242049999999999,
+            "rea": 0.051,
+            "amp75": 65,
+            "amp90": 75
+        },
+        {
+            "size": "4 AWG",
+            "od": 0.39,
+            "weight": 176,
+            "bend": 1.5,
+            "res75": 0.31,
+            "res90": 0.32828999999999997,
+            "rea": 0.048,
+            "amp75": 85,
+            "amp90": 95
+        },
+        {
+            "size": "2 AWG",
+            "od": 0.455,
+            "weight": 262,
+            "bend": 1.8,
+            "res75": 0.195,
+            "res90": 0.206505,
+            "rea": 0.045,
+            "amp75": 115,
+            "amp90": 130
+        },
+        {
+            "size": "1 AWG",
+            "od": 0.536,
+            "weight": 346,
+            "bend": 2.1,
+            "res75": 0.154,
+            "res90": 0.16308599999999998,
+            "rea": 0.046,
+            "amp75": 130,
+            "amp90": 145
+        },
+        {
+            "size": "1/0 AWG",
+            "od": 0.576,
+            "weight": 421,
+            "bend": 2.3,
+            "res75": 0.122,
+            "res90": 0.12919799999999998,
+            "rea": 0.044,
+            "amp75": 150,
+            "amp90": 170
+        },
+        {
+            "size": "2/0 AWG",
+            "od": 0.622,
+            "weight": 516,
+            "bend": 2.4,
+            "res75": 0.097,
+            "res90": 0.102723,
+            "rea": 0.043,
+            "amp75": 175,
+            "amp90": 195
+        },
+        {
+            "size": "3/0 AWG",
+            "od": 0.663,
+            "weight": 631,
+            "bend": 2.6,
+            "res75": 0.078,
+            "res90": 0.082602,
+            "rea": 0.042,
+            "amp75": 200,
+            "amp90": 225
+        },
+        {
+            "size": "4/0 AWG",
+            "od": 0.728,
+            "weight": 780,
+            "bend": 2.9,
+            "res75": 0.062,
+            "res90": 0.065658,
+            "rea": 0.041,
+            "amp75": 230,
+            "amp90": 260
+        },
+        {
+            "size": "250 kcmil",
+            "od": 0.836,
+            "weight": 955,
+            "bend": 3.3,
+            "res75": 0.053,
+            "res90": 0.056126999999999996,
+            "rea": 0.041,
+            "amp75": 255,
+            "amp90": 290
+        },
+        {
+            "size": "350 kcmil",
+            "od": 0.939,
+            "weight": 1291,
+            "bend": 3.7,
+            "res75": 0.039,
+            "res90": 0.041301,
+            "rea": 0.04,
+            "amp75": 310,
+            "amp90": 350
+        },
+        {
+            "size": "500 kcmil",
+            "od": 1.062,
+            "weight": 1786,
+            "bend": 5.3,
+            "res75": 0.029,
+            "res90": 0.030711,
+            "rea": 0.039,
+            "amp75": 380,
+            "amp90": 430
+        }
+    ],
+    "grounding": [
+        {
+            "amperes": 15,
+            "copper": "14 AWG"
+        },
+        {
+            "amperes": 20,
+            "copper": "12 AWG"
+        },
+        {
+            "amperes": 60,
+            "copper": "10 AWG"
+        },
+        {
+            "amperes": 100,
+            "copper": "8 AWG"
+        },
+        {
+            "amperes": 200,
+            "copper": "6 AWG"
+        },
+        {
+            "amperes": 300,
+            "copper": "4 AWG"
+        },
+        {
+            "amperes": 400,
+            "copper": "3 AWG"
+        },
+        {
+            "amperes": 500,
+            "copper": "2 AWG"
+        },
+        {
+            "amperes": 600,
+            "copper": "1 AWG"
+        },
+        {
+            "amperes": 800,
+            "copper": "1/0 AWG"
+        },
+        {
+            "amperes": 1000,
+            "copper": "2/0 AWG"
+        },
+        {
+            "amperes": 1200,
+            "copper": "3/0 AWG"
+        },
+        {
+            "amperes": 1600,
+            "copper": "4/0 AWG"
+        },
+        {
+            "amperes": 2000,
+            "copper": "250 kcmil"
+        },
+        {
+            "amperes": 2500,
+            "copper": "350 kcmil"
+        },
+        {
+            "amperes": 3000,
+            "copper": "400 kcmil"
+        },
+        {
+            "amperes": 4000,
+            "copper": "500 kcmil"
+        },
+        {
+            "amperes": 5000,
+            "copper": "700 kcmil"
+        },
+        {
+            "amperes": 6000,
+            "copper": "800 kcmil"
+        }
+    ]
+}
