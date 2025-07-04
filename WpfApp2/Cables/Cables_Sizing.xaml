@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="1250" d:DesignWidth="1600">
     <Grid Background="White">
-        <Border BorderBrush="Black" BorderThickness="1" Margin="10,298,0,0" Height="436" VerticalAlignment="Top" HorizontalAlignment="Left" Width="464">
+        <Border BorderBrush="Black" BorderThickness="1" Margin="10,298,0,0" Height="620" VerticalAlignment="Top" HorizontalAlignment="Left" Width="464">
             <RichTextBox x:Name="richText" Margin="9,10,9,10" RenderTransformOrigin="0.5,0.5">
 
                 <FlowDocument>
@@ -40,8 +40,9 @@
         <TextBlock x:Name="lblPowerFactor_Copy" HorizontalAlignment="Left" Margin="387,165,0,0" TextWrapping="Wrap" Text="ºF" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
         <TextBlock HorizontalAlignment="Left" Margin="26,14,0,0" TextWrapping="Wrap" Text="Sizing by NEC" VerticalAlignment="Top"/>
         <Canvas VerticalAlignment="Top">
-            <Rectangle Height="724" Stroke="Black" VerticalAlignment="Center" Width="1097" HorizontalAlignment="Left" Canvas.Left="480" Canvas.Top="10"/>
-            <TextBox x:Name="txtUnderSection" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="778" Canvas.Top="660" VerticalAlignment="Center"/>
+            <Rectangle Height="852" Stroke="Black" VerticalAlignment="Top" Width="1097" HorizontalAlignment="Left" Canvas.Left="-2119" Canvas.Top="177"/>
+            <TextBox x:Name="txtDistance" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="1307" Canvas.Top="662" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtUnderSection" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="871" Canvas.Top="660" VerticalAlignment="Center"/>
 
 
 
@@ -50,7 +51,7 @@
 
 
             <TextBlock TextWrapping="Wrap" Text="Project" HorizontalAlignment="Left" Canvas.Left="502" Canvas.Top="51" VerticalAlignment="Top"/>
-            <ComboBox x:Name="cmbPlant" Width="120" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="82" VerticalAlignment="Top" SelectionChanged="cmbPlant_SelectionChanged"/>
+            <ComboBox x:Name="cmbPlant" Width="120" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="82" VerticalAlignment="Top"/>
             <DataGrid x:Name="gridCircuits"
           IsReadOnly="True"
           AutoGenerateColumns="False"
@@ -94,21 +95,26 @@
             </DataGrid>
 
             <ComboBox x:Name="cmbProjects" Width="120" SelectionChanged="cmbProjects_SelectionChanged" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="45" VerticalAlignment="Top"/>
-            <RadioButton x:Name="radLV" Content="Low Voltage" GroupName="voltageLoad" HorizontalAlignment="Left" Canvas.Left="712" Canvas.Top="51" VerticalAlignment="Top" Checked="radLV_Checked"/>
-            <RadioButton x:Name="radMV" Content="Medium Voltage" GroupName="voltageLoad" HorizontalAlignment="Left" Canvas.Left="712" Canvas.Top="81" VerticalAlignment="Top" Checked="radMV_Checked"/>
-            <TextBlock TextWrapping="Wrap" Text="Tag" Canvas.Left="507" Canvas.Top="662" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="2.678,0.721"/>
+            <TextBlock TextWrapping="Wrap" Text="Tag" Canvas.Left="600" Canvas.Top="662" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="2.678,0.721"/>
             <TextBlock TextWrapping="Wrap" Text="Cable" Canvas.Left="496" Canvas.Top="696" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBlock TextWrapping="Wrap" Text="Under Section" Canvas.Left="692" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtTagCircuit" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="541" Canvas.Top="656" VerticalAlignment="Top"/>
-            <TextBlock TextWrapping="Wrap" Text="Above Section" Canvas.Left="923" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBlock TextWrapping="Wrap" Text="Distance" Canvas.Left="1148" Canvas.Top="668" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="Under Section" Canvas.Left="785" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtTagCircuit" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left" Canvas.Left="634" Canvas.Top="656" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="Above Section" Canvas.Left="1016" Canvas.Top="665" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="Distance" Canvas.Left="1241" Canvas.Top="668" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="id" Canvas.Left="512" Canvas.Top="662" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Text="Feeder Conn." Canvas.Left="496" Canvas.Top="735" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBlock TextWrapping="Wrap" Text="Load Conn." Canvas.Left="506" Canvas.Top="776" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtFeederConn" TextWrapping="Wrap" Width="97" HorizontalAlignment="Left" Canvas.Left="578" Canvas.Top="732" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtLoadConn" TextWrapping="Wrap" Width="97" Canvas.Left="578" Canvas.Top="767" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblFeederConnPoints" TextWrapping="Wrap" Text="-" Canvas.Left="578" Canvas.Top="806" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFA4A4A4"/>
+            <TextBlock x:Name="lblLoadConnPoints" TextWrapping="Wrap" Text="-" Canvas.Left="578" Canvas.Top="836" RenderTransformOrigin="2.678,0.721" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFA4A4A4"/>
         </Canvas>
-        <TextBlock HorizontalAlignment="Left" Margin="502,22,0,0" TextWrapping="Wrap" Text="Associate Load" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lblSelectedId" HorizontalAlignment="Left" Margin="539,662,0,0" TextWrapping="Wrap" Text="-" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtAboveSection" HorizontalAlignment="Left" Margin="1103,662,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="502,22,0,0" TextWrapping="Wrap" Text="Associate Load Voltage" VerticalAlignment="Top"/>
         <TextBlock x:Name="lblSizedCable" HorizontalAlignment="Left" Margin="26,246,0,0" TextWrapping="Wrap" Text="-" VerticalAlignment="Top" RenderTransformOrigin="-42.361,3.112"/>
-        <TextBox x:Name="txtAboveSection" HorizontalAlignment="Left" Margin="1010,662,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtDistance" HorizontalAlignment="Left" Margin="1214,662,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="1486,658,0,0" VerticalAlignment="Top" Click="btnSave_Click"/>
-        <TextBox x:Name="txtSelectedCable" HorizontalAlignment="Left" Margin="541,692,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="228"/>
+        <TextBox x:Name="txtSelectedCable" HorizontalAlignment="Left" Margin="541,692,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211"/>
 
         <materialDesign:Snackbar x:Name="MySnackbar"
                          VerticalAlignment="Top"
@@ -139,6 +145,9 @@
         <TextBlock x:Name="lblEff" HorizontalAlignment="Left" Margin="270,132,0,0" TextWrapping="Wrap" Text="Efficiency" VerticalAlignment="Top"/>
         <TextBox x:Name="txtEff" HorizontalAlignment="Left" Margin="338,126,0,0" TextWrapping="Wrap" Text="95" VerticalAlignment="Top" Width="40"/>
         <TextBlock x:Name="lblUnitEfficiency" HorizontalAlignment="Left" Margin="388,132,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" RenderTransformOrigin="0.248,3.655"/>
+        <Button x:Name="btnSeachLowVoltage" Content="Search" HorizontalAlignment="Left" Margin="694,46,0,0" VerticalAlignment="Top" Width="75" FontSize="12" Height="23" Click="btnSeachLowVoltage_Click"/>
+        <Button x:Name="btnAddConnPoints" Content="+" HorizontalAlignment="Left" Margin="694,756,0,0" VerticalAlignment="Top" BorderThickness="0,0,0,0" Width="42" Click="Button_Click_1"/>
+        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="1486,704,0,0" VerticalAlignment="Top" Background="#FFB58BFF" Click="btnClear_Click"/>
 
     </Grid>
 </UserControl>

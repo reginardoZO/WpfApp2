@@ -65,6 +65,32 @@
                 </Button>
 
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="8,4"
+                        materialDesign:ButtonAssist.CornerRadius="8"
+                        Click="MenuButton_Click"
+                        Tag="ED8"
+                        HorizontalContentAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="RulerSquareCompass" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="ED8" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="8,4"
+                        materialDesign:ButtonAssist.CornerRadius="8"
+                        Click="MenuButton_Click"
+                        Tag="Neher"
+                        HorizontalContentAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="MathCos" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Neher" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
          Margin="8,4"
          materialDesign:ButtonAssist.CornerRadius="8"
          Click="MenuButton_Click"

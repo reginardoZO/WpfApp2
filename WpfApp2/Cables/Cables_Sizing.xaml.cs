@@ -44,6 +44,7 @@ namespace WpfApp2.Cables
 
             cmbType.Items.Add("Motor");
             cmbType.Items.Add("Heater");
+            cmbType.Items.Add("Transformer");
             cmbType.Items.Add("Feeder");
             cmbLevel.Items.Add("380");
             cmbLevel.Items.Add("440");
@@ -208,6 +209,10 @@ namespace WpfApp2.Cables
             richText.Document = doc;
 
 
+            txtDistance.Text = txtDistanceSizer.Text;
+
+            txtSelectedCable.Text = dadosSaida.sizedCableCurrent;
+
         }
 
         public class inputData
@@ -263,16 +268,18 @@ namespace WpfApp2.Cables
             else if (cmbType.SelectedItem == "Heater")
             {
                 txtEff.Visibility = Visibility.Collapsed;
+                txtEff.Text = "100"; // Default efficiency for heaters
                 lblEff.Visibility = Visibility.Collapsed;
                 lblUnitEfficiency.Visibility = Visibility.Collapsed;
                 txtPowerFactor.Visibility = Visibility.Collapsed;
+                txtPower.Text = "1";
                 lblPowerFactor.Visibility = Visibility.Collapsed;
                 cmbUnit.Items.Clear();
                 txtLevel.Text = "Power";
                 cmbUnit.Items.Add("kW");
                 cmbUnit.SelectedIndex = 0;
             }
-            else
+            else if (cmbType.SelectedItem == "Feeder")
             {
                 txtEff.Visibility = Visibility.Collapsed;
                 lblEff.Visibility = Visibility.Collapsed;
@@ -283,6 +290,21 @@ namespace WpfApp2.Cables
                 txtLevel.Text = "Current";
                 cmbUnit.Items.Add("A");
                 cmbUnit.SelectedIndex = 0;
+            }
+            else
+            {
+                txtEff.Visibility = Visibility.Collapsed;
+                txtEff.Text = "100"; // Default efficiency for heaters
+                lblEff.Visibility = Visibility.Collapsed;
+                lblUnitEfficiency.Visibility = Visibility.Collapsed;
+                txtPowerFactor.Visibility = Visibility.Collapsed;
+                txtPower.Text = "1";
+                lblPowerFactor.Visibility = Visibility.Collapsed;
+                cmbUnit.Items.Clear();
+                txtLevel.Text = "Power";
+                cmbUnit.Items.Add("kVA");
+                cmbUnit.SelectedIndex = 0;
+
             }
         }
 
@@ -385,75 +407,6 @@ namespace WpfApp2.Cables
 
         }
 
-        private void radLV_Checked(object sender, RoutedEventArgs e)
-        {
-            if (radLV.IsChecked == true)
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
-
-            }
-            else
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
-            }
-        }
-
-        public async void populateGrid(string project, string plant, string voltage)
-        {
-            //find project code
-            string varSql = $"Select code from projects where Name = '{project}'";
-
-            DataTable oneRowReturn = await Task.Run(() =>
-            {
-                return acessos.ExecuteQuery(varSql);
-            });
-
-            project = oneRowReturn.Rows[0]["code"].ToString();
-
-
-            varSql = "";
-            if (voltage == "LV")
-            {
-                varSql = $"Select id, frompanel, fromUnit, Loadtype, Power, powerUnit, tag, descr from lvLoads where project = '{project}' and plant = '{plant}'";
-            }
-            else
-            {
-                varSql = $"Select id, frompanel, fromUnit, Loadtype, Power, powerUnit, tag, descr from mvLoads where project = '{project}' and plant = '{plant}'";
-            }
-
-            DataTable retorno = await Task.Run(() =>
-            {
-                return acessos.ExecuteQuery(varSql);
-            });
-
-            gridCircuits.ItemsSource = retorno.DefaultView;
-        }
-
-        private void radMV_Checked(object sender, RoutedEventArgs e)
-        {
-            if (radLV.IsChecked == true)
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
-
-            }
-            else
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
-            }
-        }
-
-        private void cmbPlant_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (radLV.IsChecked == true)
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "LV");
-
-            }
-            else
-            {
-                populateGrid(cmbProjects.SelectedValue.ToString(), cmbPlant.SelectedValue.ToString(), "MV");
-            }
-        }
         int selectedId = 0;
         private void gridCircuits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -463,23 +416,23 @@ namespace WpfApp2.Cables
             {
                 DataRowView selectedRow = (DataRowView)gridCircuits.SelectedItem;
                 selectedId = Convert.ToInt32(selectedRow["id"]);
-
-                cmbType.Text = selectedRow["loadType"].ToString();
+                try
+                {
+                    cmbType.Text = selectedRow["loadType"].ToString();
+                }
+                catch { }
                 txtPower.Text = selectedRow["power"].ToString();
                 cmbUnit.Text = selectedRow["powerUnit"].ToString();
-
+                lblSelectedId.Text = selectedRow["id"].ToString();
+                
 
             }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            string loadLevel = "MV";
-            if (radLV.IsChecked == true)
-            {
-                loadLevel = "LV";
-            }
-            string varSql = $"Insert into circuits (loadLevel, loadId, tag, cable, underSection, aboveSection, distance) values ('{loadLevel}', {selectedId}, '{txtTagCircuit.Text.ToString()}', '{txtSelectedCable.Text.ToString()}', '{txtUnderSection.Text.ToString()}', '{txtAboveSection.Text.ToString()}', '{txtDistance.Text.ToString()}')";
+
+            string varSql = $"Insert into circuits (loadLevel, loadId, tag, cable, underSection, aboveSection, distance, feederConn, loadConn) values ('LV', {selectedId}, '{txtTagCircuit.Text.ToString()}', '{txtSelectedCable.Text.ToString()}', '{txtUnderSection.Text.ToString()}', '{txtAboveSection.Text.ToString()}', '{txtDistance.Text.ToString()}','{feederConnPoints}', '{loadoConnPoints}')";
 
             int resposta = acessos.ExecuteNonQuery(varSql);
 
@@ -493,6 +446,82 @@ namespace WpfApp2.Cables
             {
                 MessageBox.Show("Error");
             }
+        }
+
+        private async void btnSeachLowVoltage_Click(object sender, RoutedEventArgs e)
+        {
+            //find project code
+            string varSql = $"Select code from projects where Name = '{cmbProjects.SelectedValue}'";
+
+            DataTable oneRowReturn = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+            string project = oneRowReturn.Rows[0]["code"].ToString();
+
+            string plant = cmbPlant.SelectedValue.ToString();
+
+            varSql = $@"
+                                SELECT id,
+                                fromPanel,
+                                fromUnit,
+                                power,
+                                powerUnit,
+                                tag,
+                                descr,
+                                'MV' AS voltageLevel
+                            FROM
+                                mvLoads
+                            WHERE
+                                project = '{project}' AND
+                                plant = '{plant}'
+
+                            UNION ALL
+
+                            SELECT id,
+                                fromPanel,
+                                fromUnit,
+                                power,
+                                powerUnit,
+                                tag,
+                                descr,
+                                'LV' AS voltageLevel
+                            FROM
+                                lvLoads
+                            WHERE
+                                project = '{project}' AND
+                                plant = '{plant}';
+                            ";
+
+
+
+            DataTable retorno = await Task.Run(() =>
+            {
+                return acessos.ExecuteQuery(varSql);
+            });
+
+            gridCircuits.ItemsSource = retorno.DefaultView;
+        }
+
+        public string feederConnPoints;
+        public string loadoConnPoints;
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            feederConnPoints = feederConnPoints + txtFeederConn.Text + "|";
+            loadoConnPoints = loadoConnPoints + txtLoadConn.Text + "|";
+
+            lblFeederConnPoints.Text = feederConnPoints;
+            lblLoadConnPoints.Text = loadoConnPoints;
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            lblSelectedId.Text = null;
+
+            txtTagCircuit.Text = null;
         }
     }
 }

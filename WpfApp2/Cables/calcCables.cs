@@ -25,6 +25,11 @@ namespace WpfApp2.Cables
                 return (dadosEntrada.power * 1000 / (Math.Sqrt(3) * dadosEntrada.voltageLevel));
 
             }
+            else if(dadosEntrada.loadType == "Transformer")
+            {
+
+                    return ((dadosEntrada.power * 1000) / (Math.Sqrt(3) * dadosEntrada.voltageLevel));
+            }
             else
             {
 
@@ -38,7 +43,6 @@ namespace WpfApp2.Cables
                     return ((dadosEntrada.power * 1000) / (Math.Sqrt(3) * dadosEntrada.voltageLevel * dadosEntrada.powerFactor * dadosEntrada.efficiency / 100));
                 }
             }
-
 
         }
 

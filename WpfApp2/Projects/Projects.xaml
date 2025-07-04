@@ -141,9 +141,9 @@
                     <TextBlock HorizontalAlignment="Left" Margin="419,235,0,0" TextWrapping="Wrap" Text="From Plant" VerticalAlignment="Top" TextAlignment="Right"/>
                     <ComboBox x:Name="cmbFromPlantTrafo" HorizontalAlignment="Left" Margin="504,226,0,0" VerticalAlignment="Top" Width="146" SelectionChanged="cmbFromPlantTrafo_SelectionChanged" TabIndex="56"/>
                     <TextBlock HorizontalAlignment="Left" Margin="417,268,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top" TextAlignment="Right"/>
-                    
+
                     <ComboBox x:Name="cmbFromPanelTrafo" HorizontalAlignment="Left" Margin="504,260,0,0" Width="197" VerticalAlignment="Top" SelectedValuePath="Content" TabIndex="57"/>
-                    
+
                     <Button x:Name="btnAddPanels_Copy" Content="Add" HorizontalAlignment="Left" Margin="726,406,0,0" VerticalAlignment="Top" Height="26" Width="52" FontSize="10" BorderThickness="0,0,0,0" Click="btnAddPanels_Copy_Click" TabIndex="58"/>
                     <TextBlock HorizontalAlignment="Left" Margin="431,338,0,0" TextWrapping="Wrap" Text="To Plant" VerticalAlignment="Top" TextAlignment="Right" RenderTransformOrigin="0.504,0.111"/>
                     <TextBlock HorizontalAlignment="Left" Margin="430,372,0,0" TextWrapping="Wrap" Text="To Panel" VerticalAlignment="Top" TextAlignment="Right"/>
@@ -188,8 +188,8 @@
                             <DataGridTextColumn Header="Description" Binding="{Binding desc}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    
-                    
+
+
                     <DataGrid x:Name="gridTrafos" IsReadOnly="True"
           Margin="795,53,10,0"
           AutoGenerateColumns="False"
@@ -256,7 +256,7 @@
                     <CheckBox x:Name="chkCTWiring" Content="CT WIRING" HorizontalAlignment="Left" Margin="72,359,0,0" VerticalAlignment="Top"/>
                     <CheckBox x:Name="chkExciterControlPower" Content="EXCITER CONTROL POWER" HorizontalAlignment="Left" Margin="72,383,0,0" VerticalAlignment="Top"/>
                     <CheckBox x:Name="chkSpeedSwitchWiring" Content="SPEED SWITCH WIRING" HorizontalAlignment="Left" Margin="72,409,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="chkTerminalBoxHeaterWiring" Content="TERMINAL BOX SPACE HEATER WIRING" HorizontalAlignment="Left" Margin="72,433,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkTerminalBoxHeaterWiring" Content="TERMINAL BOX SPACE HEATER WIRING" HorizontalAlignment="Left" Margin="72,433,0,0" VerticalAlignment="Top" IsChecked="True" IsEnabled="False"/>
                     <Rectangle HorizontalAlignment="Left" Height="460" Margin="526,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="489"/>
                     <TextBox x:Name="txtLVTag" HorizontalAlignment="Left" Margin="620,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TabIndex="75"/>
                     <TextBlock HorizontalAlignment="Left" Margin="745,66,0,0" TextWrapping="Wrap" Text="Low Voltage" VerticalAlignment="Top" Foreground="#FF673AB7"/>
@@ -345,6 +345,7 @@
                             <DataGridTextColumn Header="Level" Binding="{Binding Level}" Width="80" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    <CheckBox x:Name="chkMotorSpaceHeater" Content="120V MOTOR SPACE HEATER" HorizontalAlignment="Left" Margin="72,456,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>

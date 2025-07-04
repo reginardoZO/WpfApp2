@@ -532,7 +532,7 @@ namespace WpfApp2.Projects
             string sql = $@"
 INSERT INTO mvLoads 
 (project, plant, fromPanel, fromUnit, power, powerUnit, descr, dateRegister, 
- selPower, selFiber, ctWiring, exciter, speed, terminal, tag)
+ selPower, selFiber, ctWiring, exciter, speed, terminal, motorHeater, tag)
 VALUES (
     '{txtSelectedProject.Text}',
     '{cmbPlantsLoad.SelectedValue?.ToString()}',
@@ -547,7 +547,7 @@ VALUES (
     {(chkCTWiring.IsChecked == true ? 1 : 0)},
     {(chkExciterControlPower.IsChecked == true ? 1 : 0)},
     {(chkSpeedSwitchWiring.IsChecked == true ? 1 : 0)},
-    {(chkTerminalBoxHeaterWiring.IsChecked == true ? 1 : 0)}, '{txtTagMV.Text}'
+    {(chkTerminalBoxHeaterWiring.IsChecked == true ? 1 : 0)}, {(chkMotorSpaceHeater.IsChecked == true ? 1 : 0)}, '{txtTagMV.Text}'
 )";
 
             int rowsAffected = acessos.ExecuteNonQuery(sql);
