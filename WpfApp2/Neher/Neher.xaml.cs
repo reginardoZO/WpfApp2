@@ -254,7 +254,7 @@ namespace WpfApp2.Neher
         {
             double TC = cable.TC;
             double T_amb = cable.soilTemp;
-            double R_ac = cable.Rac_m; // Já é Rdc corrigido com Yc
+            double R_ac = cable.Rac;
             double R_ins = cable.R_Ins;
             double R_ext = cable.R_ext;
             double Wd = cable.Wd;
@@ -264,8 +264,10 @@ namespace WpfApp2.Neher
 
             while (I < 2000)
             {
-                double Pj = I * I * R_ac; // ✅ CORRETO AGORA
-                double deltaT = Wd * R_ins + Pj * (R_ins + R_ext);
+                double length_ft = 1000.0; // padrão NEC/ETAP
+
+                double Pj = I * I * R_ac * length_ft;
+                double deltaT = Pj * (R_ins + R_ext);
                 double T_calc = T_amb + deltaT;
 
                 if (T_calc > TC)
