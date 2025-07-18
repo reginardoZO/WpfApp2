@@ -15,6 +15,7 @@
     <None Remove="Cables\cablesSpecs.json" />
     <None Remove="database\cables.json" />
     <None Remove="database\conduitsSizes.json" />
+    <None Remove="installation_details.png" />
     <None Remove="Projects\add.png" />
   </ItemGroup>
 
@@ -48,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="installation_details.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Projects\add.png" />
   </ItemGroup>
 

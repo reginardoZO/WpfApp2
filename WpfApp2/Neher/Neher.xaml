@@ -5,32 +5,140 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp2.Neher"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000
+             ">
     <Grid Background="White">
         <Label Content="Level" HorizontalAlignment="Left" Margin="28,30,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="comboLevel" HorizontalAlignment="Left" Margin="68,30,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboLevel_SelectionChanged">
-            <ComboBoxItem/>
+        <TextBox x:Name="txttrash" HorizontalAlignment="Left" Margin="380,131,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Label Content="h" HorizontalAlignment="Left" Margin="232,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
+        <TextBox x:Name="txtRhoSoil" HorizontalAlignment="Left" Margin="271,31,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="42"/>
+        <Label Content="ºC.cm/W" HorizontalAlignment="Left" Margin="327,33,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
+        <Label Content="ρs" HorizontalAlignment="Left" Margin="237,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
+        <TextBox x:Name="txtH" HorizontalAlignment="Left" Margin="271,73,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="33"/>
+        <Label Content="in" HorizontalAlignment="Left" Margin="327,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="425,175,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBox x:Name="txtVoltageLevel" HorizontalAlignment="Left" Margin="83,29,0,0" TextWrapping="Wrap" Text="0.48" VerticalAlignment="Top" Width="41"/>
+        <Label Content="kV" HorizontalAlignment="Left" Margin="129,29,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.132,5.328"/>
+        <ComboBox x:Name="cmbCables" HorizontalAlignment="Left" Margin="85,62,0,0" VerticalAlignment="Top" Width="65"/>
+        <Label Content="Cable" HorizontalAlignment="Left" Margin="28,63,0,0" VerticalAlignment="Top"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="164,58,0,0" VerticalAlignment="Top" Width="20" Click="Button_Click_1"/>
+        <Label Content="TC" HorizontalAlignment="Left" Margin="28,98,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbTemp" HorizontalAlignment="Left" Margin="90,97,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label Content="Soil Temp." HorizontalAlignment="Left" Margin="26,139,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtSoilTemp" HorizontalAlignment="Left" Margin="95,139,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="35"/>
+        <Label Content="ºC" HorizontalAlignment="Left" Margin="135,140,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.132,5.328"/>
+        <Label Content="Cond.:" HorizontalAlignment="Left" Margin="28,184,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbConduits" HorizontalAlignment="Left" Margin="90,183,0,0" VerticalAlignment="Top" Width="60"/>
+
+        <UniformGrid x:Name="InputGrid"
+             Width="200"
+             Height="200"
+             Margin="18,225,0,0"
+             HorizontalAlignment="Left"
+             VerticalAlignment="Top"
+             Rows="10"
+             Columns="10"
+             Background="LightGray"/>
+        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="239,225,0,0" VerticalAlignment="Top" Click="btnClear_Click"/>
+        <Label Content="Conductor rated Temp." HorizontalAlignment="Left" Margin="543,96,0,0" VerticalAlignment="Top"/>
+        <Label Content="ºC" HorizontalAlignment="Left" Margin="760,98,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.971,0.417"/>
+        <Label Content="Maximum allowable Temp." HorizontalAlignment="Left" Margin="521,139,0,0" VerticalAlignment="Top"/>
+        <Label Content="ºC" HorizontalAlignment="Left" Margin="760,139,0,0" VerticalAlignment="Top"/>
+        <Label Content="Base Amb. Temp." HorizontalAlignment="Left" Margin="801,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.877,0.584"/>
+        <TextBox x:Name="txtTa" HorizontalAlignment="Left" Margin="911,100,0,0" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="31" RenderTransformOrigin="0.516,0.8"/>
+        <Label Content="ºC" HorizontalAlignment="Left" Margin="959,100,0,0" VerticalAlignment="Top"/>
+        <Label Content="Soil Temp." HorizontalAlignment="Left" Margin="837,139,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtTalinha" HorizontalAlignment="Left" Margin="911,138,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="31"/>
+        <Label Content="ºC" HorizontalAlignment="Left" Margin="959,140,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbVoltageLevel" HorizontalAlignment="Left" Margin="684,50,0,0" VerticalAlignment="Top" Width="102" SelectionChanged="cmbVoltageLevel_SelectionChanged">
+            <ComboBoxItem Content="0-2000V"/>
+            <ComboBoxItem Content="2001-5000V"/>
+            <ComboBoxItem Content="5001-35000V"/>
         </ComboBox>
-        <Label Content="Cable" HorizontalAlignment="Left" Margin="25,68,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbCable" HorizontalAlignment="Left" Margin="68,67,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbCable_SelectionChanged"/>
-        <TextBox x:Name="txttrash" HorizontalAlignment="Left" Margin="317,42,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Conduit" HorizontalAlignment="Left" Margin="20,109,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbConduit" HorizontalAlignment="Left" Margin="103,109,0,0" VerticalAlignment="Top" Width="85" SelectionChanged="cmbConduit_SelectionChanged"/>
-        <Label Content="h" HorizontalAlignment="Left" Margin="98,201,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtPs" HorizontalAlignment="Left" Margin="137,158,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="42"/>
-        <Label Content="ºC.m/W" HorizontalAlignment="Left" Margin="193,159,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
-        <Label Content="ρs" HorizontalAlignment="Left" Margin="103,158,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtProf" HorizontalAlignment="Left" Margin="137,200,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="33"/>
-        <Label Content="m" HorizontalAlignment="Left" Margin="193,201,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
-        <Label Content="Dist. Center/Center" HorizontalAlignment="Left" Margin="10,244,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtDistCenterCenter" HorizontalAlignment="Left" Margin="137,243,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="42"/>
-        <Label x:Name="txtQtEletrodutos" Content="Qt. Cond." HorizontalAlignment="Left" Margin="55,286,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtqtCond" HorizontalAlignment="Left" Margin="137,285,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="42"/>
-        <Label x:Name="txtQtEletrodutos_Copy" Content="Position" HorizontalAlignment="Left" Margin="59,326,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtPosition" HorizontalAlignment="Left" Margin="137,325,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="42"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="229,368,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Label x:Name="txtQtEletrodutos_Copy1" Content="Amb. Temp." HorizontalAlignment="Left" Margin="59,372,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtAmbTemp" HorizontalAlignment="Left" Margin="137,371,0,0" TextWrapping="Wrap" Text="40" VerticalAlignment="Top" Width="42"/>
+        <ComboBox x:Name="cmbTc" HorizontalAlignment="Left" Margin="698,97,0,0" VerticalAlignment="Top" Width="46"/>
+        <ComboBox x:Name="cmbTclinha" HorizontalAlignment="Left" Margin="698,135,0,0" VerticalAlignment="Top" Width="47"/>
+        <Label Content="Rho" HorizontalAlignment="Left" Margin="637,180,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbRho" HorizontalAlignment="Left" Margin="698,175,0,0" VerticalAlignment="Top" Width="83">
+            <ComboBoxItem Content="60"/>
+            <ComboBoxItem Content="90"/>
+            <ComboBoxItem Content="120"/>
+            <ComboBoxItem Content="140"/>
+            <ComboBoxItem Content="160"/>
+            <ComboBoxItem Content="180"/>
+            <ComboBoxItem Content="200"/>
+            <ComboBoxItem Content="250"/>
+        </ComboBox>
+        <Button Content="Imax" HorizontalAlignment="Left" Margin="895,375,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        <Label Content="Size Aprox" HorizontalAlignment="Left" Margin="602,217,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbSizeAprox" HorizontalAlignment="Left" Margin="689,216,0,0" VerticalAlignment="Top" Width="92">
+            <ComboBoxItem Content="#12-#1"/>
+            <ComboBoxItem Content="1/0-4/0"/>
+            <ComboBoxItem Content="250-1000"/>
+
+        </ComboBox>
+        <Label Content="Num Ckt" HorizontalAlignment="Left" Margin="602,260,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbNumCkt" HorizontalAlignment="Left" Margin="689,259,0,0" VerticalAlignment="Top" Width="92">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="6"/>
+            <ComboBoxItem Content="9+"/>
+        </ComboBox>
+        <Label Content="Cols" HorizontalAlignment="Left" Margin="621,335,0,0" VerticalAlignment="Top"/>
+        <Label Content="Rows" HorizontalAlignment="Left" Margin="621,298,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbRows" HorizontalAlignment="Left" Margin="689,297,0,0" VerticalAlignment="Top" Width="92">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="4"/>
+        </ComboBox>
+        <ComboBox x:Name="cmbCols" HorizontalAlignment="Left" Margin="689,334,0,0" VerticalAlignment="Top" Width="92">
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="4"/>
+            <ComboBoxItem Content="5"/>
+            <ComboBoxItem Content="6"/>
+            <ComboBoxItem Content="7"/>
+            <ComboBoxItem Content="8"/>
+            <ComboBoxItem Content="9"/>
+            <ComboBoxItem Content="10"/>
+            <ComboBoxItem Content="11"/>
+            <ComboBoxItem Content="12"/>
+            <ComboBoxItem Content="13"/>
+            <ComboBoxItem Content="14"/>
+            <ComboBoxItem Content="15"/>
+        </ComboBox>
+        <Label Content="Cable Size" HorizontalAlignment="Left" Margin="598,379,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbCableSizeIEE" HorizontalAlignment="Left" Margin="689,378,0,0" VerticalAlignment="Top" Width="92">
+            <ComboBoxItem Content="8"/>
+            <ComboBoxItem Content="6"/>
+            <ComboBoxItem Content="4"/>
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="1"/>
+            <ComboBoxItem Content="1/0"/>
+            <ComboBoxItem Content="2/0"/>
+            <ComboBoxItem Content="3/0"/>
+            <ComboBoxItem Content="4/0"/>
+            <ComboBoxItem Content="250"/>
+            <ComboBoxItem Content="350"/>
+            <ComboBoxItem Content="500"/>
+            <ComboBoxItem Content="750"/>
+            <ComboBoxItem Content="1000"/>
+        </ComboBox>
+        <Label Content="Voltage" HorizontalAlignment="Left" Margin="618,50,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblIBuscada" Content="-" HorizontalAlignment="Left" Margin="886,240,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblICalculada" Content="-" HorizontalAlignment="Left" Margin="886,272,0,0" VerticalAlignment="Top"/>
+        <RichTextBox x:Name="rich1" Margin="239,279,0,25" HorizontalAlignment="Left" Width="307">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Label Content="LF" HorizontalAlignment="Left" Margin="232,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
+        <TextBox x:Name="txtLF" HorizontalAlignment="Left" Margin="271,112,0,0" TextWrapping="Wrap" Text="99" VerticalAlignment="Top" Width="42"/>
+        <Label Content="%" HorizontalAlignment="Left" Margin="327,114,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
+
 
 
 

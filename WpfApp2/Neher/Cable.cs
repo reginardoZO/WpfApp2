@@ -6,24 +6,73 @@ using System.Threading.Tasks;
 
 namespace WpfApp2.Neher
 {
-    internal class Cable
+    public class Cable
     {
-        public string columnToSearch {  get; set; }
-        public string type { get; set; }
+
+        public double LF { get; set; }
+        public double Rdc_TC_ft { get;set; }
+        public double Rdc_TC { get; set; }
+
         public double Rdc_25C { get; set; }
 
-        public string size {  get; set; }
+        public double Xs {  get; set; }
 
-        public double diamCond { get; set; }
+        public double Y_skin {  get; set; }
 
-        public double OD { get; set; }
+        public double TC { get; set; }
 
-        public double sizeInsul { get; set; }
+        public string size { get; set; }
 
-        public double conduitDod { get; set; }
+        public double d_c { get; set; }
 
-        public double conduitWall { get; set; }
+        public double d_i { get; set; }
 
-        
+        public double voltage { get; set; }
+
+        public double Y_prox { get;set; }
+
+        public double Y_c { get;set; }
+
+        public double Rac { get; set; }
+
+        public double Rac_m { get; set; }
+
+
+        public double Wd { get; set; }
+
+        public double soilTemp { get; set; }
+        public double R_air { get; set; }
+
+        public double R_duct { get; set; }
+
+        public double D_o_duct { get; set; }
+
+        public double D_i_duct { get; set; }
+
+        public double conduitSize { get; set; }
+
+        public double R_earth { get; set; }
+
+        public double rho_soil { get; set; }
+
+        public double H { get; set; }
+
+        public double R_ext { get;set; }
+
+        public double deltaTD { get; set; }
+
+        public double R_Ins { get; set; }
+
+        public double RCA { get; set; }
+
+        public double I { get; set; }
+
+        public double Y_sh { get; set; }
+
+        public double R_sh { get; set; }
+
+        public double F_sh { get; set; }
+
+
     }
 }

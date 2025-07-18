@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf; // Adicione esta linha para usar o DrawerHost
+using WpfApp2.CableNEC;
 using WpfApp2.Cables;
 using WpfApp2.Conduits; // Certifique-se de que o namespace esteja correto
 using WpfApp2.Neher;
@@ -66,6 +67,10 @@ namespace WpfApp2
                     case "Neher":
                         MainContentHost.Content = new Neher.Neher();
                         TitleTextBlock.Text = "Neher";
+                        break;
+                    case "cableNec":
+                        MainContentHost.Content = new CableNEC.cablesNec();
+                        TitleTextBlock.Text = "Cables Nec";
                         break;
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }
