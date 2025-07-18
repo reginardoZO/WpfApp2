@@ -266,7 +266,7 @@ namespace WpfApp2.Neher
             {
                 double length_ft = 1000.0; // padrão NEC/ETAP
 
-                double Pj = I * I * R_ac * length_ft;
+                double Pj = I * I * R_ac;
                 double deltaT = Pj * (R_ins + R_ext);
                 double T_calc = T_amb + deltaT;
 
