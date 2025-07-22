@@ -53,7 +53,7 @@
                     </StackPanel>
                 </Button>
                 
-                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                <!--<Button Style="{StaticResource MaterialDesignFlatButton}"
                         Margin="8,4"
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="MenuButton_Click"
@@ -63,7 +63,7 @@
                         <materialDesign:PackIcon Kind="Calculator" Width="24" Height="24" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="Cable" VerticalAlignment="Center"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
                 
 
                 <Button Style="{StaticResource MaterialDesignFlatButton}"

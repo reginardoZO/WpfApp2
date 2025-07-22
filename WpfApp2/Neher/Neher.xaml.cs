@@ -14,6 +14,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
 using System.Security.Cryptography;
+using System.IO;
+using static MaterialDesignThemes.Wpf.Theme;
+using System.Diagnostics;
+using MaterialDesignThemes.Wpf;
 
 namespace WpfApp2.Neher
 {
@@ -33,10 +37,9 @@ namespace WpfApp2.Neher
         {
 
             InitializeComponent();
-
             CriarGradeNumerica(8, 8);
 
-
+            MySnackbar.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
         }
 
         private void CriarGradeNumerica(int rows, int columns)
@@ -46,7 +49,7 @@ namespace WpfApp2.Neher
 
             for (int i = 0; i < rows * columns; i++)
             {
-                var textBox = new TextBox
+                var textBox = new System.Windows.Controls.TextBox
                 {
                     Margin = new Thickness(0),
                     TextAlignment = TextAlignment.Center,
@@ -80,102 +83,186 @@ namespace WpfApp2.Neher
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //load factor
-            cable.LF = Convert.ToDouble(txtLF.Text) / 100;
 
-            cable.voltage = Convert.ToDouble(txtVoltageLevel.Text);
+            double menorCorrente = double.MaxValue;
 
-            cable.soilTemp = Convert.ToDouble(txtSoilTemp.Text);
+
+            string[,] matriz = ObterValoresPreenchidosDoGrid();
+
+
+
+            List<(int row, int col, double size)> conduitsToCalculate = new();
+
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                for (int j = 0; j < matriz.GetLength(1); j++)
+                {
+                    if (!string.IsNullOrWhiteSpace(matriz[i, j]))
+                    {
+                        string clean = new string(matriz[i, j].Where(c => char.IsDigit(c) || c == '.').ToArray());
+                        if (double.TryParse(clean, out double val))
+                        {
+                            conduitsToCalculate.Add((i, j, val));
+                        }
+                    }
+                }
+            }
+
+
+
+            StringBuilder resultados = new();
+
+            foreach (var (row, col, size) in conduitsToCalculate)
+            {
+                Cable cable = new();
+
+                cable.conduitSize = size;
+
+                // Parâmetros comuns (apenas os fixos para todos)
+                cable.LF = Convert.ToDouble(txtLF.Text) / 100;
+                cable.voltage = Convert.ToDouble(txtVoltageMain.Text) / 1000;
+                cable.soilTemp = Convert.ToDouble(txtSoilTemp.Text);
+                cable.size = cmbCables.SelectedValue.ToString();
+                cable.alfaDoCobre = 0.00393;
+                cable.TC = Convert.ToDouble(cmbTemp.Text);
+                cable.RhoDuctCm = Convert.ToDouble(txtRhoDuct.Text);
+                cable.rho_soil = Convert.ToDouble(txtRhoSoil.Text);
+                cable.H = Convert.ToDouble(txtH.Text) / 12.0;
+                cable.RhoInsCm = 350.0;
+
+                double corrente = CalcularAmpacidade(cable, matriz, row, col);
+
+                if (corrente < menorCorrente)
+                    menorCorrente = corrente;
+
+                resultados.AppendLine($"{row + 1},{col + 1} - {corrente:F2} A");
+            }
+
+            // Limpa o conteúdo anterior
+            richResults.Document.Blocks.Clear();
+
+            // Cria novo parágrafo com os resultados
+            Paragraph paragraph = new Paragraph(new Run(resultados.ToString()));
+
+            // Adiciona ao RichTextBox
+            richResults.Document.Blocks.Add(paragraph);
+
+            txttrash.Text = menorCorrente.ToString("F2");
+
+
+        }
+
+        private double CalcularAmpacidade(Cable cable, string[,] matriz, int row, int col)
+        {
+
+                       
 
             double e_r = 0;
+
             double cosFi = 0;
 
             string tableToSearch = "";
+
+            string varSql = "";
+
             if (cable.voltage >= 2)
             {
                 tableToSearch = "medium_voltage";
                 e_r = 3;
                 cosFi = 0.002;
+                varSql = $"SELECT rdc_25, rac_90 FROM {tableToSearch} WHERE size = '{cable.size}'";
+
             }
             else
             {
                 e_r = 4;
                 cosFi = 0.05;
                 tableToSearch = "low_voltage";
+                varSql = $"SELECT rdc_25, rac_75 FROM {tableToSearch} WHERE size = '{cable.size}'";
             }
+
+
 
             cable.TC = Convert.ToDouble(cmbTemp.Text);
 
-            cable.size = cmbCables.SelectedValue.ToString();
+            DataTable retorno = acessos.ExecuteQuery(varSql);
 
-            DataTable retorno = acessos.ExecuteQuery($"SELECT rdc_25 FROM {tableToSearch} WHERE size = '{cable.size}'");
+            cable.Rdc_25C = Convert.ToDouble(retorno.Rows[0][0]); // Ω/1000 ft
 
-            cable.Rdc_25C = Convert.ToDouble(retorno.Rows[0][0]);
 
-            cable.Rdc_TC = cable.Rdc_25C * (1 + 0.00393 * (cable.TC - 25));
+            if (cable.voltage >= 2)
+            {
+                cable.Rac_90 = Convert.ToDouble(retorno.Rows[0][1]); // Ω/1000 ft
+                cable.Rdc_90 = cable.Rdc_25C * (1 + cable.alfaDoCobre * (90 - 25));
+                cable.Y_skin = (cable.Rac_90 - cable.Rdc_90) / cable.Rdc_90; // Y_skin = (Rac - Rdc) / Rdc
 
-            cable.Rdc_TC_ft = cable.Rdc_TC / 1000;
+            }
+            else
+            {
+                cable.Rac_75 = Convert.ToDouble(retorno.Rows[0][1]); // Ω/1000 ft
+                cable.Rdc_75 = cable.Rdc_25C * (1 + cable.alfaDoCobre * (75 - 25));
+                cable.Y_skin = (cable.Rac_75 - cable.Rdc_75) / cable.Rdc_75;
 
-            double mu = 4 * Math.PI * 1e-7;
-            double freq = 60.0;
-            double Rdc_m = cable.Rdc_TC_ft / 0.3048; // converter para ohm/m
-            cable.Xs = (2 * Math.PI * freq * mu) / Rdc_m;
-
-            cable.Y_skin = Math.Pow(cable.Xs, 4) / (192 + 0.8 * Math.Pow(cable.Xs, 4));
+            }
 
             retorno = acessos.ExecuteQuery($"SELECT dim_bare FROM {tableToSearch} WHERE size = '{cable.size}'");
 
-            cable.d_c = Convert.ToDouble(retorno.Rows[0][0]) * 0.0254; // polegadas → metros
+            cable.d_c = Convert.ToDouble(retorno.Rows[0][0]);
 
 
             if (cable.voltage >= 2)
             {
                 // dim_over_insul já é o diâmetro total em polegadas → converter diretamente
                 retorno = acessos.ExecuteQuery($"SELECT dim_over_insul FROM {tableToSearch} WHERE size = '{cable.size}'");
-                cable.d_i = Convert.ToDouble(retorno.Rows[0][0]) * 0.0254; // inch → m
+                cable.s = Convert.ToDouble(retorno.Rows[0][0]); // inches
             }
             else
             {
                 // insul vem em mils → converter e somar duas vezes (acima e abaixo do condutor)
                 retorno = acessos.ExecuteQuery($"SELECT insul FROM {tableToSearch} WHERE size = '{cable.size}'");
-                double insul_m = Convert.ToDouble(retorno.Rows[0][0]) * 0.0000254; // mil → m
-                cable.d_i = cable.d_c + 2 * insul_m;
+                double insul = Convert.ToDouble(retorno.Rows[0][0]) / 1000; // inches
+                cable.s = cable.d_c + 2 * insul;
             }
-
-
 
             // Sizing Proximity Effect
 
-            cable.Y_prox = cable.Y_skin * Math.Pow(cable.d_c / cable.d_i, 2) * (0.312 * Math.Pow(cable.d_c / cable.d_i, 2) + (1.18 * cable.Y_skin) + 0.27);
+            cable.Y_prox = cable.Y_skin * Math.Pow(cable.d_c / cable.s, 2) * (0.312 * Math.Pow(cable.d_c / cable.s, 2) + (1.18 * cable.Y_skin) + 0.27);
 
             cable.Y_c = cable.Y_skin + cable.Y_prox;
 
-            cable.Rac = cable.Rdc_TC_ft * (1 + cable.Y_c);
-
-            cable.Rac_m = cable.Rac / 0.3048; 
-
             if (cable.voltage >= 2)
             {
+                cable.Rac = cable.Rdc_90 * (1 + cable.Y_c);
 
                 double V_ph = cable.voltage / Math.Sqrt(3); // tensão fase-terra em kV
-                cable.Wd = 0.00276 * Math.Pow(V_ph, 2) * e_r * cosFi / Math.Log10(cable.d_i / cable.d_c);
+                cable.Wd = 0.00276 * Math.Pow(V_ph, 2) * e_r * cosFi / Math.Log10(cable.s / cable.d_c);
             }
             else
             {
+                cable.Rac = cable.Rdc_75 * (1 + cable.Y_c);
                 cable.Wd = 0;
             }
 
 
-            double rho_ins_m = 0.035; // °C·m/W = 350 / 10000
-            cable.R_Ins = 0.012 * rho_ins_m * Math.Log10(cable.d_i / cable.d_c);
 
-            // Removido *3, pois é per conductor
-            cable.deltaTD = cable.Wd * (0.5 * cable.R_Ins + cable.R_ext);
+            // Caclulate R_ins
 
+            double rho_ins = cable.RhoInsCm; // Use o novo input; adicione txtRhoIns no XAML se necessário.
+            cable.R_Ins = 0.012 * rho_ins * Math.Log10(cable.s / cable.d_c);
+
+            //cable.R_Ins = 0.012 * rho_ins * Math.Log(cable.s / cable.d_c);
+
+            // Calculate R_air
 
             cable.R_air = 18.5 / (1 + 0.024 * (cable.TC + cable.soilTemp) / 2);
 
-            cable.conduitSize = Convert.ToDouble(cmbConduits.Text);
+
+
+            // Calculate R_duct
+
+
+
+
 
             retorno = acessos.ExecuteQuery($"Select Average_OD_in, SCH40_Minimum_Wall from conduitsNeher where Size = '{cable.conduitSize}'");
 
@@ -183,100 +270,155 @@ namespace WpfApp2.Neher
 
             cable.D_o_duct = cable.D_i_duct + 2 * Convert.ToDouble(retorno.Rows[0][1]);
 
-            double rho_duct = 650; 
 
-            cable.R_duct = 0.012 * rho_duct * Math.Log10(cable.D_o_duct / cable.D_i_duct);
+
+            // Resultado final em °C·in/W
+
+            cable.RhoDuctCm = Convert.ToDouble(txtRhoDuct.Text); // Armazene na propriedade.
+            double rho_duct_ft = cable.RhoDuctCm / 30.48; // Converta para °C·ft/W.
+            cable.R_duct = (rho_duct_ft / (2 * Math.PI)) * Math.Log(cable.D_o_duct / cable.D_i_duct);
+
+
+
 
             // Calculate R_earth
 
-            cable.rho_soil = Convert.ToDouble(txtRhoSoil.Text) / 100;
+            // rho_soil digitado em ºC·cm/W → converter para ºC·ft/W
 
-            cable.H = Convert.ToDouble(txtH.Text);
+            cable.rho_soil = Convert.ToDouble(txtRhoSoil.Text);
 
-            string[,] matriz = ObterValoresPreenchidosDoGrid();
+            // profundidade H em inches → converter para feet
+            cable.H = Convert.ToDouble(txtH.Text) / 12.0;
+
+
+
 
             // Removido /2.54, e min_spacing ajustado para 1.5" (típico para dutos PVC próximos; altere para 0 se touching)
-            cable.R_earth = CalculateREarth(matriz, cable.H, cable.rho_soil, 3);
-
-            // Adicionar LF para R_earth (assumindo txtLoadFactor é um novo TextBox adicionado no XAML)
-            double f = cable.LF;
-            double LF = 0.3 * f + 0.7 * f * f;
-            cable.R_earth *= LF;
-
+            cable.R_earth = CalculateREarth(matriz, cable.H, cable.rho_soil, 3, row, col);
 
             cable.R_ext = cable.R_air + cable.R_duct + cable.R_earth;
 
+            // ------------- iteração para correção da temperatura do cabo ----------------
+
+            // Inicializar variáveis de iteração
+            double T_C = cable.TC; // temperatura alvo do núcleo do condutor
+            cable.T_surface = T_C;  // chute inicial
+
+            int iter = 0;
+            int maxIter = 100;
+            double tol = 0.1; // tolerância em °C
+
+            do
+            {
+                double T_s_old = cable.T_surface;
+
+                // Atualizar theta_m com base em T_surface e T_d
+                cable.theta_m = (cable.T_surface + cable.soilTemp) / 2.0;
+
+                // Atualizar R_air com base em theta_m
+                cable.R_air = 18.5 / (1 + 0.024 * cable.theta_m);
+
+                cable.R_air *= (1 + 0.2 * (3 - 1));
+
+                // Atualizar R_ext com novo R_air
+                cable.R_ext = cable.R_air + cable.R_duct + cable.R_earth;
+
+                // Atualizar Rac conforme tipo de cabo
+                if (cable.voltage >= 2)
+                {
+                    cable.Rac = cable.Rdc_90 * (1 + cable.Y_c);
+                }
+                else
+                {
+                    cable.Rac = cable.Rdc_75 * (1 + cable.Y_c);
+                }
+
+                // Corrente de carga (entrada do usuário)
+                double I = Convert.ToDouble(txtCurrentPretend.Text); // A
+
+                // Potência dissipada por unidade de comprimento (W/1000ft)
+                double Q = Math.Pow(I, 2) * cable.Rac;
+
+                // Converter para W/ft
+                Q /= 1000.0;
+
+                // Atualizar delta T no isolamento
+                cable.deltaTD = Q * cable.R_Ins;
+
+                // Nova temperatura de superfície
+                cable.T_surface = T_C - cable.deltaTD;
+
+                iter++;
+            } while (Math.Abs(cable.T_surface - T_C + cable.deltaTD) > tol && iter < maxIter);
+
+
+            cable.deltaTD = cable.Wd * (0.5 * cable.R_Ins + cable.R_ext);
+
             cable.RCA = cable.R_Ins + cable.R_ext;
 
-
             cable.I = NeherFinalCurrent(cable);
-
-
-            txttrash.Text = cable.I.ToString("F2");
-            rich1.Document.Blocks.Clear();
-
-            rich1.AppendText($"Rdc_TC em pés: {cable.Rdc_TC_ft}\n\n\n");
-            rich1.AppendText($"Rdc_TC: {cable.Rdc_TC}\n");
-            rich1.AppendText($"Rdc_25C: {cable.Rdc_25C}\n");
-            rich1.AppendText($"Xs: {cable.Xs}\n");
-            rich1.AppendText($"Y_skin: {cable.Y_skin}\n");
-            rich1.AppendText($"TC: {cable.TC}\n");
-            rich1.AppendText($"size: {cable.size}\n");
-            rich1.AppendText($"d_c: {cable.d_c}\n");
-            rich1.AppendText($"d_i: {cable.d_i}\n");
-            rich1.AppendText($"voltage: {cable.voltage}\n");
-            rich1.AppendText($"Y_prox: {cable.Y_prox}\n");
-            rich1.AppendText($"Y_c: {cable.Y_c}\n");
-            rich1.AppendText($"Rac: {cable.Rac}\n");
-            rich1.AppendText($"Rac em metros: {cable.Rac_m}\n");
-            rich1.AppendText($"Wd: {cable.Wd}\n");
-            rich1.AppendText($"soilTemp: {cable.soilTemp}\n");
-            rich1.AppendText($"R_air: {cable.R_air}\n");
-            rich1.AppendText($"R_duct: {cable.R_duct}\n");
-            rich1.AppendText($"D_o_duct: {cable.D_o_duct}\n");
-            rich1.AppendText($"D_i_duct: {cable.D_i_duct}\n");
-            rich1.AppendText($"conduitSize: {cable.conduitSize}\n");
-            rich1.AppendText($"R_earth: {cable.R_earth}\n");
-            rich1.AppendText($"rho_soil: {cable.rho_soil}\n");
-            rich1.AppendText($"H: {cable.H}\n");
-            rich1.AppendText($"R_ext: {cable.R_ext}\n");
-            rich1.AppendText($"deltaTD: {cable.deltaTD}\n");
-            rich1.AppendText($"R_Ins: {cable.R_Ins}\n");
-            rich1.AppendText($"RCA: {cable.RCA}\n");
-            rich1.AppendText($"I: {cable.I}\n");
-            rich1.AppendText($"Y_sh: {cable.Y_sh}\n");
-            rich1.AppendText($"R_sh: {cable.R_sh}\n");
-            rich1.AppendText($"F_sh: {cable.F_sh}\n");
-
+            return cable.I;
         }
 
         public static double NeherFinalCurrent(Cable cable)
         {
             double TC = cable.TC;
             double T_amb = cable.soilTemp;
-            double R_ac = cable.Rac;
-            double R_ins = cable.R_Ins;
+            double R_Ins = cable.R_Ins;
             double R_ext = cable.R_ext;
             double Wd = cable.Wd;
+            double Rdc_25C = cable.Rdc_25C;
+            double alfa = cable.alfaDoCobre;
+            double Yc = cable.Y_c;
 
-            double I = 1;
-            double step = 0.1;
+            double I = 1.0;
+            double step = 5;
+
+            int iter = 0;
+            string logPath = @"C:\temp\log.txt";
+
+            // Criar a pasta se não existir
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(logPath));
+
+            // Iniciar log
+            File.WriteAllText(logPath, $"Log Neher-McGrath - {DateTime.Now}\n\n");
 
             while (I < 2000)
             {
-                double length_ft = 1000.0; // padrão NEC/ETAP
 
-                double Pj = I * I * R_ac;
-                double deltaT = Pj * (R_ins + R_ext);
+                double Pj = I * I * (cable.Rac / 1000.0); // R_ac em ohm/1000ft
+
+                double T_surface = T_amb + Pj * R_Ins;
+                double theta_m = (T_surface + T_amb) / 2;
+
+                double Rdc_theta = Rdc_25C * (1 + alfa * (theta_m - 25));
+                double Rac = Rdc_theta * (1 + Yc);
+
+                double deltaT = Pj * (R_Ins + R_ext) + Wd * (0.5 * R_Ins + R_ext);
                 double T_calc = T_amb + deltaT;
 
-                if (T_calc > TC)
+                // Registrar a cada 50 iterações ou na última
+                if (iter % 50 == 0 || T_calc > TC)
+                {
+                    string log = $"I = {I:F2} A\n" +
+                                 $"  θ_m = {theta_m:F2} °C\n" +
+                                 $"  Rdc_θ = {Rdc_theta:F6} Ω\n" +
+                                 $"  Rac = {Rac:F6} Ω\n" +
+                                 $"  deltaT = {deltaT:F2} °C\n" +
+                                 $"  T_calc = {T_calc:F2} °C\n" +
+                                 $"---------------------------\n";
+
+                    File.AppendAllText(logPath, log);
+                }
+
+                if (T_calc >= TC)
                     return Math.Round(I - step, 2);
 
                 I += step;
+                iter++;
             }
 
-            return I;
+            return Math.Round(I, 2);
         }
 
         private string[,] ObterValoresPreenchidosDoGrid()
@@ -296,7 +438,7 @@ namespace WpfApp2.Neher
                 for (int j = 0; j < columns; j++)
                 {
                     string value = "";
-                    if (InputGrid.Children[index] is Border border && border.Child is TextBox tb)
+                    if (InputGrid.Children[index] is Border border && border.Child is System.Windows.Controls.TextBox tb)
                     {
                         value = tb.Text.Trim();
                         temp[i, j] = value;
@@ -335,14 +477,14 @@ namespace WpfApp2.Neher
         {2, 2.375}, {3, 3.5}, {4, 4.5}, {5, 5.563}, {6, 6.625} // Adicione mais tamanhos se necessário
     };
 
-        public static double CalculateREarth(string[,] matrix, double L, double rho_soil, double min_spacing = 3.0)
+        public static double CalculateREarth(string[,] matrix, double L, double rho_soil, double min_spacing, int rowTarget, int colTarget)
         {
             int num_rows = matrix.GetLength(0);
             int num_cols = matrix.GetLength(1);
 
             // Parse matrix for nominal sizes and target position
             List<List<double>> diams = new List<List<double>>();
-            (int row, int col) target_pos = (-1, -1);
+            (int row, int col) target_pos = (rowTarget, colTarget);
 
             for (int i = 0; i < num_rows; i++)
             {
@@ -352,8 +494,8 @@ namespace WpfApp2.Neher
                     string cell = matrix[i, j];
                     double d = double.Parse(cell.Replace("D", "").Trim());
                     row_diams.Add(d);
-                    if (cell.Contains("D"))
-                        target_pos = (i, j);
+                    //if (cell.Contains("D"))
+                    //    target_pos = (i, j);
                 }
                 diams.Add(row_diams);
             }
@@ -383,7 +525,10 @@ namespace WpfApp2.Neher
 
             // Step 2: calcular y_rows (profundidade de cada linha a partir de L ajustado)
             List<double> y_rows = new List<double>();
-            double current_bottom = L_adjusted;
+
+            double L_inches = L * 12;
+
+            double current_bottom = L_inches;
 
             for (int i = 0; i < num_rows; i++)
             {
@@ -501,7 +646,7 @@ namespace WpfApp2.Neher
         // load cables according voltage level
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            double voltageLevel = Convert.ToDouble(txtVoltageLevel.Text);
+            double voltageLevel = Convert.ToDouble(txtVoltageMain.Text) / 1000;
             DataTable retorno = new DataTable();
             cmbTemp.Items.Clear();
             if (voltageLevel >= 2)
@@ -529,8 +674,7 @@ namespace WpfApp2.Neher
                               .Select(row => row["Size"].ToString())
                               .ToList();
 
-            cmbConduits.ItemsSource = conduits;
-            cmbConduits.SelectedIndex = 10;
+            MySnackbar.MessageQueue?.Enqueue("Loaded Successfully");
 
         }
 
@@ -538,7 +682,7 @@ namespace WpfApp2.Neher
         {
             foreach (var child in InputGrid.Children)
             {
-                if (child is Border border && border.Child is TextBox tb)
+                if (child is Border border && border.Child is System.Windows.Controls.TextBox tb)
                 {
                     tb.Text = string.Empty;
                 }
@@ -592,7 +736,7 @@ namespace WpfApp2.Neher
             double tc = Convert.ToDouble(cmbTc.SelectedValue);
             double tcLinha = Convert.ToDouble(cmbTclinha.SelectedValue);
             double ta = Convert.ToDouble(txtTa.Text);
-            
+
             double taLinha = Convert.ToDouble(txtTalinha.Text);
 
             double ft = Math.Sqrt(((tcLinha - ta) / (tc - ta)) * ((234.5 + tc) / (234.5 + tcLinha)));
@@ -656,6 +800,237 @@ namespace WpfApp2.Neher
             lblIBuscada.Content = "I = " + correnteBuscada.ToString("F2") + "A";
             lblICalculada.Content = "I' = " + correnteCalculada.ToString("F2") + "A";
 
+        }
+
+        private void cmbLoadTypeMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            cmbCurrentFactor.SelectedIndex = 1;
+            int loadType = cmbLoadTypeMain.SelectedIndex;
+
+            double voltage = Convert.ToDouble(txtVoltageMain.Text);
+
+            string carga = "";
+
+            lblAuxHP.Visibility = Visibility.Hidden;
+            lblAuxPower.Visibility = Visibility.Hidden;
+            cmbAuxPower.Visibility = Visibility.Hidden;
+
+
+            cmbAuxPower.ItemsSource = null;
+            cmbUnitsMain.ItemsSource = null;
+
+            switch (loadType)
+            {
+
+                case 0:
+
+                    carga = "MOTOR";
+
+                    if (voltage > 2000)
+                    {
+
+                        lblPowerMain.Visibility = Visibility.Visible;
+                        txtPowerMain.Visibility = Visibility.Visible;
+                        cmbUnitsMain.Visibility = Visibility.Visible;
+                        cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                        cmbUnitsMain.SelectedIndex = 0;
+                        lblPowerFactorMain.Visibility = Visibility.Visible;
+                        txtPowerFactorMain.Visibility = Visibility.Visible;
+                        lblEfficiencyMain.Visibility = Visibility.Visible;
+                        txtEfficiencyMain.Visibility = Visibility.Visible;
+
+                        lblPowerMain.IsEnabled = true;
+                        txtPowerMain.IsEnabled = true;
+                        cmbUnitsMain.IsEnabled = true;
+                        cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                        lblPowerFactorMain.IsEnabled = true;
+                        txtPowerFactorMain.IsEnabled = true;
+                        txtEfficiencyMain.IsEnabled = true;
+                        lblEfficiencyMain.IsEnabled = true;
+
+                    }
+                    else
+                    {
+                        lblPowerMain.Visibility = Visibility.Hidden;
+                        txtPowerMain.Visibility = Visibility.Hidden;
+                        cmbUnitsMain.Visibility = Visibility.Hidden;
+
+
+                        lblAuxHP.Visibility = Visibility.Visible;
+                        lblAuxPower.Visibility = Visibility.Visible;
+                        cmbAuxPower.Visibility = Visibility.Visible;
+                        cmbAuxPower.DisplayMemberPath = "Horsepower";
+                        cmbAuxPower.ItemsSource = acessos.ExecuteQuery("SELECT Horsepower from nec_430_250").DefaultView;
+
+                        lblPowerFactorMain.Visibility = Visibility.Hidden;
+                        txtPowerFactorMain.Visibility = Visibility.Hidden;
+                        lblEfficiencyMain.Visibility = Visibility.Hidden;
+                        txtEfficiencyMain.Visibility = Visibility.Hidden;
+
+
+                    }
+
+                    break;
+
+
+                case 1:
+                    carga = "XFRM";
+                    cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                    lblPowerMain.Visibility = Visibility.Visible;
+                    txtPowerMain.Visibility = Visibility.Visible;
+                    cmbUnitsMain.Visibility = Visibility.Visible;
+                    lblPowerMain.IsEnabled = true;
+                    txtPowerMain.IsEnabled = true;
+                    cmbUnitsMain.IsEnabled = true;
+                    cmbUnitsMain.SelectedIndex = 0;
+
+                    lblPowerFactorMain.Visibility = Visibility.Hidden;
+                    txtPowerFactorMain.Visibility = Visibility.Hidden;
+                    lblEfficiencyMain.Visibility = Visibility.Hidden;
+                    txtEfficiencyMain.Visibility = Visibility.Hidden;
+
+                    break;
+                case 2:
+                    carga = "HEATER";
+                    cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                    lblPowerMain.Visibility = Visibility.Visible;
+                    txtPowerMain.Visibility = Visibility.Visible;
+                    cmbUnitsMain.Visibility = Visibility.Visible;
+                    lblPowerMain.IsEnabled = true;
+                    txtPowerMain.IsEnabled = true;
+                    cmbUnitsMain.IsEnabled = true;
+                    cmbUnitsMain.SelectedIndex = 0;
+
+
+                    lblPowerFactorMain.Visibility = Visibility.Hidden;
+                    txtPowerFactorMain.Visibility = Visibility.Hidden;
+                    lblEfficiencyMain.Visibility = Visibility.Hidden;
+                    txtEfficiencyMain.Visibility = Visibility.Hidden;
+                    break;
+                case 3:
+                    carga = "FEEDER";
+                    cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                    lblPowerMain.Visibility = Visibility.Visible;
+                    txtPowerMain.Visibility = Visibility.Visible;
+                    cmbUnitsMain.Visibility = Visibility.Visible;
+                    lblPowerMain.IsEnabled = true;
+                    txtPowerMain.IsEnabled = true;
+                    cmbUnitsMain.IsEnabled = true;
+                    cmbUnitsMain.SelectedIndex = 0;
+
+                    lblPowerFactorMain.Visibility = Visibility.Hidden;
+                    txtPowerFactorMain.Visibility = Visibility.Hidden;
+                    lblEfficiencyMain.Visibility = Visibility.Hidden;
+                    txtEfficiencyMain.Visibility = Visibility.Hidden;
+                    break;
+                case 4:
+                    carga = "GENERATOR";
+                    lblPowerMain.Visibility = Visibility.Visible;
+                    txtPowerMain.Visibility = Visibility.Visible;
+                    cmbUnitsMain.Visibility = Visibility.Visible;
+                    cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                    cmbUnitsMain.SelectedIndex = 0;
+                    lblPowerFactorMain.Visibility = Visibility.Visible;
+                    txtPowerFactorMain.Visibility = Visibility.Visible;
+                    lblEfficiencyMain.Visibility = Visibility.Visible;
+                    txtEfficiencyMain.Visibility = Visibility.Visible;
+
+                    lblPowerMain.IsEnabled = true;
+                    txtPowerMain.IsEnabled = true;
+                    cmbUnitsMain.IsEnabled = true;
+                    cmbUnitsMain.ItemsSource = calc.retornaUnidades(carga);
+                    lblPowerFactorMain.IsEnabled = true;
+                    txtPowerFactorMain.IsEnabled = true;
+                    txtEfficiencyMain.IsEnabled = true;
+                    lblEfficiencyMain.IsEnabled = true;
+                    break;
+                default:
+
+                    break;
+            }
+        }
+
+        private void cmbAuxPower_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string sizedCurrentStr = "";
+
+            double sizedCurrent = 0;
+            if (cmbAuxPower.SelectedItem == null)
+            {
+                Debug.WriteLine("SelectedItem está null.");
+                return;
+            }
+
+            Debug.WriteLine($"Tipo de SelectedItem: {cmbAuxPower.SelectedItem.GetType()}");
+
+            if (cmbAuxPower.SelectedItem is DataRowView row)
+            {
+                string selecao = row["Horsepower"].ToString();
+
+                sizedCurrentStr = acessos.ExecuteQuery($"SELECT current FROM nec_430_250 WHERE Horsepower = '{selecao}'").Rows[0][0].ToString();
+            }
+
+            sizedCurrent = Convert.ToDouble(sizedCurrentStr) * Convert.ToDouble(cmbCurrentFactor.Text);
+
+            txtCurrentMain.Text = sizedCurrent.ToString("F2");
+
+        }
+
+        private void btnCurrentMain_Click(object sender, RoutedEventArgs e)
+        {
+            string powerUnit = cmbUnitsMain.Text;
+
+            double powerFactor = txtPowerFactorMain.IsEnabled ? Convert.ToDouble(txtPowerFactorMain.Text) : 1;
+            double efficiency = txtEfficiencyMain.IsEnabled ? Convert.ToDouble(txtEfficiencyMain.Text) : 1;
+
+            double sizedCurrent = 0;
+
+            switch (powerUnit)
+            {
+                case "kW":
+                    sizedCurrent = Convert.ToDouble(txtPowerMain.Text) * 1000 / (Math.Sqrt(3) * Convert.ToDouble(txtVoltageMain.Text) * powerFactor * efficiency);
+                    break;
+                case "HP":
+                    sizedCurrent = Convert.ToDouble(txtPowerMain.Text) * 0.7456 * 1000 / (Math.Sqrt(3) * Convert.ToDouble(txtVoltageMain.Text) * powerFactor * efficiency);
+                    break;
+
+                case "kVA":
+                    sizedCurrent = Convert.ToDouble(txtPowerMain.Text) * 1000 / (Math.Sqrt(3) * Convert.ToDouble(txtVoltageMain.Text));
+                    break;
+
+            }
+
+            sizedCurrent = sizedCurrent * Convert.ToDouble(cmbCurrentFactor.Text);
+
+            txtCurrentMain.Text = sizedCurrent.ToString("F2");
+        }
+
+        private void btnCablePhase_Click(object sender, RoutedEventArgs e)
+        {
+            double currentNow = Convert.ToDouble(txtCurrentMain.Text);
+
+            int multiplicador = Convert.ToInt16(btnCablePhase.Content.ToString().Split('-')[0]) / 3;
+
+            multiplicador++;
+
+            double currentPhase = currentNow / multiplicador;
+
+            txtCurrentLinha.Text = currentPhase.ToString("F2");
+
+
+            btnCablePhase.Content = $"{multiplicador * 3}-1/C";
+
+
+        }
+
+        private void btnClearMain_Click(object sender, RoutedEventArgs e)
+        {
+            btnCablePhase.Content = "3-1/C";
+
+            cmbLoadTypeMain.SelectedIndex = -1;
+            txtCurrentLinha.Text = null;
+            txtCurrentMain.Text = null;
         }
     }
 }

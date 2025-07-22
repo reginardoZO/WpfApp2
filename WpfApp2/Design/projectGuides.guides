@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ProjectGuidesConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectItemGuides>
+    <ProjectItemGuide TargetFile="Neher\Neher.xaml">
+      <GuideModels>
+        <GuideModel>
+          <Guides>
+            <Guide Alignment="Top" Position="87" />
+            <Guide Alignment="Top" Position="125" />
+            <Guide Alignment="Left" Position="615" />
+            <Guide Alignment="Left" Position="172" />
+            <Guide Alignment="Left" Position="255" />
+            <Guide Alignment="Left" Position="151" />
+          </Guides>
+        </GuideModel>
+      </GuideModels>
+    </ProjectItemGuide>
+  </ProjectItemGuides>
+</ProjectGuidesConfiguration>

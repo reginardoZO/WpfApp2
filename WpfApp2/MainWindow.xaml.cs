@@ -39,10 +39,7 @@ namespace WpfApp2
 
                 switch (menuOption)
                 {
-                    case "Cable":
-                        MainContentHost.Content = new Cables_Sizing();
-                        TitleTextBlock.Text = "Cable";
-                        break;
+
                     case "Inicio":
                         MainContentHost.Content = new HomeView();
                         TitleTextBlock.Text = "";
@@ -66,7 +63,7 @@ namespace WpfApp2
                         break;
                     case "Neher":
                         MainContentHost.Content = new Neher.Neher();
-                        TitleTextBlock.Text = "Neher";
+                        TitleTextBlock.Text = "Neher-Mcgrath & IEEE 399";
                         break;
                     case "cableNec":
                         MainContentHost.Content = new CableNEC.cablesNec();

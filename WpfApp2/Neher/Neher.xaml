@@ -3,144 +3,235 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WpfApp2.Neher"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1000
+             d:DesignHeight="850" d:DesignWidth="1200
              ">
     <Grid Background="White">
-        <Label Content="Level" HorizontalAlignment="Left" Margin="28,30,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txttrash" HorizontalAlignment="Left" Margin="380,131,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Label Content="h" HorizontalAlignment="Left" Margin="232,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtRhoSoil" HorizontalAlignment="Left" Margin="271,31,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Width="42"/>
-        <Label Content="ºC.cm/W" HorizontalAlignment="Left" Margin="327,33,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
-        <Label Content="ρs" HorizontalAlignment="Left" Margin="237,31,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtH" HorizontalAlignment="Left" Margin="271,73,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="33"/>
-        <Label Content="in" HorizontalAlignment="Left" Margin="327,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="425,175,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <TextBox x:Name="txtVoltageLevel" HorizontalAlignment="Left" Margin="83,29,0,0" TextWrapping="Wrap" Text="0.48" VerticalAlignment="Top" Width="41"/>
-        <Label Content="kV" HorizontalAlignment="Left" Margin="129,29,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.132,5.328"/>
-        <ComboBox x:Name="cmbCables" HorizontalAlignment="Left" Margin="85,62,0,0" VerticalAlignment="Top" Width="65"/>
-        <Label Content="Cable" HorizontalAlignment="Left" Margin="28,63,0,0" VerticalAlignment="Top"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="164,58,0,0" VerticalAlignment="Top" Width="20" Click="Button_Click_1"/>
-        <Label Content="TC" HorizontalAlignment="Left" Margin="28,98,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbTemp" HorizontalAlignment="Left" Margin="90,97,0,0" VerticalAlignment="Top" Width="60"/>
-        <Label Content="Soil Temp." HorizontalAlignment="Left" Margin="26,139,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSoilTemp" HorizontalAlignment="Left" Margin="95,139,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="35"/>
-        <Label Content="ºC" HorizontalAlignment="Left" Margin="135,140,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.132,5.328"/>
-        <Label Content="Cond.:" HorizontalAlignment="Left" Margin="28,184,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbConduits" HorizontalAlignment="Left" Margin="90,183,0,0" VerticalAlignment="Top" Width="60"/>
+        <materialDesign:Snackbar x:Name="MySnackbar"
+                   VerticalAlignment="Top"
+                   Margin="0,883,0,0"
+                   Background="#4CAF50" 
+      Foreground="White"
+                   MessageQueue="{materialDesign:MessageQueue}">
+            <materialDesign:Snackbar.Message>
+                <materialDesign:SnackbarMessage>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CheckCircle"
+                                   Width="24"
+                                   Height="24"
+                                   Foreground="White"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="Operação realizada com sucesso!" 
+                     VerticalAlignment="Center"/>
+                    </StackPanel>
+                </materialDesign:SnackbarMessage>
+            </materialDesign:Snackbar.Message>
+        </materialDesign:Snackbar>
+        <GroupBox Header="Current Calc." Margin="9,8,0,0" HorizontalAlignment="Left" Width="507" Height="359" VerticalAlignment="Top">
+            <Canvas>
+                <Label Content="Voltage" Canvas.Left="22.807" Canvas.Top="10.04" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.955,0.626" Width="55"/>
+                <TextBox x:Name="txtVoltageMain" Canvas.Left="95" TextWrapping="Wrap" Text="480" Canvas.Top="9" Width="59" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="V" Canvas.Left="158" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.582,0.556"/>
+                <Label Content="Load Type" Canvas.Left="3.807" Canvas.Top="46.04" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74"/>
+                <ComboBox x:Name="cmbLoadTypeMain" Canvas.Left="95" Canvas.Top="41" Width="147" HorizontalAlignment="Left" SelectionChanged="cmbLoadTypeMain_SelectionChanged">
+                    <ComboBoxItem Content="MOTOR"/>
+                    <ComboBoxItem Content="XFRM"/>
+                    <ComboBoxItem Content="HEATER"/>
+                    <ComboBoxItem Content="FEEDER"/>
+                    <ComboBoxItem Content="GENERATOR"/>
+                </ComboBox>
+                <Label x:Name="lblPowerMain" Content="Power" Canvas.Left="37.376" Canvas.Top="81.04" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False"/>
+                <ComboBox x:Name="cmbUnitsMain" Canvas.Left="187" Canvas.Top="79" Width="48" HorizontalAlignment="Center" Text="HP" VerticalAlignment="Top" IsEnabled="False"/>
+                <TextBox x:Name="txtPowerMain" Canvas.Left="95" TextWrapping="Wrap" Text="200" Canvas.Top="78" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="False"/>
 
-        <UniformGrid x:Name="InputGrid"
-             Width="200"
-             Height="200"
-             Margin="18,225,0,0"
-             HorizontalAlignment="Left"
-             VerticalAlignment="Top"
+                <Label x:Name="lblAuxPower" Content="Power" Canvas.Left="268" Canvas.Top="43"  HorizontalAlignment="Left" VerticalAlignment="Top"  Visibility="Hidden"/>
+                <Label x:Name="lblAuxHP" Content="HP" Canvas.Left="370" Canvas.Top="43"  HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="1.377,0.626"  Visibility="Hidden"/>
+                <ComboBox x:Name="cmbAuxPower" Canvas.Left="313" Canvas.Top="41" Width="52" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectionChanged="cmbAuxPower_SelectionChanged" Visibility="Hidden" />
+                <Label x:Name="lblPowerFactorMain" Content="p.f." Canvas.Left="53.796" Canvas.Top="118.04" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtPowerFactorMain" Canvas.Left="95" TextWrapping="Wrap" Text="0.9" Canvas.Top="117" Width="78" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label x:Name="lblEfficiencyMain" Content="Ƞ" Canvas.Left="61" Canvas.Top="159.04" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtEfficiencyMain" Canvas.Left="95" TextWrapping="Wrap" Text="0.9" Canvas.Top="158" Width="78" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="I" Canvas.Left="63.807" Canvas.Top="232.04" Width="14" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.476,0.139"/>
+                <TextBox x:Name="txtCurrentMain" Canvas.Left="95" TextWrapping="Wrap" Canvas.Top="231" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="A" Canvas.Left="187" Canvas.Top="231" RenderTransformOrigin="0.582,0.556" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="btnCurrentMain" Content="Calc." Canvas.Left="233" Canvas.Top="234" Height="19" Width="64" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0,0,0,0" Click="btnCurrentMain_Click"/>
+                <Label x:Name="lblCurrentFactor" Content="Factor" Canvas.Left="37.436" Canvas.Top="195.04" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbCurrentFactor" Canvas.Left="95" Canvas.Top="195" Width="78" HorizontalAlignment="Center">
+                    <ComboBoxItem Content="0.85"/>
+                    <ComboBoxItem Content="1.00"/>
+                    <ComboBoxItem Content="1.25"/>
+                    <ComboBoxItem Content="1.50"/>
+                </ComboBox>
+
+                <Label Content="I'" Canvas.Left="63.807" Canvas.Top="271.04" Width="14" RenderTransformOrigin="0.476,0.139" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtCurrentLinha" Canvas.Left="95" TextWrapping="Wrap" Canvas.Top="271" Width="79" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="A" Canvas.Left="187" Canvas.Top="272" RenderTransformOrigin="0.582,0.556" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="btnCablePhase" Content="3-1/C" Canvas.Left="233" Canvas.Top="273" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnCablePhase_Click"/>
+                <Button x:Name="btnClearMain" Content="Clear" Canvas.Left="404" Canvas.Top="272" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnClearMain_Click"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Header="Neher-McGrath" Margin="521,8,0,0" HorizontalAlignment="Left" Width="669" Height="359" VerticalAlignment="Top">
+            <Canvas Width="622">
+                <TextBox x:Name="txtRhoDuct" HorizontalAlignment="Center" TextWrapping="Wrap" Text="650" VerticalAlignment="Center" Width="43" Canvas.Left="71" Canvas.Top="241"/>
+                <ComboBox x:Name="cmbCables" Width="65" HorizontalAlignment="Center" Canvas.Left="71" Canvas.Top="10"/>
+                <Label Content="Cable" HorizontalAlignment="Left" Canvas.Left="22.726" Canvas.Top="13.52" VerticalAlignment="Center"/>
+                <Button Content="Load" Click="Button_Click_1"  Canvas.Left="158" Canvas.Top="16" Height="19" Width="64" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0,0,0,0" />
+                <Label Content="ºC" Canvas.Left="123.633" Canvas.Top="46.05" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="TC" HorizontalAlignment="Left" Canvas.Left="39.339" Canvas.Top="49.04" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbTemp" Width="35" HorizontalAlignment="Left" Canvas.Left="71" Canvas.Top="48"/>
+                <Label Content="Soil Temp." HorizontalAlignment="Left" Canvas.Left="-1.388" Canvas.Top="86" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtSoilTemp" TextWrapping="Wrap" Text="20" Width="35" HorizontalAlignment="Left" Canvas.Left="71" Canvas.Top="85" VerticalAlignment="Center"/>
+                <Label Content="ºC" RenderTransformOrigin="2.132,5.328" HorizontalAlignment="Center" Canvas.Left="123.633" Canvas.Top="86" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtRhoSoil" TextWrapping="Wrap" Text="200" Width="42" HorizontalAlignment="Center" Canvas.Left="71" Canvas.Top="120" VerticalAlignment="Center"/>
+                <Label Content="ºC.cm/W" RenderTransformOrigin="0.552,0.554" HorizontalAlignment="Left" Canvas.Left="123.633" Canvas.Top="121" VerticalAlignment="Center"/>
+                <Label Content="ρ soil" RenderTransformOrigin="0.414,3.51" HorizontalAlignment="Left" Canvas.Left="24.246" Canvas.Top="121" VerticalAlignment="Center"/>
+                <Label Content="h" RenderTransformOrigin="0.414,3.51" HorizontalAlignment="Left" Canvas.Left="45.709" Canvas.Top="162" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtH" TextWrapping="Wrap" Text="24" Width="33" HorizontalAlignment="Center" Canvas.Left="71" Canvas.Top="160.96" VerticalAlignment="Center"/>
+                <Label Content="in" RenderTransformOrigin="0.552,0.554" HorizontalAlignment="Center" Canvas.Left="123.633" Canvas.Top="162" VerticalAlignment="Center"/>
+                <Label Content="LF" RenderTransformOrigin="0.414,3.51" HorizontalAlignment="Left" Canvas.Left="40.989" Canvas.Top="202" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtLF" TextWrapping="Wrap" Text="100" Width="42" HorizontalAlignment="Center" Canvas.Left="71" Canvas.Top="200.96" VerticalAlignment="Center"/>
+                <Label Content="%" RenderTransformOrigin="0.552,0.554" HorizontalAlignment="Center" Canvas.Left="123.633" Canvas.Top="202" VerticalAlignment="Center"/>
+                <Label Content="ρ duct" RenderTransformOrigin="0.414,3.51" Canvas.Left="18.716" Canvas.Top="239" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="ºC.cm/W" RenderTransformOrigin="0.552,0.554" Canvas.Left="123.633" Canvas.Top="241" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <UniformGrid x:Name="InputGrid"
+             Width="160"
+             Height="152"
              Rows="10"
              Columns="10"
-             Background="LightGray"/>
-        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="239,225,0,0" VerticalAlignment="Top" Click="btnClear_Click"/>
-        <Label Content="Conductor rated Temp." HorizontalAlignment="Left" Margin="543,96,0,0" VerticalAlignment="Top"/>
-        <Label Content="ºC" HorizontalAlignment="Left" Margin="760,98,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.971,0.417"/>
-        <Label Content="Maximum allowable Temp." HorizontalAlignment="Left" Margin="521,139,0,0" VerticalAlignment="Top"/>
-        <Label Content="ºC" HorizontalAlignment="Left" Margin="760,139,0,0" VerticalAlignment="Top"/>
-        <Label Content="Base Amb. Temp." HorizontalAlignment="Left" Margin="801,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.877,0.584"/>
-        <TextBox x:Name="txtTa" HorizontalAlignment="Left" Margin="911,100,0,0" TextWrapping="Wrap" Text="30" VerticalAlignment="Top" Width="31" RenderTransformOrigin="0.516,0.8"/>
-        <Label Content="ºC" HorizontalAlignment="Left" Margin="959,100,0,0" VerticalAlignment="Top"/>
-        <Label Content="Soil Temp." HorizontalAlignment="Left" Margin="837,139,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtTalinha" HorizontalAlignment="Left" Margin="911,138,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="31"/>
-        <Label Content="ºC" HorizontalAlignment="Left" Margin="959,140,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbVoltageLevel" HorizontalAlignment="Left" Margin="684,50,0,0" VerticalAlignment="Top" Width="102" SelectionChanged="cmbVoltageLevel_SelectionChanged">
-            <ComboBoxItem Content="0-2000V"/>
-            <ComboBoxItem Content="2001-5000V"/>
-            <ComboBoxItem Content="5001-35000V"/>
-        </ComboBox>
-        <ComboBox x:Name="cmbTc" HorizontalAlignment="Left" Margin="698,97,0,0" VerticalAlignment="Top" Width="46"/>
-        <ComboBox x:Name="cmbTclinha" HorizontalAlignment="Left" Margin="698,135,0,0" VerticalAlignment="Top" Width="47"/>
-        <Label Content="Rho" HorizontalAlignment="Left" Margin="637,180,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbRho" HorizontalAlignment="Left" Margin="698,175,0,0" VerticalAlignment="Top" Width="83">
-            <ComboBoxItem Content="60"/>
-            <ComboBoxItem Content="90"/>
-            <ComboBoxItem Content="120"/>
-            <ComboBoxItem Content="140"/>
-            <ComboBoxItem Content="160"/>
-            <ComboBoxItem Content="180"/>
-            <ComboBoxItem Content="200"/>
-            <ComboBoxItem Content="250"/>
-        </ComboBox>
-        <Button Content="Imax" HorizontalAlignment="Left" Margin="895,375,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Label Content="Size Aprox" HorizontalAlignment="Left" Margin="602,217,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbSizeAprox" HorizontalAlignment="Left" Margin="689,216,0,0" VerticalAlignment="Top" Width="92">
-            <ComboBoxItem Content="#12-#1"/>
-            <ComboBoxItem Content="1/0-4/0"/>
-            <ComboBoxItem Content="250-1000"/>
+             Background="WhiteSmoke" HorizontalAlignment="Left" Canvas.Left="262" Canvas.Top="16" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtCurrentPretend" TextWrapping="Wrap" Text="200" Width="55" HorizontalAlignment="Left" Canvas.Left="346" Canvas.Top="181" VerticalAlignment="Top"/>
+                <Label Content="I" RenderTransformOrigin="0.414,3.51" HorizontalAlignment="Left" Canvas.Left="330" Canvas.Top="180" VerticalAlignment="Center"/>
+                <Label Content="A" RenderTransformOrigin="0.552,0.554" Canvas.Left="406" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="I max." RenderTransformOrigin="0.414,3.51" Canvas.Left="302" Canvas.Top="212" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBox x:Name="txttrash" TextWrapping="Wrap" Text="" Width="55" HorizontalAlignment="Left" Canvas.Left="346" Canvas.Top="211" VerticalAlignment="Center"/>
+                <Label Content="A" RenderTransformOrigin="0.552,0.554" Canvas.Left="406" Canvas.Top="212" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="btnClear" Content="Clear" Click="btnClear_Click" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="537" Canvas.Top="272"/>
+                <Button Content="Calc" Click="Button_Click" Canvas.Left="537" Canvas.Top="244" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <RichTextBox x:Name="richResults" Height="223" Width="155" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Canvas.Left="462" VerticalAlignment="Center" Canvas.Top="10">
+                    <RichTextBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="0.122"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="-0.665"/>
+                        </TransformGroup>
+                    </RichTextBox.RenderTransform>
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Text=""/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Header="IEEE Std 399-1997" Margin="10,372,0,0" HorizontalAlignment="Left" Width="506" Height="342" VerticalAlignment="Top">
+            <Canvas Margin="0,0,0,2">
+                <Label Content="Voltage" HorizontalAlignment="Center" Canvas.Left="87" Canvas.Top="10" VerticalAlignment="Center"/>
+                <Label Content="Conductor rated Temp." HorizontalAlignment="Left" Canvas.Left="5.576" Canvas.Top="45.04" VerticalAlignment="Center"/>
+                <Label Content="ºC" RenderTransformOrigin="0.971,0.417" HorizontalAlignment="Center" Canvas.Left="231" Canvas.Top="45" VerticalAlignment="Center"/>
+                <Label Content="Max. allowable Temp." HorizontalAlignment="Left" Canvas.Left="14.23" Canvas.Top="79.04" VerticalAlignment="Center"/>
+                <Label Content="ºC" HorizontalAlignment="Center" Canvas.Left="231" Canvas.Top="78" VerticalAlignment="Center"/>
+                <Label Content="Base Amb. Temp." RenderTransformOrigin="0.877,0.584" HorizontalAlignment="Left" Canvas.Left="292" Canvas.Top="10" VerticalAlignment="Top"/>
+                <TextBox x:Name="txtTa" TextWrapping="Wrap" Text="30" Width="31" RenderTransformOrigin="0.516,0.8" HorizontalAlignment="Left" Canvas.Left="405" Canvas.Top="9" VerticalAlignment="Center"/>
+                <Label Content="ºC" HorizontalAlignment="Center" Canvas.Left="437.25" Canvas.Top="10" VerticalAlignment="Center"/>
+                <Label Content="Soil Temp." HorizontalAlignment="Left" Canvas.Left="327" Canvas.Top="45" VerticalAlignment="Top"/>
+                <TextBox x:Name="txtTalinha" TextWrapping="Wrap" Text="20" Width="31" HorizontalAlignment="Left" Canvas.Left="405" Canvas.Top="44" VerticalAlignment="Center"/>
+                <Label Content="ºC" HorizontalAlignment="Center" Canvas.Left="437.25" Canvas.Top="45" VerticalAlignment="Center" RenderTransformOrigin="0.583,0.835"/>
+                <ComboBox x:Name="cmbVoltageLevel" Width="102" SelectionChanged="cmbVoltageLevel_SelectionChanged" HorizontalAlignment="Left" Canvas.Left="152" Canvas.Top="9">
+                    <ComboBoxItem Content="0-2000V"/>
+                    <ComboBoxItem Content="2001-5000V"/>
+                    <ComboBoxItem Content="5001-35000V"/>
+                </ComboBox>
+                <ComboBox x:Name="cmbTc" Width="68" HorizontalAlignment="Center" Canvas.Left="152" Canvas.Top="44"/>
+                <ComboBox x:Name="cmbTclinha" Width="68" HorizontalAlignment="Left" Canvas.Left="152" Canvas.Top="77"/>
+                <Label Content="ρ soil" HorizontalAlignment="Center" Canvas.Left="98.89" Canvas.Top="115.04" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbRho" Width="68" HorizontalAlignment="Left" Canvas.Left="152" Canvas.Top="113" RenderTransformOrigin="0.307,-0.72">
+                    <ComboBoxItem Content="60"/>
+                    <ComboBoxItem Content="90"/>
+                    <ComboBoxItem Content="120"/>
+                    <ComboBoxItem Content="140"/>
+                    <ComboBoxItem Content="160"/>
+                    <ComboBoxItem Content="180"/>
+                    <ComboBoxItem Content="200"/>
+                    <ComboBoxItem Content="250"/>
+                </ComboBox>
+                <Button Content="Imax" Click="Button_Click_2" Canvas.Left="396" Canvas.Top="257" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="Size Aprox" HorizontalAlignment="Center" Canvas.Left="71.37" Canvas.Top="152.04" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbSizeAprox" Width="97" HorizontalAlignment="Left" Canvas.Left="152" Canvas.Top="151">
+                    <ComboBoxItem Content="#12-#1"/>
+                    <ComboBoxItem Content="1/0-4/0"/>
+                    <ComboBoxItem Content="250-1000"/>
 
-        </ComboBox>
-        <Label Content="Num Ckt" HorizontalAlignment="Left" Margin="602,260,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbNumCkt" HorizontalAlignment="Left" Margin="689,259,0,0" VerticalAlignment="Top" Width="92">
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="3"/>
-            <ComboBoxItem Content="6"/>
-            <ComboBoxItem Content="9+"/>
-        </ComboBox>
-        <Label Content="Cols" HorizontalAlignment="Left" Margin="621,335,0,0" VerticalAlignment="Top"/>
-        <Label Content="Rows" HorizontalAlignment="Left" Margin="621,298,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbRows" HorizontalAlignment="Left" Margin="689,297,0,0" VerticalAlignment="Top" Width="92">
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="3"/>
-            <ComboBoxItem Content="4"/>
-        </ComboBox>
-        <ComboBox x:Name="cmbCols" HorizontalAlignment="Left" Margin="689,334,0,0" VerticalAlignment="Top" Width="92">
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="3"/>
-            <ComboBoxItem Content="4"/>
-            <ComboBoxItem Content="5"/>
-            <ComboBoxItem Content="6"/>
-            <ComboBoxItem Content="7"/>
-            <ComboBoxItem Content="8"/>
-            <ComboBoxItem Content="9"/>
-            <ComboBoxItem Content="10"/>
-            <ComboBoxItem Content="11"/>
-            <ComboBoxItem Content="12"/>
-            <ComboBoxItem Content="13"/>
-            <ComboBoxItem Content="14"/>
-            <ComboBoxItem Content="15"/>
-        </ComboBox>
-        <Label Content="Cable Size" HorizontalAlignment="Left" Margin="598,379,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cmbCableSizeIEE" HorizontalAlignment="Left" Margin="689,378,0,0" VerticalAlignment="Top" Width="92">
-            <ComboBoxItem Content="8"/>
-            <ComboBoxItem Content="6"/>
-            <ComboBoxItem Content="4"/>
-            <ComboBoxItem Content="2"/>
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="1/0"/>
-            <ComboBoxItem Content="2/0"/>
-            <ComboBoxItem Content="3/0"/>
-            <ComboBoxItem Content="4/0"/>
-            <ComboBoxItem Content="250"/>
-            <ComboBoxItem Content="350"/>
-            <ComboBoxItem Content="500"/>
-            <ComboBoxItem Content="750"/>
-            <ComboBoxItem Content="1000"/>
-        </ComboBox>
-        <Label Content="Voltage" HorizontalAlignment="Left" Margin="618,50,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblIBuscada" Content="-" HorizontalAlignment="Left" Margin="886,240,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblICalculada" Content="-" HorizontalAlignment="Left" Margin="886,272,0,0" VerticalAlignment="Top"/>
-        <RichTextBox x:Name="rich1" Margin="239,279,0,25" HorizontalAlignment="Left" Width="307">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <Label Content="LF" HorizontalAlignment="Left" Margin="232,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.414,3.51"/>
-        <TextBox x:Name="txtLF" HorizontalAlignment="Left" Margin="271,112,0,0" TextWrapping="Wrap" Text="99" VerticalAlignment="Top" Width="42"/>
-        <Label Content="%" HorizontalAlignment="Left" Margin="327,114,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.552,0.554"/>
+                </ComboBox>
+                <Label Content="Num Ckt" HorizontalAlignment="Center" Canvas.Left="80.293" Canvas.Top="195.02" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbNumCkt" Width="97" HorizontalAlignment="Center" Canvas.Left="152" Canvas.Top="189">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="9+"/>
+                </ComboBox>
+                <Label Content="Cols" HorizontalAlignment="Left" Canvas.Left="355" Canvas.Top="115" VerticalAlignment="Top"/>
+                <Label Content="Rows" HorizontalAlignment="Left" Canvas.Left="351" Canvas.Top="79" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cmbRows" Width="49" HorizontalAlignment="Center" Canvas.Left="405" Canvas.Top="78">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                </ComboBox>
+                <ComboBox x:Name="cmbCols" Width="47" HorizontalAlignment="Left" Canvas.Left="405" Canvas.Top="114">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="5"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="7"/>
+                    <ComboBoxItem Content="8"/>
+                    <ComboBoxItem Content="9"/>
+                    <ComboBoxItem Content="10"/>
+                    <ComboBoxItem Content="11"/>
+                    <ComboBoxItem Content="12"/>
+                    <ComboBoxItem Content="13"/>
+                    <ComboBoxItem Content="14"/>
+                    <ComboBoxItem Content="15"/>
+                </ComboBox>
+                <Label Content="Cable Size" HorizontalAlignment="Left" Canvas.Left="73.1" Canvas.Top="226" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbCableSizeIEE" Width="92" HorizontalAlignment="Left" Canvas.Left="152" Canvas.Top="226">
+                    <ComboBoxItem Content="8"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="1/0"/>
+                    <ComboBoxItem Content="2/0"/>
+                    <ComboBoxItem Content="3/0"/>
+                    <ComboBoxItem Content="4/0"/>
+                    <ComboBoxItem Content="250"/>
+                    <ComboBoxItem Content="350"/>
+                    <ComboBoxItem Content="500"/>
+                    <ComboBoxItem Content="750"/>
+                    <ComboBoxItem Content="1000"/>
+                </ComboBox>
+                <Label x:Name="lblIBuscada" Content="-" HorizontalAlignment="Left" Canvas.Left="369" Canvas.Top="178" VerticalAlignment="Top"/>
+                <Label x:Name="lblICalculada" Content="-" HorizontalAlignment="Left" Canvas.Left="369" Canvas.Top="207" VerticalAlignment="Top"/>
+                <Label Content="ºC.cm/W" Canvas.Left="231" Canvas.Top="113" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Canvas>
+        </GroupBox>
+
+
+
+
+
+
+
+
 
 
 
 
     </Grid>
+
+
 </UserControl>
