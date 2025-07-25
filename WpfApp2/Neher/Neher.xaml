@@ -101,29 +101,12 @@
              Rows="10"
              Columns="10"
              Background="WhiteSmoke" HorizontalAlignment="Left" Canvas.Left="262" Canvas.Top="16" VerticalAlignment="Center"/>
-                <TextBox x:Name="txtCurrentPretend" TextWrapping="Wrap" Text="200" Width="55" HorizontalAlignment="Left" Canvas.Left="346" Canvas.Top="181" VerticalAlignment="Top"/>
-                <Label Content="I" RenderTransformOrigin="0.414,3.51" HorizontalAlignment="Left" Canvas.Left="330" Canvas.Top="180" VerticalAlignment="Center"/>
-                <Label Content="A" RenderTransformOrigin="0.552,0.554" Canvas.Left="406" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="I max." RenderTransformOrigin="0.414,3.51" Canvas.Left="302" Canvas.Top="212" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBox x:Name="txttrash" TextWrapping="Wrap" Text="" Width="55" HorizontalAlignment="Left" Canvas.Left="346" Canvas.Top="211" VerticalAlignment="Center"/>
                 <Label Content="A" RenderTransformOrigin="0.552,0.554" Canvas.Left="406" Canvas.Top="212" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Button x:Name="btnClear" Content="Clear" Click="btnClear_Click" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="537" Canvas.Top="272"/>
-                <Button Content="Calc" Click="Button_Click" Canvas.Left="537" Canvas.Top="244" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <RichTextBox x:Name="richResults" Height="223" Width="155" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Canvas.Left="462" VerticalAlignment="Center" Canvas.Top="10">
-                    <RichTextBox.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform AngleY="0.122"/>
-                            <RotateTransform/>
-                            <TranslateTransform Y="-0.665"/>
-                        </TransformGroup>
-                    </RichTextBox.RenderTransform>
-                    <FlowDocument>
-                        <Paragraph>
-                            <Run Text=""/>
-                        </Paragraph>
-                    </FlowDocument>
-                </RichTextBox>
+                <Button Content="Calc" Canvas.Left="537" Canvas.Top="244" Height="19" Width="64" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click_3"/>
+                <Button Content="Hottest" Canvas.Left="445" Canvas.Top="16" Height="19" Width="78" FontSize="10" BorderThickness="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click"/>
             </Canvas>
         </GroupBox>
         <GroupBox Header="IEEE Std 399-1997" Margin="10,372,0,0" HorizontalAlignment="Left" Width="506" Height="342" VerticalAlignment="Top">
