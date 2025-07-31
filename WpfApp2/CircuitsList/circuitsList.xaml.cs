@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using ControlzEx.Theming;
 using MaterialDesignThemes.Wpf;
 using Microsoft.VisualBasic;
+using Microsoft.Xaml.Behaviors.Core;
 
 
 namespace WpfApp2.CircuitsList
@@ -39,7 +40,7 @@ namespace WpfApp2.CircuitsList
         {
             string elementoDeBusca = txtSearchMain.Text;
 
-            string varSql = $"SELECT id, TAG, VOLT, \"FROM\", \"TO\", REMARKS FROM cableList_modeste WHERE (";
+            string varSql = $"SELECT id, TAG, VOLT, \"FROM\", \"TO\", \"REMARKS\", \"ROUTE\" FROM cableList_{cmbProjects.Text} WHERE (";
 
             if (chkTag.IsChecked == true)
                 varSql = varSql + $"TAG LIKE '%{elementoDeBusca}%' OR ";
@@ -53,10 +54,12 @@ namespace WpfApp2.CircuitsList
                 varSql = varSql + $"\"TO\" LIKE '%{elementoDeBusca}%' OR ";
             if (chkRemarks.IsChecked == true)
                 varSql = varSql + $"\"REMARKS\" LIKE '%{elementoDeBusca}%' OR ";
+            if (chkRoute.IsChecked == true)
+                varSql = varSql + $"\"ROUTE\" LIKE '%{elementoDeBusca}%' OR ";
 
             string resultado = varSql.Substring(0, varSql.Length - 3) + ") ";
 
-            if(!string.IsNullOrEmpty(txtNotLike.Text))
+            if (!string.IsNullOrEmpty(txtNotLike.Text))
 
             {
                 resultado = resultado + $" and \"{cmbNotLike.Text}\" not like '%{txtNotLike.Text}%'";
@@ -87,39 +90,39 @@ namespace WpfApp2.CircuitsList
         public int idSelecionado = 0;
         private void gridMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-        
-                if (gridMain.SelectedItem is DataRowView rowView)
+
+            if (gridMain.SelectedItem is DataRowView rowView)
+            {
+                if (int.TryParse(rowView["id"].ToString(), out idSelecionado))
                 {
-                    if (int.TryParse(rowView["id"].ToString(), out idSelecionado))
-                    {
-                        // Agora você tem o valor do ID na variável
+                    // Agora você tem o valor do ID na variável
 
-                        string varSql = $"Select * from cableList_{cmbProjects.Text} where id = '{idSelecionado}'";
+                    string varSql = $"Select * from cableList_{cmbProjects.Text} where id = '{idSelecionado}'";
 
-                        DataTable retorno = acessos.ExecuteQuery(varSql);
+                    DataTable retorno = acessos.ExecuteQuery(varSql);
 
 
-                        DataRow row = retorno.Rows[0];
+                    DataRow row = retorno.Rows[0];
 
-                        txtIssue.Text = row["ISSUE"].ToString();
-                        txtTag.Text = row["TAG"].ToString();
-                        txtQty.Text = row["QTY"].ToString();
-                        txtWireSize.Text = row["WIRE SIZE"].ToString();
-                        txtGndQty.Text = row["GND QTY"].ToString();
-                        txtGrdSize.Text = row["GND SIZE"].ToString();
-                        txtInsul.Text = row["INSUL."].ToString();
-                        txtVoltage.Text = row["VOLT"].ToString();
-                        txtFrom.Text = row["FROM"].ToString();
-                        txtTo.Text = row["TO"].ToString();
-                        txtDwgFrom.Text = row["DWG FROM"].ToString();
-                        txtDwgTo.Text = row["DWG TO"].ToString();
-                        txtRemarks.Text = row["REMARKS"].ToString();
+                    txtIssue.Text = row["ISSUE"].ToString();
+                    txtTag.Text = row["TAG"].ToString();
+                    txtQty.Text = row["QTY"].ToString();
+                    txtWireSize.Text = row["WIRE SIZE"].ToString();
+                    txtGndQty.Text = row["GND QTY"].ToString();
+                    txtGrdSize.Text = row["GND SIZE"].ToString();
+                    txtInsul.Text = row["INSUL."].ToString();
+                    txtVoltage.Text = row["VOLT"].ToString();
+                    txtFrom.Text = row["FROM"].ToString();
+                    txtTo.Text = row["TO"].ToString();
+                    txtDwgFrom.Text = row["DWG FROM"].ToString();
+                    txtDwgTo.Text = row["DWG TO"].ToString();
+                    txtRemarks.Text = row["REMARKS"].ToString();
+                    txtRoute.Text = row["ROUTE"].ToString();
 
 
-
-                    }
                 }
-          
+            }
+
         }
 
 
@@ -160,7 +163,8 @@ namespace WpfApp2.CircuitsList
                 $"\"TO\" = '{txtTo.Text.Replace("'", "''")}', " +
                 $"\"DWG FROM\" = '{txtDwgFrom.Text.Replace("'", "''")}', " +
                 $"\"DWG TO\" = '{txtDwgTo.Text.Replace("'", "''")}', " +
-                $"\"REMARKS\" = '{txtRemarks.Text.Replace("'", "''")}' " +
+                $"\"REMARKS\" = '{txtRemarks.Text.Replace("'", "''")}', " +
+                $"\"ROUTE\" = '{txtRoute.Text.Replace("'", "''")}' " +
                 $"WHERE id = {idSelecionado};";
             int retorno = acessos.ExecuteNonQuery(varSql);
 
@@ -194,6 +198,23 @@ namespace WpfApp2.CircuitsList
             {
                 // Dispara o clique do botão
                 Button_Click(sender, e);
+            }
+        }
+
+        private void gridMain_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            DataRowView rowView = e.Row.Item as DataRowView;
+
+            if (rowView != null && !string.IsNullOrWhiteSpace(rowView["REMARKS"]?.ToString()))
+            {
+                // Se houver qualquer conteúdo não vazio, pinta de verde
+                e.Row.Background = new SolidColorBrush(Colors.LightGreen);
+            }
+            else
+            {
+                // Fundo padrão para as demais
+                Color cor = (Color)ColorConverter.ConvertFromString("#FFF1F1F1");
+                e.Row.Background = new SolidColorBrush(cor);
             }
         }
     }
