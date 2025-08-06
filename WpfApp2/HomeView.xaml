@@ -109,7 +109,10 @@
             </Grid.RowDefinitions>
 
             <!-- Header Section -->
-            <Border Grid.Row="0" Background="{StaticResource HeaderGradient}" Padding="40,60,40,60">
+            <Border Grid.Row="0"  Padding="40,60,40,60">
+                <Border.Background>
+                    <SolidColorBrush Color="#FF007E71"/>
+                </Border.Background>
                 <StackPanel HorizontalAlignment="Center" MaxWidth="800">
                     <TextBlock Text="ElectriCAD Suite"
                                FontSize="48"
@@ -273,7 +276,7 @@
                 </UniformGrid>
 
                 <!-- Call to Action Section -->
-                
+
             </Grid>
         </Grid>
     </ScrollViewer>

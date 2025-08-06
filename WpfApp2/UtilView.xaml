@@ -5,11 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   TextWrapping="Wrap"/>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="261*"/>
+            <ColumnDefinition Width="139*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas Margin="18,25,0,137">
+            <TextBox x:Name="txtCurrent" Canvas.Left="97" TextWrapping="Wrap" Canvas.Top="24" Width="79" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Current" Canvas.Left="37" Canvas.Top="25"/>
+            <Label Content="A" Canvas.Left="194" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="NEC_310_16 - UNDER" Canvas.Left="17" Canvas.Top="75"/>
+            <Label x:Name="lbl1016" Content="-" Canvas.Left="210" Canvas.Top="75" RenderTransformOrigin="0.651,1.976" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Content="NEC_310_17 - FREE AIR" Canvas.Left="17" Canvas.Top="114" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="lbl1017" Content="-" Canvas.Left="210" Canvas.Top="109" RenderTransformOrigin="0.651,1.976" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cmbTemp" Canvas.Left="241" Canvas.Top="23" Width="54" HorizontalAlignment="Left">
+                <ComboBoxItem Content="60"/>
+                <ComboBoxItem Content="75"/>
+                <ComboBoxItem Content="90"/>
+            </ComboBox>
+            <Button Content="Search" Canvas.Left="311" Canvas.Top="23" Height="30" Width="78" Click="Button_Click"/>
+            <Label Content="NEC_250_122 - GROUNDING" Canvas.Left="17" Canvas.Top="154" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="lblgrounding" Content="-" Canvas.Left="210" Canvas.Top="154" RenderTransformOrigin="0.651,1.976" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        </Canvas>
     </Grid>
 </UserControl>

@@ -64,5 +64,64 @@ namespace WpfApp2
             }
             return rowsAffected;
         }
+        public List<string> ExecuteQueryStr(string sqlQuery, string columnName)
+        {
+            List<string> resultList = new List<string>();
+
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(ConnectionString))
+                {
+                    connection.Open();
+                    using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
+                    {
+                        using (SqliteDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsDBNull(reader.GetOrdinal(columnName)))
+                                {
+                                    resultList.Add(reader[columnName].ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error executing query: {ex.Message}");
+            }
+
+            return resultList;
+        }
+        public string ExecuteScalarStr(string sqlQuery)
+        {
+            string result = string.Empty;
+
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(ConnectionString))
+                {
+                    connection.Open();
+                    using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
+                    {
+                        object value = command.ExecuteScalar();
+                        if (value != null && value != DBNull.Value)
+                        {
+                            result = value.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error executing scalar query: {ex.Message}");
+            }
+
+            return result;
+        }
+
+
     }
 }

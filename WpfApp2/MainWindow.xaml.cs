@@ -74,6 +74,11 @@ namespace WpfApp2
                         MainContentHost.Content = new CircuitsList.circuitsList();
                         TitleTextBlock.Text = "Circuits List";
                         break;
+                    case "Clist":
+                        MainContentHost.Content = new clist.cList();
+                        TitleTextBlock.Text = "Cable List";
+                        break;
+
                         // Adicione mais 'case' aqui para cada novo botão de menu que você criar
                 }
 

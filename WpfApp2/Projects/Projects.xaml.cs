@@ -330,8 +330,6 @@ namespace WpfApp2.Projects
 
                         gridLoads.ItemsSource = acessos.ExecuteQuery(varSql).DefaultView;
 
-
-
                     }
 
                 }
@@ -347,8 +345,6 @@ namespace WpfApp2.Projects
         {
 
         }
-
-
 
         // load existent panels
         private void cmbProjectsFeeder_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -375,8 +371,8 @@ namespace WpfApp2.Projects
             string panelName = txtTagPanel.Text;
             string description = txtDescPanel.Text;
 
-            string varSql = $"INSERT INTO feeders (tag, type, project, plant, level, descr, dateReg) " +
-                            $"VALUES ('{panelName}', 'Panel', '{selectedProject}', '{selectedPlant}', '{voltageLevel}', '{description}', '{DateTime.Now.ToString()}')";
+            string varSql = $"INSERT INTO feeders (tag, type, project, plant, level, descr, dateReg, location) " +
+                            $"VALUES ('{panelName}', 'Panel', '{selectedProject}', '{selectedPlant}', '{voltageLevel}', '{description}', '{DateTime.Now.ToString()}', '{txtPanelLocation.Text}')";
 
             int rowsAffected = acessos.ExecuteNonQuery(varSql);
             if (rowsAffected != 0)
@@ -667,7 +663,7 @@ VALUES (
         {
 
             string varSql = $@"
-                                SELECT
+                                SELECT id,
                                 fromPanel,
                                 fromUnit, loadType,
                                 power,
@@ -812,7 +808,37 @@ VALUES (
             controleToPlantTrafo = false;
 
         }
+        public int idSelecionado = 0;
+        private void gridMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+             if (gridLoads.SelectedItem is DataRowView rowView)
+            {
+                if (int.TryParse(rowView["id"].ToString(), out idSelecionado))
+                {
+                    // Agora você tem o valor do ID na variável
+
+                    string varSql = $"Select * from lvloads where id = '{idSelecionado}'";
+
+                    DataTable retorno = acessos.ExecuteQuery(varSql);
 
 
+                    DataRow row = retorno.Rows[0];
+                    cmbLVFromPanel.Text = row["fromPanel"].ToString();
+                    txtLVUnit.Text = row["fromUnit"].ToString();
+                    cmbLVLoadType.Text = row["loadType"].ToString();
+                    txtPowerLV.Text = row["power"].ToString();
+                    cmbLVUnidade.Text = row["powerUnit"].ToString();
+                    txtLVTag.Text = row["tag"].ToString();
+                    txtLVDesc.Text = row["descr"].ToString();
+                    chkVFD.IsChecked = row["isVFD"].ToString() == "1" ? true: false; 
+
+                    
+
+
+
+                }
+            }
+        }
     }
 }

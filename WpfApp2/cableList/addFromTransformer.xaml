@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="WpfApp2.cableList.addFromTransformer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp2.cableList"
+             mc:Ignorable="d" Height="249" Width="470">
+    <Grid Background="#FFF8FFE8" HorizontalAlignment="Center" Width="470" Height="249" VerticalAlignment="Center">
+        <TextBox x:Name="txtTag" HorizontalAlignment="Left" Margin="89,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Tag" HorizontalAlignment="Left" Margin="52,34,0,0" VerticalAlignment="Top"/>
+        <Label Content="Power" HorizontalAlignment="Left" Margin="38,72,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtPowerTrafo" HorizontalAlignment="Left" Margin="89,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cmbUnitTrafo" HorizontalAlignment="Left" Margin="222,72,0,0" VerticalAlignment="Top" Width="65">
+            <ComboBoxItem Content="kVA"/>
+            <ComboBoxItem Content="kW"/>
+        </ComboBox>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="235,153,0,0" VerticalAlignment="Top" Click="btnSave_Click"/>
+        <TextBox x:Name="txtLocation" HorizontalAlignment="Left" Margin="89,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"/>
+        <Label Content="Location" HorizontalAlignment="Left" Margin="25,0,0,0" VerticalAlignment="Center"/>
+
+    </Grid>
+</UserControl>

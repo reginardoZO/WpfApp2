@@ -101,8 +101,8 @@
                     <TextBlock HorizontalAlignment="Left" Margin="168,59,0,0" TextWrapping="Wrap" Text="Panels" VerticalAlignment="Top"/>
                     <TextBlock HorizontalAlignment="Left" Margin="32,168,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top" TextAlignment="Right" RenderTransformOrigin="0.954,0.645"/>
                     <TextBox x:Name="txtDescPanel" HorizontalAlignment="Left" Margin="74,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-                    <Button x:Name="btnAddPanels" Content="Add" HorizontalAlignment="Left" Margin="314,157,0,0" VerticalAlignment="Top" Height="26" Width="52" FontSize="10" BorderThickness="0,0,0,0" Click="btnAddPanels_Click"/>
-                    <ListView x:Name="listPanels" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="28,201,0,376" HorizontalAlignment="Left" Width="331">
+                    <Button x:Name="btnAddPanels" Content="Add" HorizontalAlignment="Left" Margin="307,196,0,0" VerticalAlignment="Top" Height="26" Width="52" FontSize="10" BorderThickness="0,0,0,0" Click="btnAddPanels_Click"/>
+                    <ListView x:Name="listPanels" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="28,251,0,376" HorizontalAlignment="Left" Width="331">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn/>
@@ -227,56 +227,62 @@
                             <DataGridTextColumn Header="To Plant" Binding="{Binding toPlant}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    <TextBlock HorizontalAlignment="Left" Margin="15,204,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" TextAlignment="Right" RenderTransformOrigin="0.954,0.645"/>
+                    <TextBox x:Name="txtPanelLocation" HorizontalAlignment="Left" Margin="74,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
 
                 </Grid>
             </TabItem>
             <TabItem Header="Loads">
                 <Grid Background="#FFE5E5E5" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="59*"/>
+                        <ColumnDefinition Width="341*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ComboBox x:Name="cmbPlantsLoad" HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbPlantsLoad_SelectionChanged" />
+                    <ComboBox x:Name="cmbPlantsLoad" HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cmbPlantsLoad_SelectionChanged" Grid.ColumnSpan="2" />
                     <TextBlock HorizontalAlignment="Left" Margin="18,19,0,0" TextWrapping="Wrap" Text="Plant" VerticalAlignment="Top" RenderTransformOrigin="1.249,0.732"/>
-                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="18,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="503"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="154,66,0,0" TextWrapping="Wrap" Text="Medium Voltage" VerticalAlignment="Top" Foreground="#FF673AB7"/>
+                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="18,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="503" Grid.ColumnSpan="2"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="154,66,0,0" TextWrapping="Wrap" Text="Medium Voltage" VerticalAlignment="Top" Foreground="#FF673AB7" Grid.ColumnSpan="2"/>
                     <TextBlock HorizontalAlignment="Left" Margin="28,106,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cmbMVFromPanel" HorizontalAlignment="Left" Margin="104,101,0,0" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox x:Name="cmbMVFromPanel" HorizontalAlignment="Left" Margin="104,101,0,0" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2"/>
                     <TextBlock HorizontalAlignment="Left" Margin="66,143,0,0" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtMVUnit" HorizontalAlignment="Left" Margin="104,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="txtMVUnit" HorizontalAlignment="Left" Margin="104,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2"/>
                     <TextBlock HorizontalAlignment="Left" Margin="56,183,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtPowerMV" HorizontalAlignment="Left" Margin="104,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
-                    <ComboBox x:Name="cmbPowerUnitsMV" HorizontalAlignment="Left" Margin="186,173,0,0" VerticalAlignment="Top" Width="38"/>
+                    <ComboBox x:Name="cmbPowerUnitsMV" HorizontalAlignment="Left" Margin="9,173,0,0" VerticalAlignment="Top" Width="38" Grid.Column="1"/>
                     <TextBlock HorizontalAlignment="Left" Margin="70,221,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtTagMV" HorizontalAlignment="Left" Margin="104,215,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="txtTagMV" HorizontalAlignment="Left" Margin="104,215,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2"/>
                     <TextBlock HorizontalAlignment="Left" Margin="70,263,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtDescrMV" HorizontalAlignment="Left" Margin="104,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="409"/>
-                    <Button x:Name="btnAddMVLoad" Content="Add" HorizontalAlignment="Left" Margin="440,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnAddMVLoad_Click"/>
-                    <CheckBox x:Name="chkSELPower" Content="SEL2600 POWER" HorizontalAlignment="Left" Margin="72,309,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="chkSELFiberCable" Content="SEL2600 FIBER CABLE" HorizontalAlignment="Left" Margin="72,333,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtDescrMV" HorizontalAlignment="Left" Margin="104,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="409" Grid.ColumnSpan="2"/>
+                    <Button x:Name="btnAddMVLoad" Content="Add" HorizontalAlignment="Left" Margin="263,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnAddMVLoad_Click" Grid.Column="1"/>
+                    <CheckBox x:Name="chkSELPower" Content="SEL2600 POWER" HorizontalAlignment="Left" Margin="72,309,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="chkSELFiberCable" Content="SEL2600 FIBER CABLE" HorizontalAlignment="Left" Margin="72,333,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     <CheckBox x:Name="chkCTWiring" Content="CT WIRING" HorizontalAlignment="Left" Margin="72,359,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="chkExciterControlPower" Content="EXCITER CONTROL POWER" HorizontalAlignment="Left" Margin="72,383,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="chkSpeedSwitchWiring" Content="SPEED SWITCH WIRING" HorizontalAlignment="Left" Margin="72,409,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="chkTerminalBoxHeaterWiring" Content="TERMINAL BOX SPACE HEATER WIRING" HorizontalAlignment="Left" Margin="72,433,0,0" VerticalAlignment="Top" IsChecked="True" IsEnabled="False"/>
-                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="526,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="489"/>
-                    <TextBox x:Name="txtLVTag" HorizontalAlignment="Left" Margin="620,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TabIndex="75"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="745,66,0,0" TextWrapping="Wrap" Text="Low Voltage" VerticalAlignment="Top" Foreground="#FF673AB7"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="548,182,0,0" TextWrapping="Wrap" Text="Load Type" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cmbLVLoadType" HorizontalAlignment="Left" Margin="620,177,0,0" VerticalAlignment="Top" Width="142" SelectionChanged="cmbLVLoadType_SelectionChanged" TabIndex="72"/>
-                    <CheckBox x:Name="chkVFD" Content="VFD" HorizontalAlignment="Left" Margin="786,181,0,0" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <TextBlock x:Name="lblPowerLV" HorizontalAlignment="Left" Margin="565,219,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtPowerLV" HorizontalAlignment="Left" Margin="624,212,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" TabIndex="73"/>
-                    <ComboBox x:Name="cmbLVUnidade" HorizontalAlignment="Left" Margin="708,212,0,0" VerticalAlignment="Top" Width="58" TabIndex="74"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="543,106,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cmbLVFromPanel" HorizontalAlignment="Left" Margin="624,102,0,0" VerticalAlignment="Top" Width="120" TabIndex="70"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="580,147,0,0" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtLVUnit" HorizontalAlignment="Left" Margin="624,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="71"/>
+                    <CheckBox x:Name="chkExciterControlPower" Content="EXCITER CONTROL POWER" HorizontalAlignment="Left" Margin="72,383,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="chkSpeedSwitchWiring" Content="SPEED SWITCH WIRING" HorizontalAlignment="Left" Margin="72,409,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="chkTerminalBoxHeaterWiring" Content="TERMINAL BOX SPACE HEATER WIRING" HorizontalAlignment="Left" Margin="72,433,0,0" VerticalAlignment="Top" IsChecked="True" IsEnabled="False" Grid.ColumnSpan="2"/>
+                    <Rectangle HorizontalAlignment="Left" Height="460" Margin="349,57,0,0" Stroke="Black" VerticalAlignment="Top" Width="489" Grid.Column="1"/>
+                    <TextBox x:Name="txtLVTag" HorizontalAlignment="Left" Margin="443,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TabIndex="75" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="568,66,0,0" TextWrapping="Wrap" Text="Low Voltage" VerticalAlignment="Top" Foreground="#FF673AB7" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="371,182,0,0" TextWrapping="Wrap" Text="Load Type" VerticalAlignment="Top" Grid.Column="1"/>
+                    <ComboBox x:Name="cmbLVLoadType" HorizontalAlignment="Left" Margin="442,177,0,0" VerticalAlignment="Top" Width="142" SelectionChanged="cmbLVLoadType_SelectionChanged" TabIndex="72" Grid.Column="1"/>
+                    <CheckBox x:Name="chkVFD" Content="VFD" HorizontalAlignment="Left" Margin="609,181,0,0" VerticalAlignment="Top" Visibility="Collapsed" Grid.Column="1"/>
+                    <TextBlock x:Name="lblPowerLV" HorizontalAlignment="Left" Margin="388,219,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top" Grid.Column="1"/>
+                    <TextBox x:Name="txtPowerLV" HorizontalAlignment="Left" Margin="447,212,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" TabIndex="73" Grid.Column="1"/>
+                    <ComboBox x:Name="cmbLVUnidade" HorizontalAlignment="Left" Margin="531,212,0,0" VerticalAlignment="Top" Width="58" TabIndex="74" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="366,106,0,0" TextWrapping="Wrap" Text="From Panel" VerticalAlignment="Top" Grid.Column="1"/>
+                    <ComboBox x:Name="cmbLVFromPanel" HorizontalAlignment="Left" Margin="447,102,0,0" VerticalAlignment="Top" Width="120" TabIndex="70" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="403,147,0,0" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Top" Grid.Column="1"/>
+                    <TextBox x:Name="txtLVUnit" HorizontalAlignment="Left" Margin="447,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="71" Grid.Column="1"/>
                     <Button
         Background="{DynamicResource PrimaryHueMidBrush}"
         Foreground="White"
-        Margin="797,147,0,0"
+        Margin="620,147,0,0"
         ToolTip="Adicionar"
         Click="AddButton_Click"
-        Style="{StaticResource MaterialDesignFloatingActionButton}" RenderTransformOrigin="0.5,0.5" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20">
+        Style="{StaticResource MaterialDesignFloatingActionButton}" RenderTransformOrigin="0.5,0.5" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Grid.Column="1">
                         <Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -299,21 +305,22 @@
 
 
 
-                    <TextBlock HorizontalAlignment="Left" Margin="582,258,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="576,296,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439"/>
-                    <TextBox x:Name="txtLVDesc" Margin="623,293,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="369" TabIndex="76"/>
-                    <Button x:Name="btnLVAdd" Content="Add" HorizontalAlignment="Left" Margin="944,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnLVAdd_Click" />
+                    <TextBlock HorizontalAlignment="Left" Margin="405,258,0,0" TextWrapping="Wrap" Text="Tag" VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="399,296,0,0" TextWrapping="Wrap" Text="Desc." VerticalAlignment="Top" RenderTransformOrigin="-0.248,-0.439" Grid.Column="1"/>
+                    <TextBox x:Name="txtLVDesc" Margin="446,293,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="369" TabIndex="76" Grid.Column="1"/>
+                    <Button x:Name="btnLVAdd" Content="Add" HorizontalAlignment="Left" Margin="767,487,0,0" VerticalAlignment="Top" Height="19" Width="50" FontSize="10" Click="btnLVAdd_Click" Grid.Column="1" />
 
                     <materialDesign:Snackbar x:Name="MySnackbar"
                                  VerticalAlignment="Top"
-                                 Margin="0,883,0,0"
-                                 MessageQueue="{materialDesign:MessageQueue}" />
+                                 Margin="279,883,0,0"
+                                 MessageQueue="{materialDesign:MessageQueue}" Grid.Column="1" HorizontalAlignment="Left" />
 
 
                     <DataGrid x:Name="gridLoads" Margin="18,533,10,10" 
           AutoGenerateColumns="False"
           HeadersVisibility="Column"
           GridLinesVisibility="All"
+                              IsReadOnly="True"
           CanUserAddRows="False"
           AlternatingRowBackground="LightGray"
           RowBackground="White"
@@ -322,7 +329,7 @@
           FontSize="14"
           FontFamily="Segoe UI"
           ColumnHeaderHeight="30"
-          RowHeight="38">
+          RowHeight="38" SelectionChanged="gridMain_SelectionChanged" Grid.ColumnSpan="2"  >
 
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
@@ -336,6 +343,7 @@
                         </DataGrid.ColumnHeaderStyle>
 
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="id" Binding="{Binding id}" Width="150" />
                             <DataGridTextColumn Header="From" Binding="{Binding fromPanel}" Width="150" />
                             <DataGridTextColumn Header="Unit" Binding="{Binding fromUnit}" Width="80" />
                             <DataGridTextColumn Header="Power" Binding="{Binding power}" Width="80" />
@@ -345,7 +353,7 @@
                             <DataGridTextColumn Header="Level" Binding="{Binding Level}" Width="80" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <CheckBox x:Name="chkMotorSpaceHeater" Content="120V MOTOR SPACE HEATER" HorizontalAlignment="Left" Margin="72,456,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkMotorSpaceHeater" Content="120V MOTOR SPACE HEATER" HorizontalAlignment="Left" Margin="72,456,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
 
                 </Grid>
             </TabItem>

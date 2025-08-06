@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="App.config" />
     <None Remove="Cables\cablesSpecs.json" />
+    <None Remove="clist\cable_example.png" />
     <None Remove="database\cables.json" />
     <None Remove="database\conduitsSizes.json" />
     <None Remove="installation_details.png" />
@@ -54,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="clist\cable_example.png" />
     <Resource Include="installation_details.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

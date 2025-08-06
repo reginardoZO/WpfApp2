@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="WpfApp2.cableList.addFromPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp2.cableList"
+             mc:Ignorable="d" Height="242" Width="322">
+    <Grid Background="#FFFFE2E2" HorizontalAlignment="Left" Width="312" Height="232" VerticalAlignment="Top">
+        <TextBox x:Name="txtTag" HorizontalAlignment="Left" Margin="75,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Tag" HorizontalAlignment="Left" Margin="26,44,0,0" VerticalAlignment="Top"/>
+        <Label Content="Voltage" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cmbVoltage" HorizontalAlignment="Left" Margin="75,83,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="13.8kV"/>
+            <ComboBoxItem Content="4.16kV"/>
+            <ComboBoxItem Content="480V"/>
+            <ComboBoxItem Content="460V"/>
+            <ComboBoxItem Content="380V"/>
+            <ComboBoxItem Content="220V"/>
+            <ComboBoxItem Content="127V"/>
+        </ComboBox>
+        <Label Content="Position" HorizontalAlignment="Left" Margin="5,128,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtPosition" HorizontalAlignment="Left" Margin="75,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="134,165,0,0" VerticalAlignment="Top" Click="btnSave_Click"/>
+
+    </Grid>
+</UserControl>

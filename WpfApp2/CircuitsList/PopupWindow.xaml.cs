@@ -10,19 +10,29 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp2
+namespace WpfApp2.CircuitsList
 {
     /// <summary>
-    /// Interaction logic for CalculadoraView.xaml
+    /// Interaction logic for PopupWindow.xaml
     /// </summary>
-    public partial class CalculadoraView : UserControl
+    public partial class PopupWindow : Window
     {
-        public CalculadoraView()
+
+
+        public string DadosRecebidos { get; set; }
+
+        public PopupWindow()
         {
             InitializeComponent();
+            Loaded += PopupWindow_Loaded;
+        }
+
+        private void PopupWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Acesso aos dados passados
+            lbl.Content= DadosRecebidos;
         }
     }
 }

@@ -118,6 +118,8 @@ namespace WpfApp2.CircuitsList
                     txtDwgTo.Text = row["DWG TO"].ToString();
                     txtRemarks.Text = row["REMARKS"].ToString();
                     txtRoute.Text = row["ROUTE"].ToString();
+                    
+
 
 
                 }
@@ -165,7 +167,7 @@ namespace WpfApp2.CircuitsList
                 $"\"DWG TO\" = '{txtDwgTo.Text.Replace("'", "''")}', " +
                 $"\"REMARKS\" = '{txtRemarks.Text.Replace("'", "''")}', " +
                 $"\"ROUTE\" = '{txtRoute.Text.Replace("'", "''")}' " +
-                $"WHERE id = {idSelecionado};";
+                $"WHERE id = {idSelecionado};";               
             int retorno = acessos.ExecuteNonQuery(varSql);
 
             if (retorno > 0)
@@ -216,6 +218,13 @@ namespace WpfApp2.CircuitsList
                 Color cor = (Color)ColorConverter.ConvertFromString("#FFF1F1F1");
                 e.Row.Background = new SolidColorBrush(cor);
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var popup = new PopupWindow();
+            popup.DadosRecebidos = "elemento";
+            popup.ShowDialog();
         }
     }
 }

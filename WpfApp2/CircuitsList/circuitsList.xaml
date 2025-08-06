@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WpfApp2.CircuitsList"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1200">
+             d:DesignHeight="900" d:DesignWidth="1600">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,7 +14,7 @@
 
         <materialDesign:Snackbar x:Name="MySnackbar"
              VerticalAlignment="Top"
-             Margin="568,883,0,0"
+             Margin="700,876,0,0"
              Background="#4CAF50" 
 Foreground="White"
              MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Left">
@@ -38,37 +38,46 @@ Foreground="White"
         <TextBox x:Name="txtSearchMain" HorizontalAlignment="Left" Margin="65,62,0,0" TextWrapping="Wrap"  KeyDown="txtBusca_KeyDown" VerticalAlignment="Top" Width="138"/>
         <Label Content="Search" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
         <Button Content="Find" HorizontalAlignment="Left" Margin="226,55,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.59,0.625"/>
-        <DataGrid x:Name="gridMain" Margin="10,104,10,0" FontSize="12" IsReadOnly="True" Height="546" VerticalAlignment="Top" SelectionChanged="gridMain_SelectionChanged"  LoadingRow="gridMain_LoadingRow"/>
+        <DataGrid x:Name="gridMain" Margin="10,104,10,0" FontSize="12" IsReadOnly="True" Height="550" VerticalAlignment="Top" SelectionChanged="gridMain_SelectionChanged"  LoadingRow="gridMain_LoadingRow" RenderTransformOrigin="0.5,0.5" >
+            <DataGrid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-0.157"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.747"/>
+                </TransformGroup>
+            </DataGrid.RenderTransform>
+        </DataGrid>
         <ComboBox x:Name="cmbProjects" HorizontalAlignment="Left" Margin="65,20,0,0" VerticalAlignment="Top" Width="135"/>
         <Label Content="Project" HorizontalAlignment="Left" Margin="10,21,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtIssue" HorizontalAlignment="Left" Margin="77,668,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
         <Label Content="Issue" HorizontalAlignment="Left" Margin="26,668,0,0" VerticalAlignment="Top"/>
         <Label Content="TAG" HorizontalAlignment="Left" Margin="31,708,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtTag" HorizontalAlignment="Left" Margin="77,707,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <TextBox x:Name="txtTag" HorizontalAlignment="Left" Margin="77,707,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="163"/>
         <Label Content="Qty" HorizontalAlignment="Left" Margin="33,745,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtQty" HorizontalAlignment="Left" Margin="77,745,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
-        <Label Content="Size" HorizontalAlignment="Left" Margin="438,748,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtWireSize" HorizontalAlignment="Left" Margin="480,748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Gnd Qty" HorizontalAlignment="Left" Margin="414,786,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtGndQty" HorizontalAlignment="Left" Margin="480,785,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
+        <Label Content="Size" HorizontalAlignment="Left" Margin="281,744,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtWireSize" HorizontalAlignment="Left" Margin="323,744,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Gnd Qty" HorizontalAlignment="Left" Margin="257,782,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtGndQty" HorizontalAlignment="Left" Margin="323,781,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
         <Label Content="Gnd Size" HorizontalAlignment="Left" Margin="6,788,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtGrdSize" HorizontalAlignment="Left" Margin="77,787,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Insul" HorizontalAlignment="Left" Margin="434,674,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtInsul" HorizontalAlignment="Left" Margin="480,673,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Voltage" HorizontalAlignment="Left" Margin="419,713,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtVoltage" HorizontalAlignment="Left" Margin="480,711,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="From" HorizontalAlignment="Left" Margin="25,826,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtFrom" HorizontalAlignment="Left" Margin="77,825,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
-        <Label Content="To" HorizontalAlignment="Left" Margin="40,864,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtTo" HorizontalAlignment="Left" Margin="77,863,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
-        <Label Content="Dwg From" HorizontalAlignment="Left" Margin="616,673,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtDwgFrom" HorizontalAlignment="Left" Margin="692,672,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="394"/>
-        <Label Content="Dwg To" HorizontalAlignment="Left" Margin="631,711,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtDwgTo" HorizontalAlignment="Left" Margin="692,711,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="394"/>
-        <Label Content="Route" HorizontalAlignment="Left" Margin="640,774,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtRoute" HorizontalAlignment="Left" Margin="692,750,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="394" Height="62"/>
-        <Button x:Name="btnDel" Content="Delete" HorizontalAlignment="Left" Margin="1105,792,0,0" VerticalAlignment="Top" Click="btnDel_Click" RenderTransformOrigin="2.877,3.281"/>
-        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="1105,841,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="74" Click="btnEdit_Click">
+        <Label Content="Insul" HorizontalAlignment="Left" Margin="277,670,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtInsul" HorizontalAlignment="Left" Margin="323,669,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Voltage" HorizontalAlignment="Left" Margin="262,709,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtVoltage" HorizontalAlignment="Left" Margin="323,707,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="From" HorizontalAlignment="Left" Margin="772,680,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtFrom" HorizontalAlignment="Left" Margin="824,680,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
+        <Label Content="To" HorizontalAlignment="Left" Margin="787,718,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtTo" HorizontalAlignment="Left" Margin="824,718,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
+        <Label Content="Dwg From" HorizontalAlignment="Left" Margin="1,820,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtDwgFrom" HorizontalAlignment="Left" Margin="77,819,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
+        <Label Content="Dwg To" HorizontalAlignment="Left" Margin="16,858,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtDwgTo" HorizontalAlignment="Left" Margin="77,858,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
+        <Label Content="Route" HorizontalAlignment="Left" Margin="768,782,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtRoute" HorizontalAlignment="Left" Margin="824,768,0,0" AcceptsReturn="True" VerticalAlignment="Top" Width="394" Height="38" TextWrapping="Wrap"/>
+        <Button x:Name="btnDel" Content="Delete" HorizontalAlignment="Left" Margin="1496,788,0,0" VerticalAlignment="Top" Click="btnDel_Click" RenderTransformOrigin="2.877,3.281"/>
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="1489,841,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="74" Click="btnEdit_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -97,8 +106,27 @@ Foreground="White"
         <Label Content="Not Like" HorizontalAlignment="Left" Margin="732,63,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtNotLike" HorizontalAlignment="Left" Margin="936,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="txtNotLike_KeyDown"/>
         <CheckBox x:Name="chkRoute" Content="Route" Margin="645,66,0,0" IsChecked="True" VerticalAlignment="Top" HorizontalAlignment="Left" Width="67"/>
-        <Label Content="Remarks" HorizontalAlignment="Left" Margin="628,840,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtRemarks" HorizontalAlignment="Left" Margin="692,821,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="394" Height="62"/>
+        <Label Content="Remarks" HorizontalAlignment="Left" Margin="761,848,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtRemarks" HorizontalAlignment="Left" Margin="824,834,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Top" Width="394" Height="42"/>
+        <Label Content="From Area" HorizontalAlignment="Left" Margin="1366,680,0,0" VerticalAlignment="Top"/>
+        <Label Content="To Area" HorizontalAlignment="Left" Margin="1381,718,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtFromArea" HorizontalAlignment="Left" Margin="1449,680,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtToArea" HorizontalAlignment="Left" Margin="1449,720,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Power" HorizontalAlignment="Left" Margin="469,670,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtPower" HorizontalAlignment="Left" Margin="515,667,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85"/>
+        <Label Content="Unit" HorizontalAlignment="Left" Margin="479,708,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,3.255"/>
+        <ComboBox x:Name="cmbUnit" HorizontalAlignment="Left" Margin="515,705,0,0" VerticalAlignment="Top" Width="85">
+            <ComboBoxItem Content="HP"/>
+            <ComboBoxItem Content="kVA"/>
+            <ComboBoxItem Content="kW"/>
+            <ComboBoxItem Content="kVAR"/>
+
+        </ComboBox>
+        <CheckBox x:Name="checkVFD" Content="VFD" HorizontalAlignment="Left" Margin="556,753,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.86,0.389"/>
+        <Label Content="Distance" HorizontalAlignment="Left" Margin="456,784,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,3.255"/>
+        <TextBox x:Name="txtDistance" HorizontalAlignment="Left" Margin="515,781,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85"/>
+        <Label Content="ft" HorizontalAlignment="Left" Margin="614,783,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.517,3.255"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="1310,45,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
 
     </Grid>
 </UserControl>
